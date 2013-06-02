@@ -4,6 +4,9 @@ import data_simulation
 import dismod_mr
 import numpy as np, pymc as mc
 
+# TODO: test that this works when ages includes non-integral values
+# (requires getting age weights right)
+
 def test_age_standardizing_approx():
     # simulate data
     n = 50

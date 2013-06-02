@@ -4,14 +4,15 @@ import numpy as np, pymc as mc
 
 
 def age_standardize_approx(name, age_weights, mu_age, age_start, age_end, ages):
-    """ Generate PyMC objects for approximating the integral of gamma from age_start[i] to age_end[i]
+    """ Generate PyMC objects for approximating the integral of mu_age from age_start[i] to age_end[i]
 
     Parameters
     ----------
     name : str
     age_weights : array, len == len(ages)
-    mu_age : pymc.Node with values of PCGP
+    mu_age : pymc.Node with values for each age in ages
     age_start, age_end : array
+    ages : array
 
     Results
     -------
