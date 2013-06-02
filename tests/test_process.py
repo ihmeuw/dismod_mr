@@ -6,7 +6,9 @@ import numpy as np, pymc as mc
 import dismod_mr
 import data_simulation
 
-def test_data_model_sim():
+# TODO: add test of consistent model, confirm that is working
+
+def test_age_specific_rate_model():
     # generate simulated data
     data_type = 'p'
     n = 50
@@ -39,7 +41,7 @@ def test_data_model_sim():
                                  mu_age=None, mu_age_parent=pi_usa.mean(0), sigma_age_parent=pi_usa.std(0))
 
 
-def test_data_model_lower_bound():
+def test_age_specific_rate_model_w_lower_bound_data():
     # generate simulated data
     data_type = 'csmr'
     n = 50
@@ -57,6 +59,18 @@ def test_data_model_lower_bound():
     vars = dismod_mr.model.process.age_specific_rate(d, 'pf',
                                  reference_area='all', reference_sex='total', reference_year='all',
                                  mu_age=None, mu_age_parent=None, sigma_age_parent=None, lower_bound='csmr')
+
+
+    # fit model
+    m = mc.MCMC(vars)
+    m.sample(3)
+
+def test_consistent():
+    d = dismod_mr.data.ModelData()
+    d.hierarchy, d.output_template = data_simulation.small_output()
+    
+    # create model and priors
+    vars = dismod_mr.model.process.consistent(d)
 
 
     # fit model
