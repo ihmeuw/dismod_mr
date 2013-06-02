@@ -8,5 +8,5 @@ setup(name='DisMod-MR',
       author='Abraham D. Flaxman',
       author_email='abie@uw.edu',
       url='http://ihmeuw.org/dismod/',
-      packages=['dismod_mr'],
+      packages=['dismod_mr', 'dismod_mr.model'],
      )
