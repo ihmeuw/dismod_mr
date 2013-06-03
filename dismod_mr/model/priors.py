@@ -106,7 +106,7 @@ def covariate_level_constraints(name, model, vars, ages):
     U_all = []
     nodes = ['all']
     for l in range(1,4):
-        nodes = [n for n in np.flatten([model.hierarchy.successors(n) for n in nodes])]
+        nodes = [item for n in nodes for item in model.hierarchy.successors(n)]
         U_i = np.array([col in nodes for col in vars['U'].columns])
         if U_i.sum() > 0:
             U_all.append(U_i)

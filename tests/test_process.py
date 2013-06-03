@@ -66,16 +66,24 @@ def test_age_specific_rate_model_w_lower_bound_data():
     m.sample(3)
 
 def test_consistent():
-    d = dismod_mr.data.ModelData()
-    d.hierarchy, d.output_template = data_simulation.small_output()
-    
+    dm = dismod_mr.data.ModelData()
+    dm.hierarchy, dm.output_template = data_simulation.small_output()
+
     # create model and priors
-    vars = dismod_mr.model.process.consistent(d)
+    dm.vars = dismod_mr.model.process.consistent(dm)
+
+    mc.MCMC(dm.vars).sample(3)
+
+    # try it again with expert priors on prevalence
+
+    dm.parameters['p']['level_value'] = dict(value=.1, age_before=15, age_after=95)
+    dm.parameters['p']['level_bounds'] = dict(upper=.01, lower=.001)
+
+    # create model and priors
+    dm.vars = dismod_mr.model.process.consistent(dm)
 
 
-    # fit model
-    m = mc.MCMC(vars)
-    m.sample(3)
+    mc.MCMC(dm.vars).sample(3)
 
 if __name__ == '__main__':
     import nose
