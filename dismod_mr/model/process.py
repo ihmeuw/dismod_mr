@@ -313,29 +313,31 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         for i,k in enumerate(rate[t]['knots']):
             rate[t]['gamma'][i].value = np.log(initial[k - rate[t]['ages'][0]]+1.e-9)
 
-    m_all = .01*np.ones(101)
+
+    # TODO: re-engineer this m_all interpolation section
     df = model.get_data('m_all')
     if len(df.index) == 0:
         print 'WARNING: all-cause mortality data not found, using m_all = .01'
+        m_all = .01*np.ones_like(ages)
     else:
         mean_mortality = df.groupby(['age_start', 'age_end']).mean().reset_index()
 
         knots = []
+        vals = []
         for i, row in mean_mortality.T.iteritems():
-            knots.append(np.clip((row['age_start'] + row['age_end'] + 1.) / 2., 0, 100))
+            knots.append((row['age_start'] + row['age_end'] + 1.) / 2.)  # FIXME: change m_all data to half-open intervals, and then remove +1 here
             
-            m_all[knots[-1]] = row['value']
+            vals.append(row['value'])
 
         # extend knots as constant beyond endpoints
-        knots = sorted(knots)
-        m_all[0] = m_all[knots[0]]
-        m_all[100] = m_all[knots[-1]]
+        knots.insert(0, ages[0])
+        vals.insert(0, vals[0])
 
-        knots.insert(0, 0)
-        knots.append(100)
+        knots.append(ages[-1])
+        vals.append(vals[-1])
 
-        m_all = scipy.interpolate.interp1d(knots, m_all[knots], kind='linear')(np.arange(101))
-    m_all = m_all[ages]
+
+        m_all = scipy.interpolate.interp1d(knots, vals, kind='linear')(ages)
 
     logit_C0 = mc.Uniform('logit_C0', -15, 15, value=-10.)
 

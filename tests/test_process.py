@@ -1,7 +1,7 @@
 """ Test model likelihoods
 """
 
-import numpy as np, pymc as mc
+import numpy as np, pymc as mc, pandas as pd
 
 import dismod_mr
 import data_simulation
@@ -82,6 +82,28 @@ def test_consistent():
     # create model and priors
     dm.vars = dismod_mr.model.process.consistent(dm)
 
+
+    mc.MCMC(dm.vars).sample(3)
+
+def test_consistent_w_non_integral_ages():
+    dm = dismod_mr.data.ModelData()
+    dm.hierarchy, dm.output_template = data_simulation.small_output()
+
+    # change to non-integral ages
+    dm.parameters['ages'] = np.arange(0., 5.1, .1)
+    for k in dm.parameters:
+        if type(dm.parameters[k]) == dict:
+            dm.parameters[k]['parameter_age_mesh'] = [0,5]
+
+    # create model and priors
+    dm.vars = dismod_mr.model.process.consistent(dm)
+
+    mc.MCMC(dm.vars).sample(3)
+
+    # try again, this time with m_all data
+    dm.input_data = pd.DataFrame([['m_all', 0, 100, .1]], columns=['data_type', 'age_start', 'age_end', 'value'])
+
+    dm.vars = dismod_mr.model.process.consistent(dm)
 
     mc.MCMC(dm.vars).sample(3)
 
