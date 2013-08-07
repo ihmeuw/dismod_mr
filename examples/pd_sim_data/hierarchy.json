@@ -1,0 +1,2994 @@
+{
+  "nodes": [
+    [
+      "AFG",
+      {
+        "pop": 73756.329220951768,
+        "level": 3
+      }
+    ],
+    [
+      "AGO",
+      {
+        "pop": 46343.911209476864,
+        "level": 3
+      }
+    ],
+    [
+      "ALB",
+      {
+        "pop": 9680.9514564355941,
+        "level": 3
+      }
+    ],
+    [
+      "AND",
+      {
+        "pop": 212.78980885682398,
+        "level": 3
+      }
+    ],
+    [
+      "ARE",
+      {
+        "pop": 13396.894203015685,
+        "level": 3
+      }
+    ],
+    [
+      "ARG",
+      {
+        "pop": 112554.27035786894,
+        "level": 3
+      }
+    ],
+    [
+      "ARM",
+      {
+        "pop": 9769.9351159046837,
+        "level": 3
+      }
+    ],
+    [
+      "ATG",
+      {
+        "pop": 227.55380546558169,
+        "level": 3
+      }
+    ],
+    [
+      "AUS",
+      {
+        "pop": 59326.948094512649,
+        "level": 3
+      }
+    ],
+    [
+      "AUT",
+      {
+        "pop": 24418.291388607198,
+        "level": 3
+      }
+    ],
+    [
+      "AZE",
+      {
+        "pop": 25233.351243492325,
+        "level": 3
+      }
+    ],
+    [
+      "BDI",
+      {
+        "pop": 21453.039622015087,
+        "level": 3
+      }
+    ],
+    [
+      "BEL",
+      {
+        "pop": 31501.882699129324,
+        "level": 3
+      }
+    ],
+    [
+      "BEN",
+      {
+        "pop": 21473.258777597381,
+        "level": 3
+      }
+    ],
+    [
+      "BFA",
+      {
+        "pop": 40297.235725689403,
+        "level": 3
+      }
+    ],
+    [
+      "BGD",
+      {
+        "pop": 396030.90476280561,
+        "level": 3
+      }
+    ],
+    [
+      "BGR",
+      {
+        "pop": 24452.723197940955,
+        "level": 3
+      }
+    ],
+    [
+      "BHR",
+      {
+        "pop": 2513.5602611623867,
+        "level": 3
+      }
+    ],
+    [
+      "BHS",
+      {
+        "pop": 923.89004969321036,
+        "level": 3
+      }
+    ],
+    [
+      "BIH",
+      {
+        "pop": 11966.337799417131,
+        "level": 3
+      }
+    ],
+    [
+      "BLR",
+      {
+        "pop": 29880.273135206276,
+        "level": 3
+      }
+    ],
+    [
+      "BLZ",
+      {
+        "pop": 786.28989368343923,
+        "level": 3
+      }
+    ],
+    [
+      "BOL",
+      {
+        "pop": 25909.850091972774,
+        "level": 3
+      }
+    ],
+    [
+      "BRA",
+      {
+        "pop": 532546.44504695595,
+        "level": 3
+      }
+    ],
+    [
+      "BRB",
+      {
+        "pop": 809.28239124579261,
+        "level": 3
+      }
+    ],
+    [
+      "BRN",
+      {
+        "pop": 1019.619875217231,
+        "level": 3
+      }
+    ],
+    [
+      "BTN",
+      {
+        "pop": 1949.75200213064,
+        "level": 3
+      }
+    ],
+    [
+      "BWA",
+      {
+        "pop": 5291.0188606802731,
+        "level": 3
+      }
+    ],
+    [
+      "CAF",
+      {
+        "pop": 11440.803731428494,
+        "level": 3
+      }
+    ],
+    [
+      "CAN",
+      {
+        "pop": 93769.757630678811,
+        "level": 3
+      }
+    ],
+    [
+      "CHE",
+      {
+        "pop": 21890.849869455749,
+        "level": 3
+      }
+    ],
+    [
+      "CHL",
+      {
+        "pop": 45516.469826393834,
+        "level": 3
+      }
+    ],
+    [
+      "CHN",
+      {
+        "pop": 3815185.8228167109,
+        "level": 3
+      }
+    ],
+    [
+      "CIV",
+      {
+        "pop": 50591.930771451742,
+        "level": 3
+      }
+    ],
+    [
+      "CMR",
+      {
+        "pop": 49813.375678866214,
+        "level": 3
+      }
+    ],
+    [
+      "COD",
+      {
+        "pop": 162297.56337563356,
+        "level": 3
+      }
+    ],
+    [
+      "COG",
+      {
+        "pop": 10033.847349750758,
+        "level": 3
+      }
+    ],
+    [
+      "COL",
+      {
+        "pop": 123076.76173832016,
+        "level": 3
+      }
+    ],
+    [
+      "COM",
+      {
+        "pop": 1834.2345654559997,
+        "level": 3
+      }
+    ],
+    [
+      "CPV",
+      {
+        "pop": 1330.9235764172395,
+        "level": 3
+      }
+    ],
+    [
+      "CRI",
+      {
+        "pop": 12069.635194621542,
+        "level": 3
+      }
+    ],
+    [
+      "CUB",
+      {
+        "pop": 33273.802139619089,
+        "level": 3
+      }
+    ],
+    [
+      "CYP",
+      {
+        "pop": 2154.1916379900367,
+        "level": 3
+      }
+    ],
+    [
+      "CZE",
+      {
+        "pop": 31349.040758117575,
+        "level": 3
+      }
+    ],
+    [
+      "DEU",
+      {
+        "pop": 246271.83266521376,
+        "level": 3
+      }
+    ],
+    [
+      "DJI",
+      {
+        "pop": 2276.7936024514229,
+        "level": 3
+      }
+    ],
+    [
+      "DMA",
+      {
+        "pop": 207.22635216090598,
+        "level": 3
+      }
+    ],
+    [
+      "DNK",
+      {
+        "pop": 16173.152705496623,
+        "level": 3
+      }
+    ],
+    [
+      "DOM",
+      {
+        "pop": 26512.755536599791,
+        "level": 3
+      }
+    ],
+    [
+      "DZA",
+      {
+        "pop": 94182.189365397368,
+        "level": 3
+      }
+    ],
+    [
+      "ECU",
+      {
+        "pop": 38335.121271725016,
+        "level": 3
+      }
+    ],
+    [
+      "EGY",
+      {
+        "pop": 213420.18197587237,
+        "level": 3
+      }
+    ],
+    [
+      "ERI",
+      {
+        "pop": 12962.386852911251,
+        "level": 3
+      }
+    ],
+    [
+      "ESP",
+      {
+        "pop": 127925.79237229106,
+        "level": 3
+      }
+    ],
+    [
+      "EST",
+      {
+        "pop": 4297.2293736684287,
+        "level": 3
+      }
+    ],
+    [
+      "ETH",
+      {
+        "pop": 206878.71854784014,
+        "level": 3
+      }
+    ],
+    [
+      "FIN",
+      {
+        "pop": 15721.66990012703,
+        "level": 3
+      }
+    ],
+    [
+      "FJI",
+      {
+        "pop": 2434.4455919541838,
+        "level": 3
+      }
+    ],
+    [
+      "FRA",
+      {
+        "pop": 181669.63877283392,
+        "level": 3
+      }
+    ],
+    [
+      "FSM",
+      {
+        "pop": 319.72697234127992,
+        "level": 3
+      }
+    ],
+    [
+      "GAB",
+      {
+        "pop": 3829.39810140588,
+        "level": 3
+      }
+    ],
+    [
+      "GBR",
+      {
+        "pop": 180722.50590925218,
+        "level": 3
+      }
+    ],
+    [
+      "GEO",
+      {
+        "pop": 14474.286246999432,
+        "level": 3
+      }
+    ],
+    [
+      "GHA",
+      {
+        "pop": 61189.215842085723,
+        "level": 3
+      }
+    ],
+    [
+      "GIN",
+      {
+        "pop": 25049.469746848328,
+        "level": 3
+      }
+    ],
+    [
+      "GMB",
+      {
+        "pop": 4231.6331675899237,
+        "level": 3
+      }
+    ],
+    [
+      "GNB",
+      {
+        "pop": 3943.4810025441839,
+        "level": 3
+      }
+    ],
+    [
+      "GNQ",
+      {
+        "pop": 1691.6331630331058,
+        "level": 3
+      }
+    ],
+    [
+      "GRC",
+      {
+        "pop": 33113.866890420926,
+        "level": 3
+      }
+    ],
+    [
+      "GRD",
+      {
+        "pop": 305.23265868912625,
+        "level": 3
+      }
+    ],
+    [
+      "GTM",
+      {
+        "pop": 36319.603548797779,
+        "level": 3
+      }
+    ],
+    [
+      "GUY",
+      {
+        "pop": 2222.6395006090711,
+        "level": 3
+      }
+    ],
+    [
+      "HND",
+      {
+        "pop": 19496.468277537617,
+        "level": 3
+      }
+    ],
+    [
+      "HRV",
+      {
+        "pop": 13538.211461984236,
+        "level": 3
+      }
+    ],
+    [
+      "HTI",
+      {
+        "pop": 26612.933287640451,
+        "level": 3
+      }
+    ],
+    [
+      "HUN",
+      {
+        "pop": 30797.358474431301,
+        "level": 3
+      }
+    ],
+    [
+      "IDN",
+      {
+        "pop": 654334.08761428983,
+        "level": 3
+      }
+    ],
+    [
+      "IND",
+      {
+        "pop": 3253684.3176958282,
+        "level": 3
+      }
+    ],
+    [
+      "IRL",
+      {
+        "pop": 12273.59828739258,
+        "level": 3
+      }
+    ],
+    [
+      "IRN",
+      {
+        "pop": 199746.65619732442,
+        "level": 3
+      }
+    ],
+    [
+      "IRQ",
+      {
+        "pop": 76922.114984309257,
+        "level": 3
+      }
+    ],
+    [
+      "ISL",
+      {
+        "pop": 878.28708163219073,
+        "level": 3
+      }
+    ],
+    [
+      "ISR",
+      {
+        "pop": 19289.264789047644,
+        "level": 3
+      }
+    ],
+    [
+      "ITA",
+      {
+        "pop": 176902.02602253816,
+        "level": 3
+      }
+    ],
+    [
+      "JAM",
+      {
+        "pop": 7854.302363097564,
+        "level": 3
+      }
+    ],
+    [
+      "JOR",
+      {
+        "pop": 14916.965131791305,
+        "level": 3
+      }
+    ],
+    [
+      "JPN",
+      {
+        "pop": 378211.58248970634,
+        "level": 3
+      }
+    ],
+    [
+      "KAZ",
+      {
+        "pop": 48041.249540951365,
+        "level": 3
+      }
+    ],
+    [
+      "KEN",
+      {
+        "pop": 100359.05267863872,
+        "level": 3
+      }
+    ],
+    [
+      "KGZ",
+      {
+        "pop": 14890.884872371909,
+        "level": 3
+      }
+    ],
+    [
+      "KHM",
+      {
+        "pop": 37317.367327116423,
+        "level": 3
+      }
+    ],
+    [
+      "KIR",
+      {
+        "pop": 253.48306826558724,
+        "level": 3
+      }
+    ],
+    [
+      "KOR",
+      {
+        "pop": 139214.43639911522,
+        "level": 3
+      }
+    ],
+    [
+      "KWT",
+      {
+        "pop": 7047.2631988889198,
+        "level": 3
+      }
+    ],
+    [
+      "LAO",
+      {
+        "pop": 16217.405361750552,
+        "level": 3
+      }
+    ],
+    [
+      "LBN",
+      {
+        "pop": 11331.457816630296,
+        "level": 3
+      }
+    ],
+    [
+      "LBR",
+      {
+        "pop": 9397.9191873968812,
+        "level": 3
+      }
+    ],
+    [
+      "LBY",
+      {
+        "pop": 16527.592938820759,
+        "level": 3
+      }
+    ],
+    [
+      "LCA",
+      {
+        "pop": 481.64016622992057,
+        "level": 3
+      }
+    ],
+    [
+      "LKA",
+      {
+        "pop": 58371.527764355633,
+        "level": 3
+      }
+    ],
+    [
+      "LSO",
+      {
+        "pop": 5919.0946904082357,
+        "level": 3
+      }
+    ],
+    [
+      "LTU",
+      {
+        "pop": 10547.292776088727,
+        "level": 3
+      }
+    ],
+    [
+      "LUX",
+      {
+        "pop": 1348.3358807279351,
+        "level": 3
+      }
+    ],
+    [
+      "LVA",
+      {
+        "pop": 7279.0580269773563,
+        "level": 3
+      }
+    ],
+    [
+      "MAR",
+      {
+        "pop": 87661.667173787122,
+        "level": 3
+      }
+    ],
+    [
+      "MDA",
+      {
+        "pop": 11853.493726347033,
+        "level": 3
+      }
+    ],
+    [
+      "MDG",
+      {
+        "pop": 50241.620846008722,
+        "level": 3
+      }
+    ],
+    [
+      "MDV",
+      {
+        "pop": 834.96668066711288,
+        "level": 3
+      }
+    ],
+    [
+      "MEX",
+      {
+        "pop": 305611.89530838071,
+        "level": 3
+      }
+    ],
+    [
+      "MHL",
+      {
+        "pop": 170.88804933011684,
+        "level": 3
+      }
+    ],
+    [
+      "MKD",
+      {
+        "pop": 6064.309982802828,
+        "level": 3
+      }
+    ],
+    [
+      "MLI",
+      {
+        "pop": 37637.951271288206,
+        "level": 3
+      }
+    ],
+    [
+      "MLT",
+      {
+        "pop": 1202.4844181508158,
+        "level": 3
+      }
+    ],
+    [
+      "MMR",
+      {
+        "pop": 134358.42868780164,
+        "level": 3
+      }
+    ],
+    [
+      "MNE",
+      {
+        "pop": 1859.6576223197458,
+        "level": 3
+      }
+    ],
+    [
+      "MNG",
+      {
+        "pop": 7539.989319358252,
+        "level": 3
+      }
+    ],
+    [
+      "MOZ",
+      {
+        "pop": 58085.106780838352,
+        "level": 3
+      }
+    ],
+    [
+      "MRT",
+      {
+        "pop": 8580.2256702176219,
+        "level": 3
+      }
+    ],
+    [
+      "MUS",
+      {
+        "pop": 3631.0632386702919,
+        "level": 3
+      }
+    ],
+    [
+      "MWI",
+      {
+        "pop": 37589.482787256326,
+        "level": 3
+      }
+    ],
+    [
+      "MYS",
+      {
+        "pop": 72869.871976938884,
+        "level": 3
+      }
+    ],
+    [
+      "NAM",
+      {
+        "pop": 5804.3358704447428,
+        "level": 3
+      }
+    ],
+    [
+      "NER",
+      {
+        "pop": 36710.166763556568,
+        "level": 3
+      }
+    ],
+    [
+      "NGA",
+      {
+        "pop": 399288.78012471244,
+        "level": 3
+      }
+    ],
+    [
+      "NIC",
+      {
+        "pop": 15404.998584548637,
+        "level": 3
+      }
+    ],
+    [
+      "NLD",
+      {
+        "pop": 48135.323173845951,
+        "level": 3
+      }
+    ],
+    [
+      "NOR",
+      {
+        "pop": 13772.784289337864,
+        "level": 3
+      }
+    ],
+    [
+      "NPL",
+      {
+        "pop": 76639.079250930852,
+        "level": 3
+      }
+    ],
+    [
+      "NZL",
+      {
+        "pop": 11971.270238793857,
+        "level": 3
+      }
+    ],
+    [
+      "OMN",
+      {
+        "pop": 7081.4968393696618,
+        "level": 3
+      }
+    ],
+    [
+      "PAK",
+      {
+        "pop": 447249.57950476347,
+        "level": 3
+      }
+    ],
+    [
+      "PAN",
+      {
+        "pop": 9216.1913553380109,
+        "level": 3
+      }
+    ],
+    [
+      "PER",
+      {
+        "pop": 78771.261842587177,
+        "level": 3
+      }
+    ],
+    [
+      "PHL",
+      {
+        "pop": 241367.82601624774,
+        "level": 3
+      }
+    ],
+    [
+      "PNG",
+      {
+        "pop": 17193.759025097792,
+        "level": 3
+      }
+    ],
+    [
+      "POL",
+      {
+        "pop": 115532.27629008851,
+        "level": 3
+      }
+    ],
+    [
+      "PRK",
+      {
+        "pop": 68777.899920905053,
+        "level": 3
+      }
+    ],
+    [
+      "PRT",
+      {
+        "pop": 31459.828247392783,
+        "level": 3
+      }
+    ],
+    [
+      "PRY",
+      {
+        "pop": 16698.395088716698,
+        "level": 3
+      }
+    ],
+    [
+      "PSE",
+      {
+        "pop": 9758.7743233514138,
+        "level": 3
+      }
+    ],
+    [
+      "QAT",
+      {
+        "pop": 3064.3052579483206,
+        "level": 3
+      }
+    ],
+    [
+      "ROU",
+      {
+        "pop": 67200.055646031222,
+        "level": 3
+      }
+    ],
+    [
+      "RUS",
+      {
+        "pop": 436821.60218077165,
+        "level": 3
+      }
+    ],
+    [
+      "RWA",
+      {
+        "pop": 27157.215355146709,
+        "level": 3
+      }
+    ],
+    [
+      "SAU",
+      {
+        "pop": 67491.236228980109,
+        "level": 3
+      }
+    ],
+    [
+      "SDN",
+      {
+        "pop": 109513.70946684817,
+        "level": 3
+      }
+    ],
+    [
+      "SEN",
+      {
+        "pop": 30772.763698957373,
+        "level": 3
+      }
+    ],
+    [
+      "SGP",
+      {
+        "pop": 10006.909274505573,
+        "level": 3
+      }
+    ],
+    [
+      "SLB",
+      {
+        "pop": 1332.361439754646,
+        "level": 3
+      }
+    ],
+    [
+      "SLE",
+      {
+        "pop": 15092.102920716798,
+        "level": 3
+      }
+    ],
+    [
+      "SLV",
+      {
+        "pop": 17659.505949033784,
+        "level": 3
+      }
+    ],
+    [
+      "SOM",
+      {
+        "pop": 24751.8450741489,
+        "level": 3
+      }
+    ],
+    [
+      "SRB",
+      {
+        "pop": 29685.667959827679,
+        "level": 3
+      }
+    ],
+    [
+      "STP",
+      {
+        "pop": 439.21722744285296,
+        "level": 3
+      }
+    ],
+    [
+      "SUR",
+      {
+        "pop": 1433.5549238208234,
+        "level": 3
+      }
+    ],
+    [
+      "SVK",
+      {
+        "pop": 16218.832448371792,
+        "level": 3
+      }
+    ],
+    [
+      "SVN",
+      {
+        "pop": 6093.9531985301828,
+        "level": 3
+      }
+    ],
+    [
+      "SWE",
+      {
+        "pop": 27006.07628184565,
+        "level": 3
+      }
+    ],
+    [
+      "SWZ",
+      {
+        "pop": 3172.2188424897809,
+        "level": 3
+      }
+    ],
+    [
+      "SYC",
+      {
+        "pop": 215.35496891242943,
+        "level": 3
+      }
+    ],
+    [
+      "SYR",
+      {
+        "pop": 50884.040119185025,
+        "level": 3
+      }
+    ],
+    [
+      "TCD",
+      {
+        "pop": 27384.531376711657,
+        "level": 3
+      }
+    ],
+    [
+      "TGO",
+      {
+        "pop": 15188.086359278981,
+        "level": 3
+      }
+    ],
+    [
+      "THA",
+      {
+        "pop": 193638.83229043207,
+        "level": 3
+      }
+    ],
+    [
+      "TJK",
+      {
+        "pop": 18735.352084108832,
+        "level": 3
+      }
+    ],
+    [
+      "TKM",
+      {
+        "pop": 13525.678114907325,
+        "level": 3
+      }
+    ],
+    [
+      "TLS",
+      {
+        "pop": 2921.4861956940895,
+        "level": 3
+      }
+    ],
+    [
+      "TON",
+      {
+        "pop": 303.34679147120193,
+        "level": 3
+      }
+    ],
+    [
+      "TTO",
+      {
+        "pop": 3890.7483401487334,
+        "level": 3
+      }
+    ],
+    [
+      "TUN",
+      {
+        "pop": 28832.442935239065,
+        "level": 3
+      }
+    ],
+    [
+      "TUR",
+      {
+        "pop": 196344.29954761872,
+        "level": 3
+      }
+    ],
+    [
+      "TWN",
+      {
+        "pop": 66734.427839066746,
+        "level": 3
+      }
+    ],
+    [
+      "TZA",
+      {
+        "pop": 110160.72110312866,
+        "level": 3
+      }
+    ],
+    [
+      "UGA",
+      {
+        "pop": 80441.201564036164,
+        "level": 3
+      }
+    ],
+    [
+      "UKR",
+      {
+        "pop": 145846.34811927404,
+        "level": 3
+      }
+    ],
+    [
+      "URY",
+      {
+        "pop": 9892.2660911450894,
+        "level": 3
+      }
+    ],
+    [
+      "USA",
+      {
+        "pop": 856838.93217866321,
+        "level": 3
+      }
+    ],
+    [
+      "UZB",
+      {
+        "pop": 74364.1992428581,
+        "level": 3
+      }
+    ],
+    [
+      "VCT",
+      {
+        "pop": 327.40554129812659,
+        "level": 3
+      }
+    ],
+    [
+      "VEN",
+      {
+        "pop": 75645.975338412798,
+        "level": 3
+      }
+    ],
+    [
+      "VNM",
+      {
+        "pop": 239791.81993224661,
+        "level": 3
+      }
+    ],
+    [
+      "VUT",
+      {
+        "pop": 601.00665666168391,
+        "level": 3
+      }
+    ],
+    [
+      "WSM",
+      {
+        "pop": 531.24599913560428,
+        "level": 3
+      }
+    ],
+    [
+      "YEM",
+      {
+        "pop": 57074.721486077382,
+        "level": 3
+      }
+    ],
+    [
+      "ZAF",
+      {
+        "pop": 135452.16397777942,
+        "level": 3
+      }
+    ],
+    [
+      "ZMB",
+      {
+        "pop": 32840.584447122274,
+        "level": 3
+      }
+    ],
+    [
+      "ZWE",
+      {
+        "pop": 35900.064552925563,
+        "level": 3
+      }
+    ],
+    [
+      "all",
+      {
+        "level": 0
+      }
+    ],
+    [
+      "asia_central",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "asia_east",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "asia_pacific_high_income",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "asia_south",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "asia_southeast",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "australasia",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "caribbean",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "europe_central",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "europe_eastern",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "europe_western",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "latin_america_andean",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "latin_america_central",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "latin_america_southern",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "latin_america_tropical",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "north_america_high_income",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "oceania",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "sub-saharan_africa_central",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "sub-saharan_africa_southern",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "super-region_0",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "super-region_1",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "super-region_2",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "super-region_3",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "super-region_4",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "super-region_5",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "super-region_6",
+      {
+        "level": 1
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "all",
+      "super-region_0",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "all",
+      "super-region_1",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "all",
+      "super-region_2",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "all",
+      "super-region_3",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "all",
+      "super-region_4",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "all",
+      "super-region_5",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "all",
+      "super-region_6",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "ARM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "AZE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "GEO",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "KAZ",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "KGZ",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "MNG",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "TJK",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "TKM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_central",
+      "UZB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_east",
+      "CHN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_east",
+      "PRK",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_east",
+      "TWN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_pacific_high_income",
+      "BRN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_pacific_high_income",
+      "JPN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_pacific_high_income",
+      "KOR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_pacific_high_income",
+      "SGP",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_south",
+      "BGD",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_south",
+      "BTN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_south",
+      "IND",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_south",
+      "NPL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_south",
+      "PAK",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "IDN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "KHM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "LAO",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "LKA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "MDV",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "MMR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "MUS",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "MYS",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "PHL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "SYC",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "THA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "TLS",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "asia_southeast",
+      "VNM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "australasia",
+      "AUS",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "australasia",
+      "NZL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "ATG",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "BHS",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "BLZ",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "BRB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "CUB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "DMA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "DOM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "GRD",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "GUY",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "HTI",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "JAM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "LCA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "SUR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "TTO",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "caribbean",
+      "VCT",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "ALB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "BGR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "BIH",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "CZE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "HRV",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "HUN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "MKD",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "MNE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "POL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "ROU",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "SRB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "SVK",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_central",
+      "SVN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_eastern",
+      "BLR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_eastern",
+      "EST",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_eastern",
+      "LTU",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_eastern",
+      "LVA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_eastern",
+      "MDA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_eastern",
+      "RUS",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_eastern",
+      "UKR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "AND",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "AUT",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "BEL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "CHE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "CYP",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "DEU",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "DNK",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "ESP",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "FIN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "FRA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "GBR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "GRC",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "IRL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "ISL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "ISR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "ITA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "LUX",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "MLT",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "NLD",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "NOR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "PRT",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "europe_western",
+      "SWE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_andean",
+      "BOL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_andean",
+      "ECU",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_andean",
+      "PER",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "COL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "CRI",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "GTM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "HND",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "MEX",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "NIC",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "PAN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "SLV",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_central",
+      "VEN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_southern",
+      "ARG",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_southern",
+      "CHL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_southern",
+      "URY",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_tropical",
+      "BRA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "latin_america_tropical",
+      "PRY",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "AFG",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "ARE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "BHR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "DZA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "EGY",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "IRN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "IRQ",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "JOR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "KWT",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "LBN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "LBY",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "MAR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "OMN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "PSE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "QAT",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "SAU",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "SYR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "TUN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "TUR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_africa_middle_east",
+      "YEM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_america_high_income",
+      "CAN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "north_america_high_income",
+      "USA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "FJI",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "FSM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "KIR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "MHL",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "PNG",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "SLB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "TON",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "VUT",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "oceania",
+      "WSM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_central",
+      "AGO",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_central",
+      "CAF",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_central",
+      "COD",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_central",
+      "COG",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_central",
+      "GAB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_central",
+      "GNQ",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "BDI",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "COM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "DJI",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "ERI",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "ETH",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "KEN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "MDG",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "MOZ",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "MWI",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "RWA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "SDN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "SOM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "TZA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "UGA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_east",
+      "ZMB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_southern",
+      "BWA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_southern",
+      "LSO",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_southern",
+      "NAM",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_southern",
+      "SWZ",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_southern",
+      "ZAF",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_southern",
+      "ZWE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "BEN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "BFA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "CIV",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "CMR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "CPV",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "GHA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "GIN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "GMB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "GNB",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "LBR",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "MLI",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "MRT",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "NER",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "NGA",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "SEN",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "SLE",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "STP",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "TCD",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "sub-saharan_africa_west",
+      "TGO",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_0",
+      "asia_pacific_high_income",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_0",
+      "australasia",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_0",
+      "europe_western",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_0",
+      "latin_america_southern",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_0",
+      "north_america_high_income",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_1",
+      "asia_central",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_1",
+      "europe_central",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_1",
+      "europe_eastern",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_2",
+      "sub-saharan_africa_central",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_2",
+      "sub-saharan_africa_east",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_2",
+      "sub-saharan_africa_southern",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_2",
+      "sub-saharan_africa_west",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_3",
+      "north_africa_middle_east",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_4",
+      "asia_south",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_5",
+      "asia_east",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_5",
+      "asia_southeast",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_5",
+      "oceania",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_6",
+      "caribbean",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_6",
+      "latin_america_andean",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_6",
+      "latin_america_central",
+      {
+        "weight": NaN
+      }
+    ],
+    [
+      "super-region_6",
+      "latin_america_tropical",
+      {
+        "weight": NaN
+      }
+    ]
+  ]
+}

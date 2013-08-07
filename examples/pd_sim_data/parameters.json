@@ -1,0 +1,458 @@
+{
+  "rr": {
+    "increasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "fixed_effects": {},
+    "level_bounds": {
+      "upper": 10.0,
+      "lower": 1.3999999999999999
+    },
+    "y_maximum": 1.0,
+    "level_value": {
+      "age_after": 100,
+      "value": "1.0",
+      "age_before": 0
+    },
+    "random_effects": {},
+    "decreasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "parameter_age_mesh": [
+      0,
+      30,
+      45,
+      60,
+      80,
+      100
+    ],
+    "heterogeneity": "Very",
+    "smoothness": {
+      "age_start": 0,
+      "amount": "No Prior",
+      "age_end": 100
+    }
+  },
+  "f": {
+    "increasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "fixed_effects": {
+      "x_cv_representative": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_sex": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_ihme_fao_stimulants_kcal_26oct11": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_cv_ascertainment": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_smoking_prev": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_cv_diagnostic_criteria": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      }
+    },
+    "level_bounds": {
+      "upper": 1.0,
+      "lower": 0.0
+    },
+    "y_maximum": 1.0,
+    "level_value": {
+      "age_after": 100,
+      "value": "0.0",
+      "age_before": 0
+    },
+    "random_effects": {},
+    "decreasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "parameter_age_mesh": [
+      0,
+      30,
+      45,
+      60,
+      80,
+      100
+    ],
+    "heterogeneity": "Very",
+    "smoothness": {
+      "age_start": 0,
+      "amount": "Slightly",
+      "age_end": 100
+    }
+  },
+  "i": {
+    "increasing": {
+      "age_start": 30,
+      "age_end": 100
+    },
+    "fixed_effects": {
+      "x_cv_representative": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_sex": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_ihme_fao_stimulants_kcal_26oct11": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_cv_ascertainment": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_smoking_prev": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_cv_diagnostic_criteria": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      }
+    },
+    "level_bounds": {
+      "upper": 1.0,
+      "lower": 0.0
+    },
+    "y_maximum": 1.0,
+    "level_value": {
+      "age_after": 100,
+      "value": "0.0",
+      "age_before": 30
+    },
+    "random_effects": {},
+    "decreasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "parameter_age_mesh": [
+      0,
+      30,
+      45,
+      60,
+      80,
+      100
+    ],
+    "heterogeneity": "Very",
+    "smoothness": {
+      "age_start": 0,
+      "amount": "Moderately",
+      "age_end": 100
+    }
+  },
+  "ages": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100
+  ],
+  "p": {
+    "increasing": {
+      "age_start": 30,
+      "age_end": 100
+    },
+    "fixed_effects": {},
+    "level_bounds": {
+      "upper": 1.0,
+      "lower": 0.0
+    },
+    "y_maximum": 1.0,
+    "level_value": {
+      "age_after": 100,
+      "value": "0.0",
+      "age_before": 30
+    },
+    "random_effects": {},
+    "decreasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "parameter_age_mesh": [
+      0,
+      30,
+      45,
+      60,
+      80,
+      100
+    ],
+    "heterogeneity": "Very",
+    "smoothness": {
+      "age_start": 0,
+      "amount": "Slightly",
+      "age_end": 100
+    }
+  },
+  "r": {
+    "increasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "fixed_effects": {
+      "x_cv_representative": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_sex": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_ihme_fao_stimulants_kcal_26oct11": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_cv_ascertainment": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_smoking_prev": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_cv_diagnostic_criteria": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      }
+    },
+    "level_bounds": {
+      "upper": 1.0,
+      "lower": 0.0
+    },
+    "y_maximum": 1.0,
+    "level_value": {
+      "age_after": 100,
+      "value": "0.0",
+      "age_before": 100
+    },
+    "random_effects": {},
+    "decreasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "parameter_age_mesh": [
+      0,
+      30,
+      45,
+      60,
+      80,
+      100
+    ],
+    "heterogeneity": "Very",
+    "smoothness": {
+      "age_start": 0,
+      "amount": "Slightly",
+      "age_end": 100
+    }
+  },
+  "pf": {
+    "parameter_age_mesh": [
+      0,
+      30,
+      45,
+      60,
+      80,
+      100
+    ],
+    "random_effects": {},
+    "fixed_effects": {},
+    "y_maximum": 1.0
+  },
+  "X": {
+    "increasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "fixed_effects": {
+      "x_cv_representative": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_sex": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_ihme_fao_stimulants_kcal_26oct11": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_cv_ascertainment": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_smoking_prev": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      },
+      "x_cv_diagnostic_criteria": {
+        "mu": 0,
+        "dist": "Normal",
+        "sigma": 0.0001
+      }
+    },
+    "level_bounds": {
+      "upper": 100.0,
+      "lower": 0.0
+    },
+    "y_maximum": 1.0,
+    "level_value": {
+      "age_after": 100,
+      "value": 10.0,
+      "age_before": 0
+    },
+    "random_effects": {},
+    "decreasing": {
+      "age_start": 0,
+      "age_end": 0
+    },
+    "parameter_age_mesh": [
+      0,
+      30,
+      45,
+      60,
+      80,
+      100
+    ],
+    "heterogeneity": "Slightly",
+    "smoothness": {
+      "age_start": 0,
+      "amount": "No Prior",
+      "age_end": 100
+    }
+  }
+}
