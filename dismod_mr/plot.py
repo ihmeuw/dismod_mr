@@ -7,6 +7,30 @@ import networkx as nx
 
 colors = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f0', '#ffff33']
 
+def asr(model, t):
+    """ plot age-standardized rate fit and model data
+
+    :Parameters:
+      - `model` : data.ModelData
+      - `t` : str, data type to plot, e.g 'i', 'r', 'f', 'p', 'rr', or
+        'pf'
+    """
+    vars = model.vars
+    ages = pl.array(model.parameters['ages'])
+
+    data_bars(model.get_data(t), color='grey', label='%s data'%t)
+
+    if 'knots' in vars[t]:
+        knots = vars[t]['knots']
+    else:
+        knots = range(101)
+
+    pl.plot(ages, vars[t]['mu_age'].stats()['mean'], 'k-', linewidth=2, label='Posterior')
+
+    pl.plot(ages[knots], vars[t]['mu_age'].stats()['95% HPD interval'][knots,:][:,0], 'k--', label='95% HPD')
+    pl.plot(ages[knots], vars[t]['mu_age'].stats()['95% HPD interval'][knots,:][:,1], 'k--')
+
+
 def all_plots_for(model, t, ylab, emp_priors):
     """ plot results of a fit
     
@@ -23,7 +47,7 @@ def all_plots_for(model, t, ylab, emp_priors):
     plot_acorr(model.vars[t])
     plot_hists(model.vars)
 
-def plot_data_bars(df, style='book', color='black', label=None, max=500):
+def data_bars(df, style='book', color='black', label=None, max=500):
     """ Plot data bars
     
     :Parameters:
@@ -125,7 +149,7 @@ def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY'
     for j, t in enumerate(data_types):
         pl.subplot(plot_config[0], plot_config[1], j+1)
         if with_data == 1: 
-            plot_data_bars(model.input_data[model.input_data['data_type'] == t], color='grey', label='Data')
+            data_bars(model.input_data[model.input_data['data_type'] == t], color='grey', label='Data')
         if 'knots' in vars[t]:
             knots = vars[t]['knots']
         else:
@@ -183,7 +207,7 @@ def plot_one_ppc(model, t):
     pl.hlines([0], l, r)
     pl.axis([l, r, y.min()*1.1 - y.max()*.1, -y.min()*.1 + y.max()*1.1])
 
-def plot_one_effects(model, data_type):
+def effects(model, data_type, figsize=(22, 17)):
     """ Plot random effects and fixed effects.
     
     :Parameters:
@@ -193,8 +217,9 @@ def plot_one_effects(model, data_type):
     """
     vars = model.vars[data_type]
     hierarchy = model.hierarchy
-    
-    pl.figure(figsize=(22, 17))
+
+    if figsize:
+        pl.figure(figsize=figsize)
     for i, (covariate, effect) in enumerate([['U', 'alpha'], ['X', 'beta']]):
         if covariate not in vars:
             continue
@@ -218,16 +243,16 @@ def plot_one_effects(model, data_type):
 
                 xerr = pl.array([x - pl.atleast_2d(stats['95% HPD interval'])[:,0],
                                  pl.atleast_2d(stats['95% HPD interval'])[:,1] - x])
-                pl.errorbar(x[index], y[index], xerr=xerr[:, index], fmt='bs', mec='w')
+                pl.errorbar(x[index], y[index], xerr=xerr[:, index], fmt='s', mec='w', color=colors[1])
 
                 l,r,b,t = pl.axis()
                 pl.vlines([0], b-.5, t+.5)
-                pl.hlines(y, l, r, linestyle='dotted')
-                pl.xticks([l, 0, r])
+                #pl.hlines(y, l, r, linestyle='dotted')
+                pl.xticks([l, l/2, 0, r/2, r])
                 pl.yticks([])
                 for i in index:
                     spaces = cov_name[i] in hierarchy and len(nx.shortest_path(hierarchy, 'all', cov_name[i])) or 0
-                    pl.text(l, y[i], '%s%s' % (' * '*spaces, cov_name[i]), va='center', ha='left')
+                    pl.text(l, y[i], ' %s%s' % (' * '*spaces, cov_name[i]), va='center', ha='left')
                 pl.axis([l, r, -.5, t+.5])
                 
         if isinstance(vars.get(effect), list):
@@ -245,39 +270,38 @@ def plot_one_effects(model, data_type):
 
                         xerr = pl.array([x - pl.atleast_2d(stats['95% HPD interval'])[:,0],
                                          pl.atleast_2d(stats['95% HPD interval'])[:,1] - x])
-                        pl.errorbar(x, y, xerr=xerr, fmt='bs', mec='w')
+                        pl.errorbar(x, y, xerr=xerr, fmt='s', mec='w', color=colors[1])
 
             l,r,b,t = pl.axis()
             pl.vlines([0], b-.5, t+.5)
-            pl.hlines(y, l, r, linestyle='dotted')
-            pl.xticks([l, 0, r])
+            #pl.hlines(y, l, r, linestyle='dotted')
+            pl.xticks([l, l/2, 0, r/2, r])
             pl.yticks([])
 
             for y, i in enumerate(index):
                 spaces = cov_name[i] in hierarchy and len(nx.shortest_path(hierarchy, 'all', cov_name[i])) or 0
-                pl.text(l, y, '%s%s' % (' * '*spaces, cov_name[i]), va='center', ha='left')
+                pl.text(l, y, ' %s%s' % (' * '*spaces, cov_name[i]), va='center', ha='left')
 
             pl.axis([l, r, -.5, t+.5])
                 
 
+            effect_str = '\n'
             if effect == 'alpha':
-                effect_str = ''
                 for sigma in vars['sigma_alpha']:
                     stats = sigma.stats()
                     if stats:
-                        effect_str += '%s = %.3f\n' % (sigma.__name__, stats['mean'])
+                        effect_str += '%s = %.3f -\n' % (sigma.__name__, stats['mean'])  # FIXME: pylab doesn't align right correctly for lines that end in spaces
                     else:
-                        effect_str += '%s = %.3f\n' % (sigma.__name__, sigma.value)
+                        effect_str += '%s = %.3f -\n' % (sigma.__name__, sigma.value)
                 pl.text(r, t, effect_str, va='top', ha='right')
             elif effect == 'beta':
-                effect_str = ''
                 if 'eta' in vars:
                     eta = vars['eta']
-                    stats = eta.stats()
+                    tr = eta.trace()
                     if stats:
-                        effect_str += '%s = %.3f\n' % (eta.__name__, stats['mean'])
+                        effect_str += 'exp(%s) = %.3f -\n' % (eta.__name__, pl.mean(pl.exp(tr)))
                     else:
-                        effect_str += '%s = %.3f\n' % (eta.__name__, eta.value)
+                        effect_str += 'exp(%s) = %.3f -\n' % (eta.__name__, pl.exp(eta.value))
                 pl.text(r, t, effect_str, va='top', ha='right')
 
 
