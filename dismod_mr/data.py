@@ -6,7 +6,7 @@ import pymc as mc
 import pylab as pl
 import simplejson as json
 
-import graphics
+import plot
 
 def describe_vars(d):
     m = mc.Model(d)
@@ -35,7 +35,7 @@ def check_convergence(vars):
     autocorrelation at 25 lags to zero lags.  warn about convergence if it exceeds
     10% for any stoch """
     import dismod3
-    cells, stochs = dismod3.graphics.tally_stochs(vars)
+    cells, stochs = dismod_mr.plot.tally_stochs(vars)
 
     for s in sorted(stochs, key=lambda s: s.__name__):
         tr = s.trace()

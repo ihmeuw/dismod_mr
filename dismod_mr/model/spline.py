@@ -40,7 +40,7 @@ def spline(name, ages, knots, smoothing, interpolation_method='linear'):
     vars = dict(gamma=gamma, mu_age=mu_age, ages=ages, knots=knots)
 
     if (smoothing > 0) and (not pl.isinf(smoothing)):
-        print 'adding smoothing of', smoothing
+        #print 'adding smoothing of', smoothing
         @mc.potential(name='smooth_mu_%s'%name)
         def smooth_gamma(gamma=flat_gamma, knots=knots, tau=smoothing**-2):
             # the following is to include a "noise floor" so that level value

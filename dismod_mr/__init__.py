@@ -1,2 +1,2 @@
-import data, graphics, model, fit
+import data, plot, model, fit
 
