@@ -1,6 +1,6 @@
 numpy>=1.7.1
 scipy>=0.12.0
-pycppad==20121020
 pymc==2.2
 networkx>=1.8
 pandas>=0.12.0
+pycppad==20121020
