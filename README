@@ -22,7 +22,43 @@ re-install previous ones and restart the computer several times. Using
 easyinstall was helpful. I also had to install GCC at some point. I
 hope these would be helpful for making it easier for new users."
 
-This installation section could be more detailed. Patches welcome.
+This installation section could be more detailed. Here is a little bit
+more from the first successful install outside of IHME:
+
+I was able to set-up pycppad. One lesson learned was that using
+pycppad with the Anaconda Python distribution makes the kernel die (at
+least for OS X).
+
+The method that I've found to be less prone to errors (at least for OS
+X) is:
+
+- Use the pre-installed python that comes with OS X (better to have
+  other python distributions uninstalled)
+
+- Install SciPy which contains most of the dependencies (and includes
+  easy install if I remember correctly)
+
+- Install the remaining dependencies using easy install (in my case,
+  only simplejson I think)
+
+For the consistent model:
+
+- Install boost
+  (http://www.boost.org/doc/libs/1_54_0/libs/python/doc/index.html)
+
+- Install cppad (http://www.coin-or.org/CppAD/)
+
+- Configure the setup.py file for pycppad to point to the directories
+  and library files for boost and cppad
+
+- Build and install pycppad
+
+Other notes:
+
+- I sometimes got errors about not finding a C compiler even though I
+  had gcc installed; this was solved by making a symbolic link
+
+PS Xcode and Command Line Tools should also be installed on OS X
 
 Coding Practices
 ================
