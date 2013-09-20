@@ -216,7 +216,7 @@ class ModelData:
         json.dump(dict(nodes=[[n, self.hierarchy.node[n]] for n in sorted(self.hierarchy.nodes())],
                        edges=[[u, v, self.hierarchy.edge[u][v]] for u,v in sorted(self.hierarchy.edges())]),
                   open(path + '/hierarchy.json', 'w'), indent=2)
-        json.dump(self.nodes_to_fit, open(path + '/nodes_to_fit.json', 'w'), indent=2)
+        json.dump(list(self.nodes_to_fit), open(path + '/nodes_to_fit.json', 'w'), indent=2)
 
     @staticmethod
     def load(path):
