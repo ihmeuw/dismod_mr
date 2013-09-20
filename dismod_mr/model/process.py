@@ -54,7 +54,10 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
 
     smoothing_dict = {'No Prior':np.inf, 'Slightly':.5, 'Moderately': .05, 'Very': .005}
     if 'smoothness' in parameters:
-        smoothing = smoothing_dict[parameters['smoothness']['amount']]
+        try:
+            smoothing = float(parameters['smoothness']['amount'])
+        except ValueError:
+            smoothing = smoothing_dict[parameters['smoothness']['amount']]
     else:
         smoothing = 0.
 
