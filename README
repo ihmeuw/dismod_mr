@@ -25,6 +25,8 @@ hope these would be helpful for making it easier for new users."
 This installation section could be more detailed. Here is a little bit
 more from the first successful install outside of IHME:
 
+### For Macintosh OS X
+
 I was able to set-up pycppad. One lesson learned was that using
 pycppad with the Anaconda Python distribution makes the kernel die (at
 least for OS X).
@@ -59,6 +61,32 @@ Other notes:
   had gcc installed; this was solved by making a symbolic link
 
 PS Xcode and Command Line Tools should also be installed on OS X
+
+### For Windows
+
+I was able to set-up the age-standardising part of the model on a
+Windows system. The installation had some differences from OS X. In a
+nutshell:
+
+- I was only able to make a 32-bit installation work for now.
+
+- Some prerequisites: install *specifically* Visual Studio C++ 2008
+  Express Edition (not the later versions!); also had to install gcc,
+  gfortran, g++ via MinGW (then had to set path manually in the
+  environment variables)
+
+- Installed Python and set path manually in environment variables
+
+- Had to use unofficial SciPy Stack installer from
+  http://www.lfd.uci.edu/~gohlke/pythonlibs/
+
+- Installed other remaining dependencies via command line (in my case,
+  networkx and pymc)
+
+- In the case of pymc, had to force to build using mingw32 but then
+  had to install the built files using easy_install (that's just how I
+  got it to work somehow)
+
 
 Coding Practices
 ================
