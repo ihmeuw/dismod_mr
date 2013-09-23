@@ -20,7 +20,7 @@ def similar(name, mu_child, mu_parent, sigma_parent, sigma_difference, offset=1.
     Returns dict of PyMC objects, including parent_mu_age and parent_sim the similarity potential
     """
     if isinstance(mu_parent, mc.Node):
-        tau = 1. / sigma_difference**2
+        tau = 1. / (sigma_parent**2 + sigma_difference**2)
     else:
         tau = 1. / (((sigma_parent+offset)/(mu_parent+offset))**2 + sigma_difference**2)
 
