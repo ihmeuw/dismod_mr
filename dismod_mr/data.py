@@ -190,6 +190,35 @@ class ModelData:
 
         print 'kept %d rows of data' % len(self.input_data.index)
 
+    def setup(self, data_type=None):
+        """ Setup PyMC model vars based on current parameters and data
+        :Parameters:
+          - `data_type` : str, optional
+            if data_type is provided, the model will be an age
+            standardized rate model for the specified data_type.
+            otherwise, it will be a consistent model for all data types.
+        :Notes:
+        This method also creates methods fit and predict_for for the current object
+        """
+
+        if data_type:
+            self.vars = ...
+        else:
+            self.vars = ...
+
+
+        def fit():
+            ...
+        self.fit = fit
+
+        def predict_for():
+            ...
+        self.predict_for = predict_for
+
+    def fit():
+        """ Fit the model using MCMC"""
+        assert 0, 'Set up dynamically after model vars are added'
+
     def predict_for(data_type, area, year, sex):
         """
         # TODO: refactor prediction code from covariate_model.py into ism.py
