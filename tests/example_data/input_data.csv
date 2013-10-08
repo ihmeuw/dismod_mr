@@ -1,0 +1,12 @@
+,data_type,value,area,sex,age_start,age_end,year_start,year_end,standard_error,effective_sample_size,lower_ci,upper_ci,age_weights,x_war_related_events_ratio_geq_.3,x_war_related_events_ratio_missing,x_symptom_scale,x_coverage_1,x_coverage_2,x_response_rate_1,x_response_rate_missing,x_tsc_5,x_tsc_4,x_tsc_3,x_tsc_2
+0,p,0.01,Mexico,total,12.0,17.0,,,,3005.0,,,,False,True,0.0,True,False,True,False,True,False,False,False
+1,p,0.046,Myanmar,total,15.0,99.0,,,,495.0,,,,False,False,1.0,False,True,False,True,False,False,False,False
+2,p,0.054,Nepal,male,18.0,89.0,,,,720.0,,,,True,False,1.0,True,False,False,True,False,False,False,True
+3,p,0.063,Uganda,male,3.0,19.0,,,,734.0,,,,True,False,0.0,True,False,False,False,False,False,False,False
+4,p,0.066,Israel,total,18.0,99.0,,,,1117.0,,,,False,False,1.0,False,False,True,False,False,False,False,False
+5,p,0.07,Sri Lanka,total,15.0,99.0,,,,1409.0,,,,False,False,1.0,True,False,False,False,False,False,False,False
+6,p,0.069,Uganda,female,3.0,19.0,,,,853.0,,,,True,False,0.0,True,False,False,False,False,False,False,False
+7,p,0.075,Afghanistan,male,15.0,99.0,,,,467.0,,,,True,False,1.0,True,False,True,False,False,False,False,False
+8,p,0.139,Nepal,female,18.0,89.0,,,,720.0,,,,True,False,1.0,True,False,False,True,False,False,False,True
+9,p,0.18,Israel,total,18.0,99.0,,,,394.0,,,,False,False,1.0,False,False,True,False,False,False,False,False
+10,p,0.196,Rwanda,male,18.0,94.0,,,,1010.0,,,,True,False,1.0,True,False,False,False,False,False,False,False

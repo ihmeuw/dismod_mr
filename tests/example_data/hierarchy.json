@@ -1,0 +1,540 @@
+{
+  "nodes": [
+    [
+      "1.0",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "2.0",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "3.0",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "4.0",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "5.0",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "6.0",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "Afghanistan",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Asia, South ",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Asia, SouthEast",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Bosnia-Herzegovina",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Cambodia",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Croatia",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "DRC",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Europe, Central",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Europe, Western",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "India",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Indonesia",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Iran",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Iraq",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Israel",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Kosovo",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Latin America, Andean",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Latin America, Central",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Lebanon",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Liberia",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Macedonia",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Mexico",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Mozambique",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Myanmar",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Nepal",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Nigeria",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "North Africa/Middle East",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Palestine",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Peru",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Rwanda",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Senegal",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Sierra Leone",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Somalia",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "South Africa",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Sri Lanka",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Sub-Saharan Africa, Central",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Sub-Saharan Africa, East",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Sub-Saharan Africa, South",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Sub-Saharan Africa, West",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Sudan",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Timor-Leste",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Turkey",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "Uganda",
+      {
+        "level": 3
+      }
+    ],
+    [
+      "all",
+      {
+        "level": 0
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "1.0",
+      "North Africa/Middle East",
+      {}
+    ],
+    [
+      "2.0",
+      "Asia, South ",
+      {}
+    ],
+    [
+      "2.0",
+      "Asia, SouthEast",
+      {}
+    ],
+    [
+      "3.0",
+      "Europe, Central",
+      {}
+    ],
+    [
+      "4.0",
+      "Europe, Western",
+      {}
+    ],
+    [
+      "5.0",
+      "Latin America, Andean",
+      {}
+    ],
+    [
+      "5.0",
+      "Latin America, Central",
+      {}
+    ],
+    [
+      "6.0",
+      "Sub-Saharan Africa, Central",
+      {}
+    ],
+    [
+      "6.0",
+      "Sub-Saharan Africa, East",
+      {}
+    ],
+    [
+      "6.0",
+      "Sub-Saharan Africa, South",
+      {}
+    ],
+    [
+      "6.0",
+      "Sub-Saharan Africa, West",
+      {}
+    ],
+    [
+      "Asia, South ",
+      "India",
+      {}
+    ],
+    [
+      "Asia, South ",
+      "Nepal",
+      {}
+    ],
+    [
+      "Asia, SouthEast",
+      "Cambodia",
+      {}
+    ],
+    [
+      "Asia, SouthEast",
+      "Indonesia",
+      {}
+    ],
+    [
+      "Asia, SouthEast",
+      "Myanmar",
+      {}
+    ],
+    [
+      "Asia, SouthEast",
+      "Sri Lanka",
+      {}
+    ],
+    [
+      "Asia, SouthEast",
+      "Timor-Leste",
+      {}
+    ],
+    [
+      "Europe, Central",
+      "Bosnia-Herzegovina",
+      {}
+    ],
+    [
+      "Europe, Central",
+      "Croatia",
+      {}
+    ],
+    [
+      "Europe, Central",
+      "Kosovo",
+      {}
+    ],
+    [
+      "Europe, Central",
+      "Macedonia",
+      {}
+    ],
+    [
+      "Europe, Western",
+      "Israel",
+      {}
+    ],
+    [
+      "Latin America, Andean",
+      "Peru",
+      {}
+    ],
+    [
+      "Latin America, Central",
+      "Mexico",
+      {}
+    ],
+    [
+      "North Africa/Middle East",
+      "Afghanistan",
+      {}
+    ],
+    [
+      "North Africa/Middle East",
+      "Iran",
+      {}
+    ],
+    [
+      "North Africa/Middle East",
+      "Iraq",
+      {}
+    ],
+    [
+      "North Africa/Middle East",
+      "Lebanon",
+      {}
+    ],
+    [
+      "North Africa/Middle East",
+      "Palestine",
+      {}
+    ],
+    [
+      "North Africa/Middle East",
+      "Turkey",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, Central",
+      "DRC",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, East",
+      "Mozambique",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, East",
+      "Rwanda",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, East",
+      "Senegal",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, East",
+      "Somalia",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, East",
+      "Sudan",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, East",
+      "Uganda",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, South",
+      "South Africa",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, West",
+      "Liberia",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, West",
+      "Nigeria",
+      {}
+    ],
+    [
+      "Sub-Saharan Africa, West",
+      "Sierra Leone",
+      {}
+    ],
+    [
+      "all",
+      "1.0",
+      {}
+    ],
+    [
+      "all",
+      "2.0",
+      {}
+    ],
+    [
+      "all",
+      "3.0",
+      {}
+    ],
+    [
+      "all",
+      "4.0",
+      {}
+    ],
+    [
+      "all",
+      "5.0",
+      {}
+    ],
+    [
+      "all",
+      "6.0",
+      {}
+    ]
+  ]
+}
