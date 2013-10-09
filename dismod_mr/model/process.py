@@ -31,8 +31,8 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
     import dismod_mr
     result = dismod_mr.data.ModelVars()
     
-    if (mu_age_parent != None and np.any(np.isnan(mu_age_parent))) \
-           or (sigma_age_parent != None and np.any(np.isnan(sigma_age_parent))):
+    if (isinstance(mu_age_parent, np.ndarray) and np.any(np.isnan(mu_age_parent))) \
+           or (isinstance(sigma_age_parent, np.ndarray) and np.any(np.isnan(sigma_age_parent))):
         mu_age_parent = None
         sigma_age_parent = None
         print 'WARNING: nan found in parent mu/sigma.  Ignoring'
@@ -54,7 +54,10 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
 
     smoothing_dict = {'No Prior':np.inf, 'Slightly':.5, 'Moderately': .05, 'Very': .005}
     if 'smoothness' in parameters:
-        smoothing = smoothing_dict[parameters['smoothness']['amount']]
+        try:
+            smoothing = float(parameters['smoothness']['amount'])
+        except ValueError:
+            smoothing = smoothing_dict[parameters['smoothness']['amount']]
     else:
         smoothing = 0.
 

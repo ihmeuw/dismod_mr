@@ -116,8 +116,8 @@ def neg_binom(name, pi, delta, p, n):
     """
     assert pl.all(p >= 0), 'observed values must be non-negative'
     assert pl.all(n >= 0), 'effective sample size must non-negative'
-
-    i_zero = (n==0.)
+    
+    i_zero = pl.array(n==0.)
 
     if (isinstance(delta, mc.Node) and pl.shape(delta.value) == ()) \
             or (not isinstance(delta, mc.Node) and pl.shape(delta) == ()): # delta is a scalar
