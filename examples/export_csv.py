@@ -113,6 +113,17 @@ ylabel('Posterior Probability');
 
 # <markdowncell>
 
+# You can extract an age-standardized point and interval estimate from the 1000 draws from the posterior distribution stored in age_std as follows:  (to do this for crude prevalence, use the population weights to average, instead of standard weights.)
+
+# <codecell>
+
+import pymc as mc
+
+print 'age_std prev mean:', age_std.mean()
+print 'age_std prev 95% UI:', mc.utils.hpd(age_std, .05)
+
+# <markdowncell>
+
 # For groups, just do the same thing group by group:
 
 # <codecell>
