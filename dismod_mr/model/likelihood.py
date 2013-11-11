@@ -176,12 +176,16 @@ def normal(name, pi, sigma, p, s):
       - Returns dict of PyMC objects, including 'p_obs' and 'p_pred' the observed stochastic likelihood and data predicted stochastic
 
     """
+    p = pl.array(p)
+    s = pl.array(s)
+
     assert pl.all(s >= 0), 'standard error must be non-negative'
 
     i_inf = pl.isinf(s)
+
     @mc.observed(name='p_obs_%s'%name)
     def p_obs(value=p, pi=pi, sigma=sigma, s=s):
-        return mc.normal_like(value[~i_inf], pi[~i_inf], 1./(sigma**2. + s[~i_inf]**2.))
+        return mc.normal_like(value, pi, 1./(sigma**2. + s**2.))
 
     s_noninf = s.copy()
     s_noninf[i_inf] = 0.    
@@ -212,8 +216,8 @@ def log_normal(name, pi, sigma, p, s):
     i_inf = pl.isinf(s)
     @mc.observed(name='p_obs_%s'%name)
     def p_obs(value=p, pi=pi, sigma=sigma, s=s):
-        return mc.normal_like(pl.log(value[~i_inf]), pl.log(pi[~i_inf]+1.e-9),
-                              1./(sigma**2. + (s[~i_inf]/value[~i_inf])**2.))
+        return mc.normal_like(pl.log(value), pl.log(pi+1.e-9),
+                              1./(sigma**2. + (s/value)**2.))
 
     s_noninf = s.copy()
     s_noninf[i_inf] = 0.    
