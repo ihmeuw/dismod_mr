@@ -162,54 +162,68 @@ class ModelData:
             if G.node[n]['cnt'] > 0:
                 print ' *'*G.node[n]['depth'], n, int(G.node[n]['cnt'])
 
-    def plot(self):
+    def plot(self, rate_type=None):
         import matplotlib.pyplot as plt, numpy as np
-        import plot
+        import dismod_mr.plot as plot
 
-        #for i, t in enumerate(self.input_data.data_type.unique()):
+        if rate_type or 'rate_type' in self.model_settings:
+            plot_types = self.model_settings.get('rate_type', rate_type)
+        else:
+            plot_types = ['p', 'i', 'r', 'f']
 
-        t = 'p'
-        a0 = self.parameters['ages'][0]
-    
-        plt.figure()
-        plot.data_bars(self.get_data('p'), color=plot.colors[1])
-    
-        if t in self.vars:
-            x = np.array(self.parameters['ages'])
-            knots = self.vars[t]['knots']
-            
-            if not hasattr(self.vars[t]['mu_age'], 'trace'):
-                pt = self.vars[t]['mu_age'].value
-                plt.plot(x, pt, linewidth=3, color=plot.colors[0])
-                plt.plot(knots, pt[knots-a0], 's', ms=15, mec='w', color=plot.colors[0])
-            else:
-            
-                pred = self.vars['p']['mu_age'].trace()
-                import pymc as mc
-                ui =mc.utils.hpd(pred, .05)
+        fig = plt.figure()
 
-                plt.plot(x[knots-a0], ui[knots-a0, :], '--', linewidth=2, color=plot.colors[0], alpha=1)
+        for i, t in enumerate(plot_types):
+            if len(plot_types) == 4:
+                plt.subplot(2, 2, i+1)
+                plt.title(t)
+                plt.subplots_adjust(hspace=.5, wspace=.4)
 
-                plt.plot(x, pred.T, linewidth=10, color=plot.colors[0], alpha=.005)
-                plt.plot(self.parameters['ages'], pred.mean(0), linewidth=5, color='w')
+            a0 = self.parameters['ages'][0]
 
-                xx = []
-                yy = []
-                for k_i in self.vars[t]['knots']:
-                    xx += [k_i, k_i, np.nan]
-                    yy += [0., pred.mean(axis=0)[k_i-a0], np.nan]
-                plt.plot(xx, yy, linewidth=5, color='w')
-                plt.plot(xx, yy, linewidth=3, color=plot.colors[0])
-                plt.plot(self.parameters['ages'], pred.mean(0), linewidth=3, color=plot.colors[0])
-                plt.plot(knots, pred.mean(axis=0)[knots-a0], 's', ms=15, mec='w', color=plot.colors[0])
+            plot.data_bars(self.get_data(t), color=plot.colors[1])
+
+            if t in self.vars:
+                x = np.array(self.parameters['ages'])
+                knots = self.vars[t].get('knots')
+
+                if not hasattr(self.vars[t]['mu_age'], 'trace'):
+                    pt = self.vars[t]['mu_age'].value
+                    plt.plot(x, pt, linewidth=3, color=plot.colors[0])
+                    if knots != None:
+                        plt.plot(knots, pt[knots-a0], 's', ms=15, mec='w', color=plot.colors[0])
+                else:
+
+                    pred = self.vars[t]['mu_age'].trace()
+                    import pymc as mc
+                    ui =mc.utils.hpd(pred, .05)
+
+                    if knots != None:
+                        plt.plot(x[knots-a0], ui[knots-a0, :], '--', linewidth=2, color=plot.colors[0], alpha=1)
+                    else:
+                        plt.plot(x, ui, '--', linewidth=2, color=plot.colors[0], alpha=1)
+
+                    plt.plot(x, pred.T, linewidth=10, color=plot.colors[0], alpha=.005)
+                    plt.plot(self.parameters['ages'], pred.mean(0), linewidth=5, color='w')
+
+                    if knots != None:
+                        xx = []
+                        yy = []
+                        for k_i in knots:
+                            xx += [k_i, k_i, np.nan]
+                            yy += [0., pred.mean(axis=0)[k_i-a0], np.nan]
+                        plt.plot(xx, yy, linewidth=5, color='w')
+                        plt.plot(xx, yy, linewidth=3, color=plot.colors[0])
+                        plt.plot(self.parameters['ages'], pred.mean(0), linewidth=3, color=plot.colors[0])
+                        plt.plot(knots, pred.mean(axis=0)[knots-a0], 's', ms=15, mec='w', color=plot.colors[0])
 
 
-                import pymc as mc
-                ui =mc.utils.hpd(pred, .05)
-                plt.plot(x, pred.mean(0), linewidth=5, color='w')
-                plt.plot(x, pred.mean(0), linewidth=3, color=plot.colors[0])
+                    import pymc as mc
+                    ui =mc.utils.hpd(pred, .05)
+                    plt.plot(x, pred.mean(0), linewidth=5, color='w')
+                    plt.plot(x, pred.mean(0), linewidth=3, color=plot.colors[0])
 
-        plt.axis(xmin=-5, xmax=105)
+            plt.axis(xmin=-5, xmax=105)
 
     def keep(self, areas=['all'], sexes=['male', 'female', 'total'], start_year=-pl.inf, end_year=pl.inf):
         """ Modify model to feature only desired area/sex/year(s)
@@ -368,8 +382,28 @@ class ModelData:
         """
         self.parameters[rate_type]['heterogeneity'] = value
 
+    def set_effect_prior(self, rate_type, value):
+        """ Set prior for fixed or random effect of one
+        type.
+        
+        :Parameters:
+          - `rate_type` : str, one of 'i', 'r', 'f', 'p'
+          - `cov` : str, covariate name
+          - `value` : dict, TODO: describe allowed values
 
-    def setup_model(self, rate_type=None, rate_model='neg_binom', include_covariates=True):
+        
+        :Results: 
+          - Changes heterogeneity in self.parameters[rate_type]
+
+        """
+        if cov.startswith('x_'): # fixed effect
+            model.parameters[rate_type]['fixed_effects'][cov] = value
+        else: # random effect
+            model.parameters[rate_type]['random_effects'][cov] = value
+
+
+    def setup_model(self, rate_type=None, rate_model='neg_binom',
+                    include_covariates=True):
         """ Setup PyMC model vars based on current parameters and data
         :Parameters:
           - `rate_type` : str, optional
@@ -388,33 +422,22 @@ class ModelData:
             model for the rate type should include additional fixed
             and random effects
         :Notes:
-        This method also creates methods fit and predict_for for the current object
+
+        This method also creates methods fit and predict_for for the
+        current object
         """
+        import model
 
         if rate_type:
-            import model
             self.vars = model.asr(self, rate_type,
                                   rate_type=rate_model,  # TODO: rename parameter in model.process.asr so this is less confusing
                                   include_covariates=include_covariates)
 
             self.model_settings['rate_type'] = rate_type
-
-            def predict_for(area, sex, year):
-                import model
-                return model.covariates.predict_for(
-                    self, self.parameters[rate_type],
-                    'all', 'total', 'all',
-                    area, sex, year,
-                    1., self.vars[rate_type], 
-                    self.parameters[rate_type]['level_bounds']['lower'], 
-                    self.parameters[rate_type]['level_bounds']['upper'])
-
                 
         else:
-            assert 0
-            self.vars = {}
-
-        self.predict_for = predict_for
+            self.vars = model.consistent(self, rate_type=rate_model)
+            self.model_settings['consistent'] = True
 
     def fit(self, how='mcmc', iter=10000, burn=5000, thin=5):
         """ Fit the model
@@ -427,10 +450,11 @@ class ModelData:
         :Notes:
         This must come after a call to .setup_model.
         """
+        import fit
+
         if 'rate_type' in self.model_settings:
             rate_type=self.model_settings['rate_type']
 
-            import fit
             if how=='mcmc':
                 self.map, self.mcmc = fit.asr(
                     self, rate_type,
@@ -440,12 +464,17 @@ class ModelData:
                 fit.find_asr_initial_vals(
                     self.vars[rate_type], 'fmin_powell', tol=1e-3, verbose=0)
                 self.map.fit(method='fmin_powell')
-        elif 'consistent' in model_settings:
-            assert 0, 'Not Yet Implemented'
+        elif 'consistent' in self.model_settings:
+            if how=='mcmc':
+                self.map, self.mcmc = fit.consistent(
+                    self,
+                    iter=iter, burn=burn, thin=thin)
+            elif how=='map':
+                raise NotImplementedError, 'not yet implemented'
         else:
             raise NotImplementedError, 'Need to call .setup_model before calling fit.'
 
-    def predict_for(area, sex, year):
+    def predict_for(rate_type, area, sex, year):
         """
         Predict
         """
