@@ -414,7 +414,8 @@ def predict_for(model, parameters,
     #
     for l in leaves:
         log_shift_l = np.zeros(len_trace)
-        U_l.ix[0,:] = 0.
+        if len(U_l.columns) > 0:
+            U_l.ix[0,:] = 0.
 
         root_to_leaf = nx.shortest_path(area_hierarchy, root_area, l)
         for node in root_to_leaf[1:]:
