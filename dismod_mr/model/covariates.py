@@ -1,3 +1,22 @@
+
+
+# Copyright 2008-2012 University of Washington
+# 
+# This file is part of DisMod-MR.
+# 
+# DisMod-MR is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# DisMod-MR is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+# 
+# You should have received a copy of the GNU Affero General Public License
+# along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
+
 """ Covariate models"""
 
 import numpy as np, pymc as mc, pandas as pd, networkx as nx
@@ -414,7 +433,8 @@ def predict_for(model, parameters,
     #
     for l in leaves:
         log_shift_l = np.zeros(len_trace)
-        U_l.ix[0,:] = 0.
+        if len(U_l.columns) > 0:
+            U_l.ix[0,:] = 0.
 
         root_to_leaf = nx.shortest_path(area_hierarchy, root_area, l)
         for node in root_to_leaf[1:]:
