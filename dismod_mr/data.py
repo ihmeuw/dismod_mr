@@ -401,24 +401,37 @@ class ModelData:
         """
         self.parameters[rate_type]['heterogeneity'] = value
 
-    def set_effect_prior(self, rate_type, value):
+    def set_effect_prior(self, rate_type, cov, value):
         """ Set prior for fixed or random effect of one
         type.
         
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p'
           - `cov` : str, covariate name
-          - `value` : dict, TODO: describe allowed values
-
+          - `value` : dict, including keys `dist`, `mu`, and possibly
+            `sigma`, `lower`, and `upper`
         
         :Results: 
           - Changes heterogeneity in self.parameters[rate_type]
 
+        :Notes:
+
+        the `value` dict describes the distribution of the effect
+        prior.  Recognized distributions are Constant, Normal, and
+        TruncatedNormal.  Examples:
+          - `value=dict(dist='Constant', mu=0)`
+          - `value=dict(dist='Normal', mu=0, sigma=1)`
+          - `value=dict(dist='TruncatedNormal, mu=0, sigma=1,
+                        lower=-1, upper=1)`
         """
+        for effects in ['fixed_effects', 'random_effects']:
+            if not effects in self.parameters[rate_type]:
+                self.parameters[rate_type][effects] = {}
+
         if cov.startswith('x_'): # fixed effect
-            model.parameters[rate_type]['fixed_effects'][cov] = value
+            self.parameters[rate_type]['fixed_effects'][cov] = value
         else: # random effect
-            model.parameters[rate_type]['random_effects'][cov] = value
+            self.parameters[rate_type]['random_effects'][cov] = value
 
 
     def setup_model(self, rate_type=None, rate_model='neg_binom',

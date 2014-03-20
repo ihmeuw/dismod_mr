@@ -3,6 +3,7 @@
 import pylab as pl
 import pymc as mc
 
+import dismod_mr
 from dismod_mr import data
 reload(data)
 
@@ -22,6 +23,9 @@ def test_blank_input_data():
 
     assert len(d.nodes_to_fit) > 0, 'Nodes to fit should be non-empty'
 
+def test_set_effect_prior():
+    dm = dismod_mr.data.ModelData()
+    dm.set_effect_prior('p', 'x_sex', dict(dist='Constant', mu=.1))
 
 if __name__ == '__main__':
     import nose
