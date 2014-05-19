@@ -53,7 +53,8 @@ def check_convergence(vars):
     """ Apply a simple test of convergence to the model: compare
     autocorrelation at 25 lags to zero lags.  warn about convergence if it exceeds
     10% for any stoch """
-    import dismod3
+    import dismod_mr
+
     cells, stochs = dismod_mr.plot.tally_stochs(vars)
 
     for s in sorted(stochs, key=lambda s: s.__name__):
