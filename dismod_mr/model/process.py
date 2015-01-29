@@ -36,7 +36,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
       - `mu_age` : pymc.Node, will be used as the age pattern, set to None if not needed
       - `mu_age_parent` : pymc.Node, will be used as the age pattern of the parent of the root area, set to None if not needed
       - `sigma_age_parent` : pymc.Node, will be used as the standard deviation of the age pattern, set to None if not needed
-      - `rate_type` : str, optional. One of 'beta_binom', 'binom', 'log_normal_model', 'neg_binom', 'neg_binom_lower_bound_model', 'neg_binom_model', 'normal_model', 'offest_log_normal', or 'poisson'
+      - `rate_type` : str, optional. One of 'beta_binom', 'beta_binom_2', 'binom', 'log_normal_model', 'neg_binom', 'neg_binom_lower_bound_model', 'neg_binom_model', 'normal_model', 'offest_log_normal', or 'poisson'
       - `lower_bound` : 
       - `interpolation_method` : str, optional, one of 'linear', 'nearest', 'zero', 'slinear', 'quadratic, or 'cubic'
       - `include_covariates` : boolean
@@ -207,6 +207,8 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
             vars += dismod_mr.model.likelihood.binom(name, vars['pi'], data['value'], data['effective_sample_size'])
         elif rate_type == 'beta_binom':
             vars += dismod_mr.model.likelihood.beta_binom(name, vars['pi'], data['value'], data['effective_sample_size'])
+        elif rate_type == 'beta_binom_2':
+            vars += dismod_mr.model.likelihood.beta_binom_2(name, vars['pi'], data['value'], data['effective_sample_size'])
         elif rate_type == 'poisson':
             missing_ess = np.isnan(data['effective_sample_size']) | (data['effective_sample_size'] < 0)
             if sum(missing_ess) > 0:
@@ -277,7 +279,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         priors on age patterns
       - `zero_re` : boolean, change one stoch from each set of
         siblings in area hierarchy to a 'sum to zero' deterministic
-      - `rate_type` : str or dict, optional. One of 'beta_binom',
+      - `rate_type` : str or dict, optional. One of 'beta_binom', 'beta_binom_2', 
         'binom', 'log_normal_model', 'neg_binom',
         'neg_binom_lower_bound_model', 'neg_binom_model',
         'normal_model', 'offest_log_normal', or 'poisson', optionally
