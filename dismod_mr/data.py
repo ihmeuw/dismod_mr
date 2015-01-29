@@ -436,26 +436,28 @@ class ModelData:
 
 
     def setup_model(self, rate_type=None, rate_model='neg_binom',
-                    include_covariates=True):
+                    interpolation_method='linear', include_covariates=True):
         """ Setup PyMC model vars based on current parameters and data
         :Parameters:
-          - `rate_type` : str, optional
-            if rate_type is provided, the model will be an age
-            standardized rate model for the specified rate_type.
-            otherwise, it will be a consistent model for all rate
-            types.
+          - `rate_type` : str, optional if rate_type is provided, the
+            model will be an age standardized rate model for the
+            specified rate_type.  otherwise, it will be a consistent
+            model for all rate types.
           - `rate_model` : str, optional, one of 'beta_binom',
-            'binom', 'log_normal', 'neg_binom',
-            'neg_binom_lower_bound', 'neg_binom',
-            'normal', 'offest_log_normal', or 'poisson'
-            if rate_type is provided, this option specifies the
-            rate model for data of this rate type.
-          - `include_covariates` : bool, optional
-            if rate_type is provided, this option specifies if the
-            model for the rate type should include additional fixed
-            and random effects
-        :Notes:
+            'beta_binom_2', 'binom', 'log_normal', 'neg_binom',
+            'neg_binom_lower_bound', 'neg_binom', 'normal',
+            'offest_log_normal', or 'poisson' if rate_type is
+            provided, this option specifies the rate model for data of
+            this rate type.
 
+          - `interpolation_method` : str, optional, one of 'linear',
+            'nearest', 'zero', 'slinear', 'quadratic, or 'cubic'
+
+          - `include_covariates` : bool, optional if rate_type is
+            provided, this option specifies if the model for the rate
+            type should include additional fixed and random effects
+
+        :Notes:
         This method also creates methods fit and predict_for for the
         current object
         """
@@ -464,6 +466,7 @@ class ModelData:
         if rate_type:
             self.vars = model.asr(self, rate_type,
                                   rate_type=rate_model,  # TODO: rename parameter in model.process.asr so this is less confusing
+                                  interpolation_method=interpolation_method,
                                   include_covariates=include_covariates)
 
             self.model_settings['rate_type'] = rate_type

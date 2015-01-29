@@ -157,6 +157,47 @@ def neg_binom(name, pi, delta, p, n):
 
     return dict(p_obs=p_obs, p_pred=p_pred)
 
+def beta_binom_2(name, pi, delta, p, n):
+    """ Generate PyMC objects for a beta binomial model with faster computation
+
+    :Parameters:
+      - `name` : str
+      - `pi` : pymc.Node, expected values of rates
+      - `delta` : pymc.Node, dispersion parameters of rates
+      - `p` : array, observed values of rates
+      - `n` : array, effective sample sizes of rates
+
+    :Results:
+      - Returns dict of PyMC objects, including 'p_obs' and 'p_pred' the observed stochastic likelihood and data predicted stochastic
+
+    """
+    assert pl.all(p >= 0), 'observed values must be non-negative'
+    assert pl.all(n >= 0), 'effective sample size must non-negative'
+    
+    i_zero = pl.array(n==0.)
+
+    if (isinstance(delta, mc.Node) and pl.shape(delta.value) == ()) \
+            or (not isinstance(delta, mc.Node) and pl.shape(delta) == ()): # delta is a scalar
+        assert 0, 'not yet supported'
+    else:
+        @mc.observed(name='p_obs_%s'%name)
+        def p_obs(value=p, pi=pi, delta=delta, n=n):
+            return mc.betabin_like(x=value[~i_zero]*n[~i_zero],
+                                   alpha=pi[~i_zero]*delta[~i_zero]*50, 
+                                   beta=(1-pi[~i_zero])*delta[~i_zero]*50,
+                                   n=n[~i_zero])
+
+    # for any observation with n=0, make predictions for n=1.e9, to use for predictive validity
+    n_nonzero = n.copy()
+    n_nonzero[i_zero] = 1.e9
+    @mc.deterministic(name='p_pred_%s'%name)
+    def p_pred(pi=pi, delta=delta, n=n_nonzero):
+        return mc.rbetabin(alpha=pi[~i_zero]*delta[~i_zero]*50,
+                           beta=(1-pi[~i_zero])*delta[~i_zero]*50,
+                           n=n[~i_zero]) / pl.array(n+1.e-9, dtype=float)
+
+    return dict(p_obs=p_obs, p_pred=p_pred)
+
 def neg_binom_lower_bound(name, pi, delta, p, n):
     """ Generate PyMC objects for a negative binomial lower bound model
 
