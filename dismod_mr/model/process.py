@@ -138,8 +138,10 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
         data['standard_error'][missing_se] = (data['upper_ci'][missing_se] - data['lower_ci'][missing_se]) / (2*1.96)
 
         # then replace all missing ess with se
-        missing_ess = np.isnan(data['effective_sample_size'])
-        data['effective_sample_size'][missing_ess] = data['value'][missing_ess]*(1-data['value'][missing_ess])/data['standard_error'][missing_ess]**2
+        missing_ess = data[np.isnan(data['effective_sample_size'])].index
+        data.loc[missing_ess, 'effective_sample_size'] = \
+                data.loc[missing_ess, 'value']*(1-data.loc[missing_ess, 'value']) \
+                    / data.loc[missing_ess, 'standard_error']**2
 
         if rate_type == 'neg_binom':
 
@@ -147,7 +149,8 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
             missing_ess = np.isnan(data['effective_sample_size']) | (data['effective_sample_size'] < 0)
             if sum(missing_ess) > 0:
                 print 'WARNING: %d rows of %s data has invalid quantification of uncertainty.' % (sum(missing_ess), name)
-                data['effective_sample_size'][missing_ess] = 0.0
+                missing_ess = data[missing_ess].index
+                data.loc[missing_ess, 'effective_sample_size'] = 0.0
 
             # warn and change data where ess is unreasonably huge
             large_ess = data['effective_sample_size'] >= 1.e10

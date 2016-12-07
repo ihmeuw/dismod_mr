@@ -219,7 +219,7 @@ class ModelData:
                     ui =mc.utils.hpd(pred, .05)
 
                     if knots != None:
-                        plt.plot(x[knots-a0], ui[knots-a0, :], '--', linewidth=2, color=plot.colors[0], alpha=1)
+                        plt.plot(x[knots-a0], ui[:, knots-a0].T, '--', linewidth=2, color=plot.colors[0], alpha=1)
                     else:
                         plt.plot(x, ui, '--', linewidth=2, color=plot.colors[0], alpha=1)
 

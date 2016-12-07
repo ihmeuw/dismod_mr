@@ -2,3 +2,4 @@
 *~
 build
 *.ipynb_checkpoints
+.cache
