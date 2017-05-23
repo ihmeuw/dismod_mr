@@ -17,6 +17,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
 
-import data, plot, model, fit
+from . import data, plot, model, fit
 
-from data import load
+from .data import load

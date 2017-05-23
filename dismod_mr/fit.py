@@ -157,7 +157,7 @@ def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=F
 
         if verbose:
             from fit_posterior import inspect_vars
-            print inspect_vars({}, vars)
+            print(inspect_vars({}, vars))
 
     except KeyboardInterrupt:
         logger.warning('Initial condition calculation interrupted')
@@ -173,7 +173,7 @@ def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=F
             stoch = [vars[t]['gamma'][i] for t in 'ifr' if i < len(vars[t]['gamma'])]
 
             if verbose:
-                print 'finding Normal Approx for', [n.__name__ for n in stoch]
+                print('finding Normal Approx for', [n.__name__ for n in stoch])
             try:
                 na = mc.NormApprox(vars_to_fit + stoch)
                 na.fit(method='fmin_powell', verbose=verbose)
@@ -184,7 +184,7 @@ def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=F
                     raise ValueError
             except ValueError:
                 if verbose:
-                    print 'cov matrix is not positive semi-definite'
+                    print('cov matrix is not positive semi-definite')
                 m.use_step_method(mc.AdaptiveMetropolis, stoch)
 
             logger.info('.')
@@ -229,14 +229,14 @@ except ImportError:
 def print_mare(vars):
     if 'p_obs' in vars:
         are = np.atleast_1d(np.absolute((vars['p_obs'].value - vars['pi'].value)/vars['pi'].value))
-        print 'mare:', np.round_(np.median(are), 2)
+        print('mare:', np.round_(np.median(are), 2))
 
 class Log:
     def info(self, msg):
-        print msg,
+        print(msg,)
         sys.stdout.flush()
     def warning(self, msg):
-        print msg
+        print(msg)
         sys.stdout.flush()
 logger = Log()
 
@@ -252,13 +252,13 @@ def find_consistent_spline_initial_vals(vars, method, tol, verbose):
     max_knots = max([len(vars[t]['gamma']) for t in 'irf'])
     for i in [max_knots]: #range(1, max_knots+1):
         if verbose:
-            print 'fitting first %d knots of %d' % (i, max_knots)
+            print('fitting first %d knots of %d' % (i, max_knots))
         vars_to_fit += [vars[t]['gamma'][:i] for t in 'irf']
         mc.MAP(vars_to_fit).fit(method=method, tol=tol, verbose=verbose)
 
         if verbose:
             from fit_posterior import inspect_vars
-            print inspect_vars({}, vars)[-10:]
+            print(inspect_vars({}, vars)[-10:])
         else:
             logger.info('.')
 
@@ -280,7 +280,7 @@ def find_spline_initial_vals(vars, method, tol, verbose):
 
     for i, n in enumerate(vars['gamma']):
         if verbose:
-            print 'fitting first %d knots of %d' % (i+1, len(vars['gamma']))
+            print('fitting first %d knots of %d' % (i+1, len(vars['gamma'])))
         vars_to_fit.append(n)
         mc.MAP(vars_to_fit).fit(method=method, tol=tol, verbose=verbose)
         if verbose:

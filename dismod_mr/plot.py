@@ -83,7 +83,7 @@ def data_bars(df, style='book', color='black', label=None, max=500):
     """
     data_bars = zip(df['age_start'], df['age_end'], df['value'])
 
-    if len(data_bars) > max:
+    if len(list(data_bars)) > max:
         import random
         data_bars = random.sample(data_bars, max)
 
@@ -101,7 +101,7 @@ def data_bars(df, style='book', color='black', label=None, max=500):
         pl.plot(x, y, 's-', mew=1, mec='w', ms=0,
                 alpha=1.0, color=colors[2], linewidth=15, label=label)
     else:
-        raise Exception, 'Unrecognized style: %s' % style
+        raise Exception('Unrecognized style: %s' % style)
 
 def my_stats(node):
     """ Convenience function to generate a stats dict even if the pymc.Node has no trace
@@ -179,7 +179,7 @@ def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY'
                 pl.plot(ages[knots], vars[t]['mu_age'].stats()['95% HPD interval'][knots,:][:,0], 'k--', label='95% HPD')
                 pl.plot(ages[knots], vars[t]['mu_age'].stats()['95% HPD interval'][knots,:][:,1], 'k--')
         except (TypeError, AttributeError, KeyError):
-            print 'Could not generate output statistics'
+            print('Could not generate output statistics')
             if t in vars:
                 pl.plot(ages, vars[t]['mu_age'].value, 'k-', linewidth=2)
         if t in posteriors:
@@ -403,7 +403,7 @@ def tally_stochs(vars):
     for k in vars.keys():
         # handle dicts and dicts of dicts by making a list of nodes
         if isinstance(vars[k], dict):
-            nodes = vars[k].values()
+            nodes = list(vars[k].values())
         else:
             nodes = [vars[k]]
 

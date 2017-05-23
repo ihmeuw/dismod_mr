@@ -5,7 +5,6 @@ import pymc as mc
 
 import dismod_mr
 from dismod_mr import data
-reload(data)
 
 def test_blank_input_data():
     d = data.ModelData()
