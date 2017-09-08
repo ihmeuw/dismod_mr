@@ -66,7 +66,7 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
     U = pd.DataFrame(np.zeros((n, p_U)), columns=model.hierarchy.nodes(), index=input_data.index)
     for i, row in input_data.T.iteritems():
         if row['area'] not in model.hierarchy:
-            print 'WARNING: "%s" not in model hierarchy, skipping random effects for this observation' % row['area']
+            print('WARNING: "%s" not in model hierarchy, skipping random effects for this observation' % row['area'])
             continue
         
         for level, node in enumerate(nx.shortest_path(model.hierarchy, 'all', input_data.ix[i, 'area'])):
@@ -109,7 +109,7 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
         effect = 'sigma_alpha_%s_%d'%(name,i)
         if 'random_effects' in parameters and effect in parameters['random_effects']:
             prior = parameters['random_effects'][effect]
-            print 'using stored RE hyperprior for', effect, prior 
+            print('using stored RE hyperprior for', effect, prior)
             sigma_alpha.append(MyTruncatedNormal(effect, prior['mu'], np.maximum(prior['sigma'], .001)**-2,
                                                   min(prior['mu'], prior['lower']),
                                                   max(prior['mu'], prior['upper']),
@@ -133,7 +133,7 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
             effect = 'alpha_%s_%s'%(name, U.columns[i])
             if 'random_effects' in parameters and U.columns[i] in parameters['random_effects']:
                 prior = parameters['random_effects'][U.columns[i]]
-                print 'using stored RE for', effect, prior
+                print('using stored RE for', effect, prior)
                 if prior['dist'] == 'Normal':
                     alpha.append(mc.Normal(effect, prior['mu'], np.maximum(prior['sigma'], .001)**-2,
                                            value=0.))
@@ -209,9 +209,9 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
                 covs = covs.reset_index().drop(['year', 'sex'], axis=1).groupby('area').mean()  # TODO: change to .reset_index(), but that doesn't work with old pandas
                 leaf_covs = covs.ix[leaves]
             elif root_sex == 'total':
-                raise Exception, 'root_sex == total, root_year != all is Not Yet Implemented'
+                raise Exception('root_sex == total, root_year != all is Not Yet Implemented')
             elif root_year == 'all':
-                raise Exception, 'root_year == all, root_sex != total is Not Yet Implemented'
+                raise Exception('root_year == all, root_sex != total is Not Yet Implemented')
             else:
                 leaf_covs = covs.ix[[(l, root_sex, root_year) for l in leaves]]
 
@@ -231,7 +231,7 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
             name_i = 'beta_%s_%s'%(name, effect)
             if 'fixed_effects' in parameters and effect in parameters['fixed_effects']:
                 prior = parameters['fixed_effects'][effect]
-                print 'using stored FE for', name_i, effect, prior
+                print('using stored FE for', name_i, effect, prior)
                 if prior['dist'] == 'TruncatedNormal':
                     beta.append(MyTruncatedNormal(name_i, mu=float(prior['mu']), tau=np.maximum(prior['sigma'], .001)**-2, a=prior['lower'], b=prior['upper'], value=.5*(prior['lower']+prior['upper'])))
                 elif prior['dist'] == 'Normal':

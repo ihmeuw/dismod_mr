@@ -103,7 +103,7 @@ def test_fixed_effect_priors():
     vars.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, parameters, model,
                                                      'all', 'total', 'all'))
 
-    print vars['beta']
+    print(vars['beta'])
     assert vars['beta'][0].parents['mu'] == 1.
 
 def test_random_effect_priors():
@@ -135,8 +135,8 @@ def test_random_effect_priors():
     vars.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, parameters, model,
                                                      'all', 'total', 'all'))
 
-    print vars['alpha']
-    print vars['alpha'][1].parents['mu']
+    print(vars['alpha'])
+    print(vars['alpha'][1].parents['mu'])
     assert vars['alpha'][1].parents['mu'] == .1
 
 

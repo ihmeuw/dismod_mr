@@ -17,8 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
 
-import likelihood, spline, age_groups, priors, covariates, process
-from process import age_specific_rate as asr, consistent
-from covariates import predict_for
+from . import likelihood, spline, age_groups, priors, covariates, process
+from .process import age_specific_rate as asr, consistent
+from .covariates import predict_for
 
 

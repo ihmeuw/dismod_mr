@@ -10,7 +10,9 @@ def test_binom():
     and std dev are as expected"""
 
     pi = mc.Uniform('pi', lower=0, upper=1)
-    obs = dismod_mr.model.likelihood.binom('prevalence', pi, [.5], [10])
+    obs = dismod_mr.model.likelihood.binom('prevalence', pi,
+                                           np.array([.5]),
+                                           np.array([10]))
 
     mc.MAP([pi, obs]).fit()
     assert np.allclose(pi.value, .5, rtol=.01)

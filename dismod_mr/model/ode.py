@@ -121,7 +121,10 @@
 #
 # $end
 import numpy
-import pycppad
+try:
+        import pycppad
+except ImportError:
+        print('WARNING: pycppad not found')
 
 N = 0
 

@@ -23,9 +23,12 @@ import pandas as pd
 import networkx as nx
 import pymc as mc
 import pylab as pl
-import simplejson as json
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
-import plot
+from . import plot
 
 def describe_vars(d):
     m = mc.Model(d)
@@ -65,7 +68,7 @@ def check_convergence(vars):
             for k in range(50,100):
                 acorr = pl.dot(tr[:-k,d]-tr[:k,d].mean(), tr[k:,d]-tr[k:,d].mean()) / pl.dot(tr[k:,d]-tr[k:,d].mean(), tr[k:,d]-tr[k:,d].mean())
                 if abs(acorr) > .5:
-                    print 'potential non-convergence', s, acorr
+                    print('potential non-convergence', s, acorr)
                     return False
             
     return True
@@ -98,7 +101,7 @@ class ModelVars(dict):
         return '%s\nkeys: %s' % (describe_vars(self), ', '.join(self.keys()))
 
     def describe(self):
-        print describe_vars(self)
+        print(describe_vars(self))
 
     def empirical_priors_from_fit(self, type_list=['i', 'r', 'f', 'p', 'rr']):
         """ Find empirical priors for asr of type t
@@ -180,7 +183,7 @@ class ModelData:
         
         for n in nx.dfs_preorder_nodes(G, 'all'):
             if G.node[n]['cnt'] > 0:
-                print ' *'*G.node[n]['depth'], n, int(G.node[n]['cnt'])
+                print(' *'*G.node[n]['depth'], n, int(G.node[n]['cnt']))
 
     def plot(self, rate_type=None):
         import matplotlib.pyplot as plt, numpy as np
@@ -273,7 +276,7 @@ class ModelData:
         self.input_data = self.input_data.select(lambda i: self.input_data['year_end'][i] >= start_year)
         self.input_data = self.input_data.select(lambda i: self.input_data['year_start'][i] <= end_year)
 
-        print 'kept %d rows of data' % len(self.input_data.index)
+        print('kept %d rows of data' % len(self.input_data.index))
 
     def set_smoothness(self, rate_type, value):
         """ Set smoothness parameter for age-specific rate function of one type.
@@ -461,7 +464,7 @@ class ModelData:
         This method also creates methods fit and predict_for for the
         current object
         """
-        import model
+        from . import model
 
         if rate_type:
             self.vars = model.asr(self, rate_type,
@@ -486,7 +489,7 @@ class ModelData:
         :Notes:
         This must come after a call to .setup_model.
         """
-        import fit
+        from . import fit
 
         if 'rate_type' in self.model_settings:
             rate_type=self.model_settings['rate_type']
@@ -506,9 +509,9 @@ class ModelData:
                     self,
                     iter=iter, burn=burn, thin=thin)
             elif how=='map':
-                raise NotImplementedError, 'not yet implemented'
+                raise NotImplementedError('not yet implemented')
         else:
-            raise NotImplementedError, 'Need to call .setup_model before calling fit.'
+            raise NotImplementedError('Need to call .setup_model before calling fit.')
 
     def predict_for(rate_type, area, sex, year):
         """
