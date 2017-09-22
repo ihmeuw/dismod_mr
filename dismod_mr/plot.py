@@ -82,7 +82,6 @@ def data_bars(df, style='book', color='black', label=None, max=500):
     
     """
     data_bars = list(zip(df['age_start'], df['age_end'], df['value']))
-    import pdb; pdb.set_trace()
     if len(data_bars) > max:
         import random
         data_bars = random.sample(data_bars, max)
