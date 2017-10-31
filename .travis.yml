@@ -14,5 +14,8 @@ before_install:
   - export DISPLAY=":99.0"
   - travis_retry pip install --install-option="--no-cython-compile" Cython==0.22
   - travis_retry pip install numpy scipy nose matplotlib
-install: "pip install -r requirements.txt"
-script: pytest
+install: 
+  - pip install -r requirements.txt
+  - python setup.py install
+script:
+  - pytest
