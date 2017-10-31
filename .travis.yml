@@ -1,0 +1,18 @@
+language: python
+python:
+  - "2.7"
+  - "3.6"
+addons:
+  apt:
+    packages:
+    - libatlas-dev
+    - libatlas-base-dev
+    - liblapack-dev
+    - gfortran
+before_install:
+  - sh -e /etc/init.d/xvfb start
+  - export DISPLAY=":99.0"
+  - travis_retry pip install --install-option="--no-cython-compile" Cython==0.22
+  - travis_retry pip install numpy scipy nose matplotlib
+install: "pip install -r requirements.txt"
+script: py.test test.py

@@ -82,7 +82,8 @@ def data_bars(df, style='book', color='black', label=None, max=500):
     
     """
     data_bars = list(zip(df['age_start'], df['age_end'], df['value']))
-    if len(data_bars) > max:
+
+    if len(list(data_bars)) > max:
         import random
         data_bars = random.sample(data_bars, max)
 
@@ -376,7 +377,7 @@ def plot_viz_of_stochs(vars, viz_func, figsize=(8,6)):
     cells, stochs = tally_stochs(vars)
 
     # for each stoch, make an autocorrelation plot for each dimension
-    rows = pl.floor(pl.sqrt(cells))
+    rows = np.floor(np.sqrt(cells))
     cols = np.ceil(cells/rows)
 
     tile = 1
@@ -420,3 +421,33 @@ def tally_stochs(vars):
                     cells += len(np.atleast_1d(n.value))
     return cells, stochs
 
+def data_value_by_covariates(inp):
+    """ Show raw values of data stratified by all x_* covariates
+    
+    :Parameters:
+      - `inp` : pd.DataFrame of input data
+    """
+    X = inp.filter(like='x_')
+    y = inp.value
+
+    assert len(X.columns) <= 20, "FIXME: currently only works for up to 20 covariates"
+
+    for i, c_i in enumerate(X.columns):
+        plt.subplot(4,5,1+i)
+        plt.title('\n'+c_i, va='top', fontsize=10)
+        plt.ylabel('prevalence')
+        plt.plot(X[c_i]+np.random.normal(size=len(y))*.03, y, 'k.', alpha=.5)
+        plt.axis(xmin=-.1, xmax=1.1, ymin=-.1, ymax=1.1)
+        plt.subplots_adjust(hspace=.5, wspace=.5)
+
+def plot_residuals(dm):
+    inp = dm.input_data
+    plt.plot((inp.age_start+inp.age_end)/2 + 2*np.random.randn(len(inp.index)),
+             inp.value - dm.vars['p']['mu_interval'].trace().mean(axis=0), 's',
+             mec=colors[0], mew=1, color='w')
+    plt.hlines([0],0,100, linestyle='dashed')
+    plt.xlabel('Age (years)')
+    plt.ylabel('Residual (observed $-$ predicted)')
+    l,r,b,t = plt.axis()
+    plt.vlines(dm.parameters['p']['parameter_age_mesh'],-1,1, linestyle='solid', color=colors[1])
+    plt.axis([-5,105,b,t])
