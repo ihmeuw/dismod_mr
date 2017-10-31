@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(name='DisMod-MR',
       version='1.0',
@@ -8,5 +8,5 @@ setup(name='DisMod-MR',
       author='Abraham D. Flaxman',
       author_email='abie@uw.edu',
       url='http://ihmeuw.org/dismod/',
-      packages=['dismod_mr', 'dismod_mr.model'],
+      packages=find_packages(),
      )

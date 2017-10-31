@@ -30,6 +30,27 @@ except ImportError:
 
 from . import plot
 
+def my_stats(self, alpha=0.05, start=0, batches=100,
+           chain=None, quantiles=(2.5, 25, 50, 75, 97.5)):
+    trace = self.trace()
+
+    n = len(trace)
+    if not n:
+        print_(
+            'Cannot generate statistics for zero-length trace in',
+            self.__name__)
+        return
+
+    return {
+        'n': n,
+        'standard deviation': trace.std(0),
+        'mean': trace.mean(0),
+        '%s%s HPD interval' % (int(100 * (1 - alpha)), '%'): mc.utils.hpd(trace, alpha),
+        #'mc error': batchsd(trace, min(n, batches)),
+        #'quantiles': utils.quantiles(trace, qlist=quantiles)
+    }
+
+
 def describe_vars(d):
     m = mc.Model(d)
 
@@ -124,14 +145,14 @@ class ModelVars(dict):
                 if 'U' in self[t]:
                     for i, re in enumerate(self[t]['U'].columns):
                         if isinstance(self[t]['alpha'][i], mc.Node):
-                            pdt['random_effects'][re] = dict(dist='Constant', mu=self[t]['alpha'][i].stats()['mean'])
+                            pdt['random_effects'][re] = dict(dist='Constant', mu=my_stats(self[t]['alpha'][i])['mean'])
                         else:
                             pdt['random_effects'][re] = dict(dist='Constant', mu=self[t]['alpha'][i])
 
                 if 'X' in self[t]:
                     for i, fe in enumerate(self[t]['X'].columns):
                         if isinstance(self[t]['beta'][i], mc.Node):
-                            pdt['fixed_effects'][fe] = dict(dist='Constant', mu=self[t]['beta'][i].stats()['mean'])
+                            pdt['fixed_effects'][fe] = dict(dist='Constant', mu=my_stats(self[t]['beta'][i])['mean'])
                         else:
                             pdt['fixed_effects'][fe] = dict(dist='Constant', mu=self[t]['beta'][i])
 
@@ -185,6 +206,7 @@ class ModelData:
             if G.node[n]['cnt'] > 0:
                 print(' *'*G.node[n]['depth'], n, int(G.node[n]['cnt']))
 
+
     def plot(self, rate_type=None):
         import matplotlib.pyplot as plt, numpy as np
         import dismod_mr.plot as plot
@@ -208,12 +230,12 @@ class ModelData:
 
             if t in self.vars:
                 x = np.array(self.parameters['ages'])
-                knots = self.vars[t].get('knots')
+                knots = self.vars[t].get('knots', np.array([]))
 
                 if not hasattr(self.vars[t]['mu_age'], 'trace'):
                     pt = self.vars[t]['mu_age'].value
                     plt.plot(x, pt, linewidth=3, color=plot.colors[0])
-                    if knots != None:
+                    if len(knots) > 0:
                         plt.plot(knots, pt[knots-a0], 's', ms=15, mec='w', color=plot.colors[0])
                 else:
 
@@ -221,7 +243,7 @@ class ModelData:
                     import pymc as mc
                     ui =mc.utils.hpd(pred, .05)
 
-                    if knots != None:
+                    if len(knots) > 0:
                         plt.plot(x[knots-a0], ui[:, knots-a0].T, '--', linewidth=2, color=plot.colors[0], alpha=1)
                     else:
                         plt.plot(x, ui, '--', linewidth=2, color=plot.colors[0], alpha=1)
@@ -229,7 +251,7 @@ class ModelData:
                     plt.plot(x, pred.T, linewidth=10, color=plot.colors[0], alpha=.005)
                     plt.plot(self.parameters['ages'], pred.mean(0), linewidth=5, color='w')
 
-                    if knots != None:
+                    if len(knots) > 0:
                         xx = []
                         yy = []
                         for k_i in knots:
@@ -239,7 +261,6 @@ class ModelData:
                         plt.plot(xx, yy, linewidth=3, color=plot.colors[0])
                         plt.plot(self.parameters['ages'], pred.mean(0), linewidth=3, color=plot.colors[0])
                         plt.plot(knots, pred.mean(axis=0)[knots-a0], 's', ms=15, mec='w', color=plot.colors[0])
-
 
                     import pymc as mc
                     ui =mc.utils.hpd(pred, .05)
@@ -583,6 +604,16 @@ class ModelData:
 
         return d
 
+    def invalid_precision(self):
+        """ Identify rows of data with invalid precision
+        :Results: 
+          - DataFrame of rows with invalid quantification of uncertainty
+
+        """
+        rows = self.input_data.effective_sample_size.isnull() \
+          & self.input_data.standard_error.isnull() \
+          & (self.input_data.lower_ci.isnull() | self.input_data.upper_ci.isnull())
+        return self.input_data[rows]
 
 load = ModelData.load
 

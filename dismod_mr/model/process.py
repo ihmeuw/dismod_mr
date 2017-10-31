@@ -90,7 +90,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
     vars.update(dismod_mr.model.priors.level_constraints(name, parameters, vars['mu_age'], ages))
     vars.update(dismod_mr.model.priors.derivative_constraints(name, parameters, vars['mu_age'], ages))
 
-    if mu_age_parent != None:
+    if type(mu_age_parent) != type(None):
         # setup a hierarchical prior on the simliarity between the
         # consistent estimate here and (inconsistent) estimate for its
         # parent in the areas hierarchy
@@ -338,7 +338,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
                     initial[start:end] = row['value']
 
         for i,k in enumerate(rate[t]['knots']):
-            rate[t]['gamma'][int(i)].value = np.log(initial[k - rate[t]['ages'][0]]+1.e-9)
+            rate[t]['gamma'][int(i)].value = np.log(initial[int(k - rate[t]['ages'][0])]+1.e-9)
 
 
     # TODO: re-engineer this m_all interpolation section
