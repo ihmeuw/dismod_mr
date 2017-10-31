@@ -1,3 +1,4 @@
 travis.ci setup
 add tests for graphics
 make them pass
+conda package for pycppad
