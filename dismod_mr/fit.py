@@ -302,7 +302,7 @@ def find_re_initial_vals(vars, method, tol, verbose):
                                vars.get('mu_sim'), vars.get('mu_age_derivative_potential'), vars.get('covariate_constraint')]
                 vars_to_fit += [vars.get('alpha_potentials')]
 
-                re_vars = [vars['alpha'][col_map[n]] for n in successors + [p] if n in vars['U']]
+                re_vars = [vars['alpha'][col_map[n]] for n in list(successors) + [p] if n in vars['U']]
                 vars_to_fit += re_vars
                 if len(re_vars) > 0:
                     mc.MAP(vars_to_fit).fit(method=method, tol=tol, verbose=verbose)

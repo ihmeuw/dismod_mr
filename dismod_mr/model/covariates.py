@@ -224,7 +224,7 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
 
         X = X - X_shift
 
-        assert not np.any(np.isnan(X.__array__())), 'Covariate matrix should have no missing values'
+        assert not np.any(np.isnan(np.array(X, dtype=float))), 'matrix should have no missing values'
 
         beta = []
         for i, effect in enumerate(X.columns):
