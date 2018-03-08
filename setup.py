@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-setup(name='DisMod-MR',
+setup(name='dismod_mr',
       version='1.0',
       description='Integrative Meta-Regression Framework for Descriptive Epidemmiology',
       author='Abraham D. Flaxman',
