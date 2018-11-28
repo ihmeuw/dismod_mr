@@ -233,11 +233,9 @@ def print_mare(vars):
 
 class Log:
     def info(self, msg):
-        print(msg,)
-        sys.stdout.flush()
+        print(msg, end='', flush=True)
     def warning(self, msg):
-        print(msg)
-        sys.stdout.flush()
+        print(msg, flush=True)
 logger = Log()
 
 param_types = 'i r f p pf rr smr m_with X'.split()

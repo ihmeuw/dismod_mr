@@ -21,6 +21,14 @@
 
 import numpy as np, pymc as mc, pandas as pd, networkx as nx
 
+# Pandas moved an Error, which I wish I was not catching anyway
+# this code deals with the different Pandas versions until the
+# whole approach is improved
+try: 
+    from pandas.core.groupby import DataError as PandasDataError
+except ImportError:
+    from pandas.core.groupby.groupby import DataError as PandasDataError
+
 sex_value = {'male': .5, 'total':0., 'female': -.5}
 
 
@@ -196,7 +204,7 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
         # shift columns to have zero for root covariate
         try:
             output_template = model.output_template.groupby(['area', 'sex', 'year']).mean()  # TODO: change to .first(), but that doesn't work with old pandas
-        except pd.core.groupby.DataError:
+        except PandasDataError:
             output_template = model.output_template.groupby(['area', 'sex', 'year']).first()
         covs = output_template.filter(list(X.columns) + ['pop'])
         if len(covs.columns) > 1:
