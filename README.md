@@ -16,6 +16,18 @@ All examples: http://nbviewer.ipython.org/github/ihmeuw/dismod_mr/tree/master/ex
 Installation
 ============
 
+Setup a conda environment (after [installing conda, if
+necessary](https://docs.conda.io/projects/conda/en/latest/user-guide/install/)):
+
+```
+conda create --name=dismod_mr python=3.6
+conda activate dismod_mr
+git clone git@github.com:ihmeuw/dismod_mr.git
+cd dismod_mr
+pip install -U -e .
+```
+
+
 The file requirements.tex lists the Python packages necessary to run
 DisMod-MR.  Unfortunately, PyCPPAD is not available with
 pip/easy_install.

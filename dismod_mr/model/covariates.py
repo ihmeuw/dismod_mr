@@ -196,11 +196,12 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
         # shift columns to have zero for root covariate
         try:
             output_template = model.output_template.groupby(['area', 'sex', 'year']).mean()  # TODO: change to .first(), but that doesn't work with old pandas
-        except pd.core.groupby.DataError:
+        except pd.core.groupby.groupby.DataError:
             output_template = model.output_template.groupby(['area', 'sex', 'year']).first()
         covs = output_template.filter(list(X.columns) + ['pop'])
         if len(covs.columns) > 1:
-            leaves = [n for n in nx.traversal.bfs_tree(model.hierarchy, root_area) if model.hierarchy.successors(n) == []]
+            leaves = [n for n in nx.traversal.bfs_tree(model.hierarchy, root_area)
+                      if len(list(model.hierarchy.successors(n))) == 0]
             if len(leaves) == 0:
                 # networkx returns an empty list when the bfs tree is a single node
                 leaves = [root_area]
@@ -476,15 +477,16 @@ def predict_for(model, parameters,
         # 'shift' the random effects matrix to have the intended
         # level of the hierarchy as the reference value
         if 'U_shift' in vars:
-            for node in vars['U_shift']:
-                U_l -= vars['U_shift'][node]
+            for node in U_l.columns:
+                if node in vars['U_shift'].index:
+                    U_l[node] -= vars['U_shift'][node]
 
         # add the random effect intercept shift (len_trace draws)
         log_shift_l += np.dot(alpha_trace, U_l.T).flatten()
             
         # make X_l
         if len(beta_trace) > 0:
-            X_l = covs.ix[l, sex, year]
+            X_l = covs.loc[(l, sex, year)]
             log_shift_l += np.dot(beta_trace, X_l.T).flatten()
 
         if population_weighted:

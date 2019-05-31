@@ -130,65 +130,68 @@ N = 0
 
 # copied from http://www.seanet.com/~bradbell/pycppad/runge_kutta_4.xml
 def runge_kutta_4(f, ti, yi, dt) :
-	k1 = dt * f(ti         , yi)
-	k2 = dt * f(ti + .5*dt , yi + .5*k1) 
-	k3 = dt * f(ti + .5*dt , yi + .5*k2) 
-	k4 = dt * f(ti + dt    , yi + k3)
-	yf = yi + (1./6.) * ( k1 + 2.*k2 + 2.*k3 + k4 )
-	return yf 
+        k1 = dt * f(ti         , yi)
+        k2 = dt * f(ti + .5*dt , yi + .5*k1) 
+        k3 = dt * f(ti + .5*dt , yi + .5*k2) 
+        k4 = dt * f(ti + dt    , yi + k3)
+        yf = yi + (1./6.) * ( k1 + 2.*k2 + 2.*k3 + k4 )
+        return yf 
 
 #
 
 def ode_fun(a, susceptible_condition) :
-	global age, incidence, remission, excess, all_cause
-	s      = susceptible_condition[0]
-	c      = susceptible_condition[1]
-	i      = incidence[a]
-	r      = remission[a]
-	e      = excess[a]
-	m      = all_cause[a];
-	other  = m - e * s / (s + c)
-	ds_da  = - (i + other) * s +              r  * c
-	dc_da  = +           i * s - (r + other + e) * c
-	return numpy.array( [ ds_da , dc_da ] )
+        global age, incidence, remission, excess, all_cause
+        s      = susceptible_condition[0]
+        c      = susceptible_condition[1]
+        i      = incidence[int(a)]
+        r      = remission[int(a)]
+        e      = excess[int(a)]
+        m      = all_cause[int(a)];
+        other  = m - e * s / (s + c)
+        ds_da  = - (i + other) * s +              r  * c
+        dc_da  = +           i * s - (r + other + e) * c
+        return numpy.array( [ ds_da , dc_da ] )
 
 def ode_integrate(N, num_step, s0, c0) :
-	global age, incidence, remission, excess, all_cause
-	global susceptible, condition
-	susceptible[0] = s0
-	condition[0]   = c0
-	sc             = numpy.array( [s0, c0] )
-	N              = len( all_cause )
-	for j in range(N-1) :
-		a_step = (age[j+1] - age[j]) / num_step
-		a_tmp  = age[j]
-		for step in range(num_step) :
-			sc    = runge_kutta_4(ode_fun, a_tmp, sc, a_step)
-			a_tmp = a_tmp + a_step
-		susceptible[j+1] = sc[0]
-		condition[j+1]   = sc[1]
+        global age, incidence, remission, excess, all_cause
+        global susceptible, condition
+        susceptible[0] = s0
+        condition[0]   = c0
+        sc             = numpy.array( [s0, c0] )
+        N              = len( all_cause )
+        for j in range(N-1) :
+                a_step = (age[j+1] - age[j]) / num_step
+                a_tmp  = age[j]
+                for step in range(num_step) :
+                        sc    = runge_kutta_4(ode_fun, a_tmp, sc, a_step)
+                        a_tmp = a_tmp + a_step
+                susceptible[j+1] = sc[0]
+                condition[j+1]   = sc[1]
 
 def ode_function(num_step, age_local, all_local) :
-	global age, incidence, remission, excess, all_cause
-	global susceptible, condition
-	N            = len( age_local )
-	age          = age_local
-	all_cause    = all_local
-	susceptible  = pycppad.ad( numpy.zeros(N) )
-	condition    = pycppad.ad( numpy.zeros(N) )
-	incidence    = .00 * numpy.ones(N)
-	remission    = .00 * numpy.ones(N)
-	excess       = .00 * numpy.ones(N)
-	s0           = 0.
-	c0           = 0.
-	x            = numpy.hstack( (incidence, remission, excess, s0, c0) )
-	x            = pycppad.independent( x )
-	incidence    = x[(0*N):(1*N)]
-	remission    = x[(1*N):(2*N)]
-	excess       = x[(2*N):(3*N)]
-	s0           = x[3*N]
-	c0           = x[3*N+1]
-	ode_integrate(N, num_step, s0, c0)
-	y            = numpy.hstack( (susceptible, condition) )
-	fun          = pycppad.adfun(x, y)
-	return fun
+        global age, incidence, remission, excess, all_cause
+        global susceptible, condition
+        N            = len( age_local )
+        age          = age_local
+        all_cause    = all_local
+        susceptible  = numpy.zeros(N)
+        condition    = numpy.zeros(N)
+        incidence    = .00 * numpy.ones(N)
+        remission    = .00 * numpy.ones(N)
+        excess       = .00 * numpy.ones(N)
+        s0           = 0.
+        c0           = 0.
+        #x            = numpy.hstack( (incidence, remission, excess, s0, c0) )
+        #x            = pycppad.independent( x )
+        #incidence    = x[(0*N):(1*N)]
+        #remission    = x[(1*N):(2*N)]
+        #excess       = x[(2*N):(3*N)]
+        #s0           = x[3*N]
+        #c0           = x[3*N+1]
+
+        from numba import jit
+        @jit
+        def fun(incidence, remission, excess, s0, c0):
+                ode_integrate(N, num_step, s0, c0)
+                return (susceptible, condition)
+        return fun
