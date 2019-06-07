@@ -5,3 +5,5 @@ build
 .cache
 DisMod_MR.egg-info/
 dismod_mr.egg-info/
+examples/hcv_replication/
+examples/IHME_GBD_HEP_C_RESEARCH_ARCHIVE_Y2013M04D12.ZIP
