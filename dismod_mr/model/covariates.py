@@ -486,7 +486,12 @@ def predict_for(model, parameters,
             
         # make X_l
         if len(beta_trace) > 0:
-            X_l = covs.loc[(l, sex, year)]
+            if (l,sex,year) in covs.index:
+                X_l = covs.loc[(l,sex,year)]
+            else:
+                # HACK: if this location/sex/year is not in index, return zeros
+                X_l = np.zeros_like(covs.iloc[0])
+
             log_shift_l += np.dot(beta_trace, X_l.T).flatten()
 
         if population_weighted:
