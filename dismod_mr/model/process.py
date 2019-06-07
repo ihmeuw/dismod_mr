@@ -375,8 +375,6 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
     N = len(m_all)
     num_step = 10  # double until it works
     ages = np.array(ages, dtype=float)
-    #fun = dismod_mr.model.ode.ode_function(num_step, ages, m_all)
-    dismod_ode_function = dismod_mr.model.ode.ode_function(num_step, ages, m_all)
     @mc.deterministic
     def mu_age_p(logit_C0=logit_C0,
                  i=rate['i']['mu_age'],
@@ -389,14 +387,11 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         if r.min() > 5.99:
             return i / (r + m_all + f)
         
-        C0 = mc.invlogit(logit_C0)
+        C0 = float(mc.invlogit(logit_C0))
 
-        #x = np.hstack((i, r, f, 1-C0, C0))
-        susceptible, condition = dismod_ode_function(i, r, f, 1-C0, C0)
-        #y = fun.forward(0, x)
-
-        #susceptible = y[:N]
-        #condition = y[N:]
+        susceptible = np.zeros(len(ages))
+        condition = np.zeros(len(ages))
+        dismod_mr.model.ode.ode_function(susceptible, condition, num_step, ages, m_all, i, r, f, 1-C0, C0)
 
         p = condition / (susceptible + condition)
         p[np.isnan(p)] = 0.

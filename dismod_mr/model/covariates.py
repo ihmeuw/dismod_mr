@@ -69,9 +69,9 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
             print('WARNING: "%s" not in model hierarchy, skipping random effects for this observation' % row['area'])
             continue
         
-        for level, node in enumerate(nx.shortest_path(model.hierarchy, 'all', input_data.ix[i, 'area'])):
+        for level, node in enumerate(nx.shortest_path(model.hierarchy, 'all', input_data.loc[i, 'area'])):
             model.hierarchy.node[node]['level'] = level
-            U.ix[i, node] = 1.
+            U.loc[i, node] = 1.
             
     for n2 in model.hierarchy.nodes():
         for level, node in enumerate(nx.shortest_path(model.hierarchy, 'all', n2)):
@@ -208,13 +208,13 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
 
             if root_sex == 'total' and root_year == 'all':  # special case for all years and sexes
                 covs = covs.reset_index().drop(['year', 'sex'], axis=1).groupby('area').mean()  # TODO: change to .reset_index(), but that doesn't work with old pandas
-                leaf_covs = covs.ix[leaves]
+                leaf_covs = covs.loc[leaves]
             elif root_sex == 'total':
                 raise Exception('root_sex == total, root_year != all is Not Yet Implemented')
             elif root_year == 'all':
                 raise Exception('root_year == all, root_sex != total is Not Yet Implemented')
             else:
-                leaf_covs = covs.ix[[(l, root_sex, root_year) for l in leaves]]
+                leaf_covs = covs.loc[[(l, root_sex, root_year) for l in leaves]]
 
             for cov in covs:
                 if cov != 'pop':
@@ -435,7 +435,7 @@ def predict_for(model, parameters,
     for l in leaves:
         log_shift_l = np.zeros(len_trace)
         if len(U_l.columns) > 0:
-            U_l.ix[0,:] = 0.
+            U_l.loc[0,:] = 0.
 
         root_to_leaf = nx.shortest_path(area_hierarchy, root_area, l)
         for node in root_to_leaf[1:]:
@@ -472,7 +472,7 @@ def predict_for(model, parameters,
                     alpha_trace = np.atleast_2d(alpha_node).T
 
             # TODO: implement a more robust way to align alpha_trace and U_l
-            U_l.ix[0, node] = 1.
+            U_l.loc[0, node] = 1.
 
         # 'shift' the random effects matrix to have the intended
         # level of the hierarchy as the reference value
