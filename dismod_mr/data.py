@@ -534,14 +534,15 @@ class ModelData:
         else:
             raise NotImplementedError('Need to call .setup_model before calling fit.')
 
-    def predict_for(rate_type, area, sex, year):
-        """
-        Predict
-        """
-        assert 0, 'Not yet implemented'
-        import covariate_model
-        reload(covariate_model)
-        self.estimates = self.estimates.append(pd.DataFrame())
+    def predict_for(self, rate_type, area, sex, year):
+        from . import model
+        return model.covariates.predict_for(
+            self, self.parameters[rate_type],
+            'all', 'total', 'all',
+            area, sex, year,
+            1., self.vars[rate_type], 
+            self.parameters[rate_type]['level_bounds']['lower'], 
+            self.parameters[rate_type]['level_bounds']['upper'])
 
     def save(self, path):
         """ Saves all model data in human-readable files
