@@ -373,7 +373,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
     import dismod_mr.model.ode
 
     N = len(m_all)
-    num_step = 10  # double until it works
+    num_step = 2  # double until it works
     ages = np.array(ages, dtype=float)
     @mc.deterministic
     def mu_age_p(logit_C0=logit_C0,

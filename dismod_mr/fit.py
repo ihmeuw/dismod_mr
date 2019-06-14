@@ -176,7 +176,11 @@ def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=F
                 print('finding Normal Approx for', [n.__name__ for n in stoch])
             try:
                 na = mc.NormApprox(vars_to_fit + stoch)
-                na.fit(method='fmin_powell', verbose=verbose)
+                try:
+                    na.fit(method='fmin_powell', verbose=verbose)
+                except ZeroDivisionError as e:
+                    print('Error that often happens with little data')
+                    print(e)
                 cov = np.array(np.linalg.inv(-na.hess), order='F')
                 if np.all(np.linalg.eigvals(cov) >= 0):
                     m.use_step_method(mc.AdaptiveMetropolis, stoch, cov=cov)
