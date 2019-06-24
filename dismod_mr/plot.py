@@ -20,7 +20,7 @@
 """ Module for DisMod-MR graphics"""
 
 import numpy as np, matplotlib.pyplot as plt
-import pymc as mc
+import pymc as pm
 import pandas
 import networkx as nx
 
@@ -245,23 +245,24 @@ def effects(model, data_type, figsize=(22, 17)):
         
         cov_name = list(vars[covariate].columns)
         
-        if isinstance(vars.get(effect), mc.Stochastic):
+        if isinstance(vars.get(effect), pm.Stochastic):
             plt.subplot(1, 2, i+1)
             plt.title('%s_%s' % (effect, data_type))
 
-            stats = vars[effect].stats()
-            if stats:
+            trace = vars[effect].trace()
+            if trace:
                 if effect == 'alpha':
                     index = sorted(np.arange(len(cov_name)),
                                    key=lambda i: str(cov_name[i] in hierarchy and nx.shortest_path(hierarchy, 'all', cov_name[i]) or cov_name[i]))
                 elif effect == 'beta':
                     index = np.arange(len(cov_name))
 
-                x = np.atleast_1d(stats['mean'])
+                x = np.atleast_1d(np.mean(trace))
                 y = np.arange(len(x))
+                hpd = pm.utils.hpd(trace, 0.05)
 
-                xerr = np.array([x - np.atleast_2d(stats['95% HPD interval'])[:,0],
-                                 np.atleast_2d(stats['95% HPD interval'])[:,1] - x])
+                xerr = np.array([x - np.atleast_2d(hpd)[:,0],
+                                 np.atleast_2d(hpd)[:,1] - x])
                 plt.errorbar(x[index], y[index], xerr=xerr[:, index], fmt='s', mec='w', color=colors[1])
 
                 l,r,b,t = plt.axis()
@@ -282,14 +283,14 @@ def effects(model, data_type, figsize=(22, 17)):
 
             for y, i in enumerate(index):
                 n = vars[effect][i]
-                if isinstance(n, mc.Stochastic) or isinstance(n, mc.Deterministic):
-                    stats = n.stats()
-                    if stats:
-                        x = np.atleast_1d(stats['mean'])
+                if isinstance(n, pm.Stochastic) or isinstance(n, pm.Deterministic):
+                    trace = n.trace()
+                    x = np.atleast_1d(np.mean(trace))
+                    hpd = pm.utils.hpd(trace, 0.05)
 
-                        xerr = np.array([x - np.atleast_2d(stats['95% HPD interval'])[:,0],
-                                         np.atleast_2d(stats['95% HPD interval'])[:,1] - x])
-                        plt.errorbar(x, y, xerr=xerr, fmt='s', mec='w', color=colors[1])
+                    xerr = np.array([x - np.atleast_2d(hpd)[:,0],
+                                     np.atleast_2d(hpd)[:,1] - x])
+                    plt.errorbar(x, y, xerr=xerr, fmt='s', mec='w', color=colors[1])
 
             l,r,b,t = plt.axis()
             plt.vlines([0], b-.5, t+.5)
@@ -307,9 +308,9 @@ def effects(model, data_type, figsize=(22, 17)):
             effect_str = '\n'
             if effect == 'alpha':
                 for sigma in vars['sigma_alpha']:
-                    stats = sigma.stats()
-                    if stats:
-                        effect_str += '%s = %.3f -\n' % (sigma.__name__, stats['mean'])  # FIXME: pylab doesn't align right correctly for lines that end in spaces
+                    trace = sigma.trace()
+                    if len(trace) > 0:
+                        effect_str += '%s = %.3f -\n' % (sigma.__name__, np.mean(trace))  # FIXME: pylab doesn't align right correctly for lines that end in spaces
                     else:
                         effect_str += '%s = %.3f -\n' % (sigma.__name__, sigma.value)
                 plt.text(r, t, effect_str, va='top', ha='right')
@@ -317,7 +318,7 @@ def effects(model, data_type, figsize=(22, 17)):
                 if 'eta' in vars:
                     eta = vars['eta']
                     tr = eta.trace()
-                    if stats:
+                    if len(tr) > 0:
                         effect_str += 'exp(%s) = %.3f -\n' % (eta.__name__, np.mean(np.exp(tr)))
                     else:
                         effect_str += 'exp(%s) = %.3f -\n' % (eta.__name__, np.exp(eta.value))
@@ -414,7 +415,7 @@ def tally_stochs(vars):
                 nodes += n
 
         for n in nodes:
-            if isinstance(n, mc.Stochastic) and not n.observed:
+            if isinstance(n, pm.Stochastic) and not n.observed:
                 trace = n.trace()
                 if len(trace) > 0:
                     stochs.append(n)

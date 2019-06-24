@@ -136,21 +136,21 @@ def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=F
 
         for t in param_types:
             find_re_initial_vals(vars[t], method, tol, verbose)
-            logger.info('.')
+            logger.heartbeat()
 
         find_consistent_spline_initial_vals(vars, method, tol, verbose)
-        logger.info('.')
+        logger.heartbeat()
 
         for t in param_types:
             find_fe_initial_vals(vars[t], method, tol, verbose)
-            logger.info('.')
+            logger.heartbeat()
 
         find_consistent_spline_initial_vals(vars, method, tol, verbose)
-        logger.info('.')
+        logger.heartbeat()
 
         for t in param_types:
             find_dispersion_initial_vals(vars[t], method, tol, verbose)
-            logger.info('.')
+            logger.heartbeat()
 
         logger.info('\nfitting all stochs\n')
         map.fit(method=method, tol=tol, verbose=verbose)
@@ -187,16 +187,16 @@ def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=F
                     print('cov matrix is not positive semi-definite')
                 m.use_step_method(mc.AdaptiveMetropolis, stoch)
 
-            logger.info('.')
+            logger.heartbeat()
 
         for t in param_types:
             setup_asr_step_methods(m, vars[t], vars_to_fit)
 
             # reset values to MAP
             find_consistent_spline_initial_vals(vars, method, tol, verbose)
-            logger.info('.')
+            logger.heartbeat()
         map.fit(method=method, tol=tol, verbose=verbose)
-        logger.info('.')
+        logger.heartbeat()
     except KeyboardInterrupt:
         logger.warning('Initial condition calculation interrupted')
 
@@ -233,11 +233,11 @@ def print_mare(vars):
 
 class Log:
     def info(self, msg):
-        print(msg,)
-        sys.stdout.flush()
+        print(msg, flush=True)
     def warning(self, msg):
-        print(msg)
-        sys.stdout.flush()
+        print(msg, flush=True)
+    def heartbeat(self):
+        print('.', end=' ', flush=True)
 logger = Log()
 
 param_types = 'i r f p pf rr smr m_with X'.split()
@@ -260,7 +260,7 @@ def find_consistent_spline_initial_vals(vars, method, tol, verbose):
             from fit_posterior import inspect_vars
             print(inspect_vars({}, vars)[-10:])
         else:
-            logger.info('.')
+            logger.heartbeat()
 
 
 def find_asr_initial_vals(vars, method, tol, verbose):
@@ -271,7 +271,7 @@ def find_asr_initial_vals(vars, method, tol, verbose):
         find_fe_initial_vals(vars, method, tol, verbose)
         find_spline_initial_vals(vars, method, tol, verbose)
         find_dispersion_initial_vals(vars, method, tol, verbose)
-        logger.info('.')
+        logger.heartbeat()
 
 def find_spline_initial_vals(vars, method, tol, verbose):
     ## generate initial value by fitting knots sequentially

@@ -365,11 +365,13 @@ def test_predict_for_wo_data():
     for node in ['USA', 'NAHI', 'super-region-1', 'all']:
         d.parameters['p']['random_effects'][node] = dict(dist='Constant', mu=0, sigma=1.e-9) # zero out REs to see if test passes
         
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+    pred1 = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'all', 'total', 'all',
                                          'USA', 'male', 1990,
                                          0., vars['p'], 0., np.inf)
 
+    #assert_almost_equal(pred1,
+    #                    vars['p']['mu_age'].trace())
 
     ### Prediction case 2: constant non-zero random effects, zero fixed effect coefficients
     # FIXME: this test was failing because PyMC is drawing from the prior of beta[0] even though I asked for NoStepper
@@ -378,7 +380,7 @@ def test_predict_for_wo_data():
     for i, node in enumerate(['USA', 'NAHI', 'super-region-1']):
         d.parameters['p']['random_effects'][node]['mu'] = (i+1.)/10.
         
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+    pred2 = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'all', 'total', 'all',
                                          'USA', 'male', 1990,
                                          0., vars['p'], 0., np.inf)
@@ -386,7 +388,7 @@ def test_predict_for_wo_data():
     # test that the predicted value is as expected
     fe_usa_1990 = np.exp(.5*vars['p']['beta'][0].value) # beta[0] is drawn from prior, even though I set it to NoStepper, see FIXME above
     re_usa_1990 = np.exp(.1+.2+.3)
-    assert_almost_equal(pred,
+    assert_almost_equal(pred2,
                         vars['p']['mu_age'].trace() * fe_usa_1990 * re_usa_1990)
 
 
