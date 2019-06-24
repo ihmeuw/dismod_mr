@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ihmeuw/dismod_mr.svg?branch=master)](https://travis-ci.org/ihmeuw/dismod_mr)
+
 Introduction
 ============
 

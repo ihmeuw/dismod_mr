@@ -79,7 +79,7 @@ def level_constraints(name, parameters, unconstrained_mu_age, ages):
                lower=parameters['level_bounds']['lower'],
                upper=parameters['level_bounds']['upper']):
         mu_age = unconstrained_mu_age.copy()
-        mu_age[:age_before] = value
+        mu_age[:int(age_before)] = value
         if age_after < len(mu_age)-1:
             mu_age[(age_after+1):] = value
         return mu_age.clip(lower, upper)
