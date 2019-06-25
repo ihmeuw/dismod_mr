@@ -204,7 +204,10 @@ def plot_one_ppc(model, t):
       - `t` : str, data type of 'i', 'r', 'f', 'p', 'rr', 'm', 'X', 'pf', 'csmr'
     
     """
-    stats = model.vars[t]['p_pred'].stats()
+    stats = {}
+    trace = model.vars[t]['p_pred'].trace()
+    stats['quantiles'] = {50: np.median(trace, axis=0)}
+    stats['95% HPD interval'] = pm.utils.hpd(trace, .05)
     if stats == None:
         return
 
@@ -213,8 +216,8 @@ def plot_one_ppc(model, t):
 
     x = model.vars[t]['p_obs'].value.__array__()
     y = x - stats['quantiles'][50]
-    yerr = [stats['quantiles'][50] - np.atleast_2d(stats['95% HPD interval'])[:,0],
-            np.atleast_2d(stats['95% HPD interval'])[:,1] - stats['quantiles'][50]]
+    yerr = [stats['quantiles'][50] - stats['95% HPD interval'][0],
+            stats['95% HPD interval'][1] - stats['quantiles'][50]]
     plt.errorbar(x, y, yerr=yerr, fmt='ko', mec='w', capsize=0,
                 label='Obs vs Residual (Obs - Pred)')
 
