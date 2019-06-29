@@ -1,7 +1,6 @@
 """ Test Plot Module"""
 
-import numpy as np, pandas as pd, pymc as pm
-import dismod_mr
+import pandas as pd
 
 tt = pd.DataFrame({'age_start': [0, 10],
                    'age_end': [10, 20],
@@ -10,7 +9,7 @@ tt = pd.DataFrame({'age_start': [0, 10],
                })
 
 def test_plot_data_bars():
-    dismod_mr.plot.data_bars(tt)
+    src.dismod_mr.plot.data_bars(tt)
 
 def test_data_values_by_covariates():
-    dismod_mr.plot.data_value_by_covariates(tt)
+    src.dismod_mr.plot.data_value_by_covariates(tt)

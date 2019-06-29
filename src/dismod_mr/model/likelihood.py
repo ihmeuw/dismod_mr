@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2012 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,10 +11,9 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Several rate models"""
 
 import pylab as pl
@@ -135,7 +132,7 @@ def neg_binom(name, pi, delta, p, n):
     """
     assert pl.all(p >= 0), 'observed values must be non-negative'
     assert pl.all(n >= 0), 'effective sample size must non-negative'
-    
+
     i_zero = pl.array(n==0.)
 
     if (isinstance(delta, mc.Node) and pl.shape(delta.value) == ()) \
@@ -173,7 +170,7 @@ def beta_binom_2(name, pi, delta, p, n):
     """
     assert pl.all(p >= 0), 'observed values must be non-negative'
     assert pl.all(n >= 0), 'effective sample size must non-negative'
-    
+
     i_zero = pl.array(n==0.)
 
     if (isinstance(delta, mc.Node) and pl.shape(delta.value) == ()) \
@@ -183,7 +180,7 @@ def beta_binom_2(name, pi, delta, p, n):
         @mc.observed(name='p_obs_%s'%name)
         def p_obs(value=p, pi=pi, delta=delta, n=n):
             return mc.betabin_like(x=value[~i_zero]*n[~i_zero],
-                                   alpha=pi[~i_zero]*delta[~i_zero]*50, 
+                                   alpha=pi[~i_zero]*delta[~i_zero]*50,
                                    beta=(1-pi[~i_zero])*delta[~i_zero]*50,
                                    n=n[~i_zero])
 
@@ -209,7 +206,7 @@ def neg_binom_lower_bound(name, pi, delta, p, n):
       - `n` : array, effective sample sizes of rates
 
     :Results:
-      - Returns dict of PyMC objects, including 'p_obs' the observed stochastic 
+      - Returns dict of PyMC objects, including 'p_obs' the observed stochastic
 
     """
     assert pl.all(p >= 0), 'observed values must be non-negative'
@@ -248,7 +245,7 @@ def normal(name, pi, sigma, p, s):
         return mc.normal_like(value, pi, 1./(sigma**2. + s**2.))
 
     s_noninf = s.copy()
-    s_noninf[i_inf] = 0.    
+    s_noninf[i_inf] = 0.
     @mc.deterministic(name='p_pred_%s'%name)
     def p_pred(pi=pi, sigma=sigma, s=s_noninf):
         return mc.rnormal(pi, 1./(sigma**2. + s**2.))
@@ -280,7 +277,7 @@ def log_normal(name, pi, sigma, p, s):
                               1./(sigma**2. + (s/value)**2.))
 
     s_noninf = s.copy()
-    s_noninf[i_inf] = 0.    
+    s_noninf[i_inf] = 0.
     @mc.deterministic(name='p_pred_%s'%name)
     def p_pred(pi=pi, sigma=sigma, s=s_noninf):
         return pl.exp(mc.rnormal(pl.log(pi+1.e-9), 1./(sigma**2. + (s/(pi+1.e-9))**2)))
@@ -290,7 +287,7 @@ def log_normal(name, pi, sigma, p, s):
 
 def offset_log_normal(name, pi, sigma, p, s):
     """ Generate PyMC objects for an offset log-normal model
-    
+
     :Parameters:
       - `name` : str
       - `pi` : pymc.Node, expected values of rates

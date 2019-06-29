@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2012 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,10 +11,9 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Module for DisMod-MR model fitting methods"""
 
 import sys, time
@@ -24,7 +21,7 @@ import numpy as np, pymc as mc, networkx as nx
 
 def asr(model, data_type, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=False):
     """ Fit data model for one epidemiologic parameter using MCMC
-    
+
     :Parameters:
       - `model` : data.ModelData
       - `data_type` : str, one of 'i', 'r', 'f', 'p', or 'pf'
@@ -46,7 +43,7 @@ def asr(model, data_type, iter=2000, burn=1000, thin=1, tune_interval=100, verbo
     assert thin < iter - burn, 'thin must be less than iter-burn'
 
     vars = model.vars[data_type]
-    
+
     start_time = time.time()
     map = mc.MAP(vars)
     m = mc.MCMC(vars)
@@ -61,7 +58,7 @@ def asr(model, data_type, iter=2000, burn=1000, thin=1, tune_interval=100, verbo
 
         logger.info('\nfinding MAP estimate')
         map.fit(method=method, tol=tol, verbose=verbose)
-        
+
         if verbose:
             print_mare(vars)
         logger.info('\nfinding step covariances estimate')
@@ -90,15 +87,15 @@ def asr(model, data_type, iter=2000, burn=1000, thin=1, tune_interval=100, verbo
         m.sample(m.iter, m.burn, m.thin, tune_interval=tune_interval, progress_bar=False)
 
     m.wall_time = time.time() - start_time
-    
+
     model.map = map
     model.mcmc = m
-    
+
     return model.map, model.mcmc
 
 def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=False):
     """Fit data model for all epidemiologic parameters using MCMC
-    
+
     :Parameters:
       - `model` : data.ModelData
       - `iter` : int, number of posterior samples fit
@@ -121,7 +118,7 @@ def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=F
     param_types = 'i r f p pf rr smr m_with X'.split()
 
     vars = model.vars
-    
+
     start_time = time.time()
     map = mc.MAP(vars)
     m = mc.MCMC(vars)
@@ -219,7 +216,7 @@ def consistent(model, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=F
 
     model.map = map
     model.mcmc = m
-    
+
     return model.map, model.mcmc
 
 """ Routines for fitting disease models"""
@@ -349,7 +346,7 @@ def setup_asr_step_methods(m, vars, additional_stochs=[]):
         group = []
 
         col_map = dict([[key, i] for i,key in enumerate(vars['U'].columns)])
-        
+
         if a in vars['U']:
             for b in nx.shortest_path(vars['hierarchy'], 'all', a):
                 if b in vars['U']:
@@ -362,7 +359,7 @@ def setup_asr_step_methods(m, vars, additional_stochs=[]):
             #groups.append(group)
             #group += fe_group
             #groups.append(group)
-                    
+
     for stoch in groups:
         if len(stoch) > 0 and np.all([isinstance(n, mc.Stochastic) for n in stoch]):
             # only step certain stochastics, for understanding convergence

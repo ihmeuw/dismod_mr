@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2012 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,14 +11,13 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 import numpy, numba
 
 @numba.jit(nopython=True)
-def f(a, susceptible_condition, 
+def f(a, susceptible_condition,
         incidence, remission, excess, all_cause) :
         s      = susceptible_condition[0]
         c      = susceptible_condition[1]
@@ -56,8 +53,8 @@ def ode_function(susceptible, condition, num_step, age_local, all_cause, inciden
                         # copied from http://www.seanet.com/~bradbell/pycppad/runge_kutta_4.xml
 
                         k1 = dt * f(ti         , yi, incidence, remission, excess, all_cause)
-                        k2 = dt * f(ti + .5*dt , yi + .5*k1, incidence, remission, excess, all_cause) 
-                        k3 = dt * f(ti + .5*dt , yi + .5*k2, incidence, remission, excess, all_cause) 
+                        k2 = dt * f(ti + .5*dt , yi + .5*k1, incidence, remission, excess, all_cause)
+                        k3 = dt * f(ti + .5*dt , yi + .5*k2, incidence, remission, excess, all_cause)
                         k4 = dt * f(ti + dt    , yi + k3, incidence, remission, excess, all_cause)
                         yf = yi + (1./6.) * ( k1 + 2.*k2 + 2.*k3 + k4 )
 

@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2012 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,16 +11,15 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Dismod-MR model creation methods"""
 
 import numpy as np, pymc as mc, scipy.interpolate
 
 def age_specific_rate(model, data_type, reference_area='all', reference_sex='total', reference_year='all',
-                      mu_age=None, mu_age_parent=None, sigma_age_parent=None, 
+                      mu_age=None, mu_age_parent=None, sigma_age_parent=None,
                       rate_type='neg_binom', lower_bound=None, interpolation_method='linear',
                       include_covariates=True, zero_re=False):
     # TODO: expose (and document) interface for alternative rate_type as well as other options,
@@ -37,7 +34,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
       - `mu_age_parent` : pymc.Node, will be used as the age pattern of the parent of the root area, set to None if not needed
       - `sigma_age_parent` : pymc.Node, will be used as the standard deviation of the age pattern, set to None if not needed
       - `rate_type` : str, optional. One of 'beta_binom', 'beta_binom_2', 'binom', 'log_normal_model', 'neg_binom', 'neg_binom_lower_bound_model', 'neg_binom_model', 'normal_model', 'offest_log_normal', or 'poisson'
-      - `lower_bound` : 
+      - `lower_bound` :
       - `interpolation_method` : str, optional, one of 'linear', 'nearest', 'zero', 'slinear', 'quadratic, or 'cubic'
       - `include_covariates` : boolean
       - `zero_re` : boolean, change one stoch from each set of siblings in area hierarchy to a 'sum to zero' deterministic
@@ -47,9 +44,8 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
 
     """
     name = data_type
-    import dismod_mr
-    result = dismod_mr.data.ModelVars()
-    
+    result = src.dismod_mr.data.ModelVars()
+
     if (isinstance(mu_age_parent, np.ndarray) and np.any(np.isnan(mu_age_parent))) \
            or (isinstance(sigma_age_parent, np.ndarray) and np.any(np.isnan(sigma_age_parent))):
         mu_age_parent = None
@@ -63,7 +59,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
     parameters = model.parameters.get(data_type, {})
     area_hierarchy = model.hierarchy
 
-    vars = dismod_mr.data.ModelVars()
+    vars = src.dismod_mr.data.ModelVars()
     vars += dict(data=data)
 
     if 'parameter_age_mesh' in parameters:
@@ -82,13 +78,13 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
 
     if mu_age == None:
         vars.update(
-            dismod_mr.model.spline.spline(name, ages=ages, knots=knots, smoothing=smoothing, interpolation_method=interpolation_method)
+            src.dismod_mr.model.spline.spline(name, ages=ages, knots=knots, smoothing=smoothing, interpolation_method=interpolation_method)
             )
     else:
         vars.update(dict(mu_age=mu_age, ages=ages))
 
-    vars.update(dismod_mr.model.priors.level_constraints(name, parameters, vars['mu_age'], ages))
-    vars.update(dismod_mr.model.priors.derivative_constraints(name, parameters, vars['mu_age'], ages))
+    vars.update(src.dismod_mr.model.priors.level_constraints(name, parameters, vars['mu_age'], ages))
+    vars.update(src.dismod_mr.model.priors.derivative_constraints(name, parameters, vars['mu_age'], ages))
 
     if type(mu_age_parent) != type(None):
         # setup a hierarchical prior on the simliarity between the
@@ -97,7 +93,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
         #weight_dict = {'Unusable': 10., 'Slightly': 10., 'Moderately': 1., 'Very': .1}
         #weight = weight_dict[parameters['heterogeneity']]
         vars.update(
-            dismod_mr.model.priors.similar('parent_similarity_%s'%name, vars['mu_age'], mu_age_parent, sigma_age_parent, 0.)
+            src.dismod_mr.model.priors.similar('parent_similarity_%s' % name, vars['mu_age'], mu_age_parent, sigma_age_parent, 0.)
             )
 
         # also use this as the initial value for the age pattern, if it is not already specified
@@ -106,14 +102,14 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
                 initial_mu = mu_age_parent.value
             else:
                 initial_mu = mu_age_parent
-                
+
             for i, k_i in enumerate(knots):
                 vars['gamma'][i].value = (np.log(initial_mu[k_i-ages[0]])).clip(-12,6)
 
     age_weights = np.ones_like(vars['mu_age'].value) # TODO: use age pattern appropriate to the rate type
     if len(data) > 0:
         vars.update(
-            dismod_mr.model.age_groups.age_standardize_approx(name, age_weights, vars['mu_age'], data['age_start'], data['age_end'], ages)
+            src.dismod_mr.model.age_groups.age_standardize_approx(name, age_weights, vars['mu_age'], data['age_start'], data['age_end'], ages)
             )
 
         # uncomment the following to effectively remove alleffects
@@ -127,7 +123,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
 
         if include_covariates:
             vars.update(
-                dismod_mr.model.covariates.mean_covariate_model(name, vars['mu_interval'], data, parameters, model, reference_area, reference_sex, reference_year, zero_re=zero_re)
+                src.dismod_mr.model.covariates.mean_covariate_model(name, vars['mu_interval'], data, parameters, model, reference_area, reference_sex, reference_year, zero_re=zero_re)
                 )
         else:
             vars.update({'pi': vars['mu_interval']})
@@ -168,13 +164,13 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
             # special case, treat pf data as poisson
             if data_type == 'pf':
                 lower = 1.e12
-            
+
             vars.update(
-                dismod_mr.model.covariates.dispersion_covariate_model(name, data, lower, lower*9.)
+                src.dismod_mr.model.covariates.dispersion_covariate_model(name, data, lower, lower * 9.)
                 )
 
             vars.update(
-                dismod_mr.model.likelihood.neg_binom(name, vars['pi'], vars['delta'], data['value'], data['effective_sample_size'])
+                src.dismod_mr.model.likelihood.neg_binom(name, vars['pi'], vars['delta'], data['value'], data['effective_sample_size'])
                 )
         elif rate_type == 'log_normal':
 
@@ -188,7 +184,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
             vars['sigma'] = mc.Uniform('sigma_%s'%name, lower=.0001, upper=1., value=.01)
             #vars['sigma'] = mc.Exponential('sigma_%s'%name, beta=100., value=.01)
             vars.update(
-                dismod_mr.model.likelihood.log_normal(name, vars['pi'], vars['sigma'], data['value'], data['standard_error'])
+                src.dismod_mr.model.likelihood.log_normal(name, vars['pi'], vars['sigma'], data['value'], data['standard_error'])
                 )
         elif rate_type == 'normal':
 
@@ -200,52 +196,52 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
 
             vars['sigma'] = mc.Uniform('sigma_%s'%name, lower=.0001, upper=.1, value=.01)
             vars.update(
-                dismod_mr.model.likelihood.normal(name, vars['pi'], vars['sigma'], data['value'], data['standard_error'])
+                src.dismod_mr.model.likelihood.normal(name, vars['pi'], vars['sigma'], data['value'], data['standard_error'])
                 )
         elif rate_type == 'binom':
             missing_ess = np.isnan(data['effective_sample_size']) | (data['effective_sample_size'] < 0)
             if sum(missing_ess) > 0:
                 print('WARNING: %d rows of %s data has invalid quantification of uncertainty.' % (sum(missing_ess), name))
                 data['effective_sample_size'][missing_ess] = 0.0
-            vars += dismod_mr.model.likelihood.binom(name, vars['pi'], data['value'], data['effective_sample_size'])
+            vars += src.dismod_mr.model.likelihood.binom(name, vars['pi'], data['value'], data['effective_sample_size'])
         elif rate_type == 'beta_binom':
-            vars += dismod_mr.model.likelihood.beta_binom(name, vars['pi'], data['value'], data['effective_sample_size'])
+            vars += src.dismod_mr.model.likelihood.beta_binom(name, vars['pi'], data['value'], data['effective_sample_size'])
         elif rate_type == 'beta_binom_2':
-            vars += dismod_mr.model.likelihood.beta_binom_2(name, vars['pi'], data['value'], data['effective_sample_size'])
+            vars += src.dismod_mr.model.likelihood.beta_binom_2(name, vars['pi'], data['value'], data['effective_sample_size'])
         elif rate_type == 'poisson':
             missing_ess = np.isnan(data['effective_sample_size']) | (data['effective_sample_size'] < 0)
             if sum(missing_ess) > 0:
                 print('WARNING: %d rows of %s data has invalid quantification of uncertainty.' % (sum(missing_ess), name))
                 data['effective_sample_size'][missing_ess] = 0.0
 
-            vars += dismod_mr.model.likelihood.poisson(name, vars['pi'], data['value'], data['effective_sample_size'])
+            vars += src.dismod_mr.model.likelihood.poisson(name, vars['pi'], data['value'], data['effective_sample_size'])
         elif rate_type == 'offset_log_normal':
             vars['sigma'] = mc.Uniform('sigma_%s'%name, lower=.0001, upper=10., value=.01)
-            vars += dismod_mr.model.likelihood.offset_log_normal(name, vars['pi'], vars['sigma'], data['value'], data['standard_error'])
+            vars += src.dismod_mr.model.likelihood.offset_log_normal(name, vars['pi'], vars['sigma'], data['value'], data['standard_error'])
         else:
             raise Exception('rate_model "%s" not implemented' % rate_type)
     else:
         if include_covariates:
             vars.update(
-                dismod_mr.model.covariates.mean_covariate_model(name, [], data, parameters, model, reference_area, reference_sex, reference_year, zero_re=zero_re)
+                src.dismod_mr.model.covariates.mean_covariate_model(name, [], data, parameters, model, reference_area, reference_sex, reference_year, zero_re=zero_re)
                 )
     if include_covariates:
-        vars.update(dismod_mr.model.priors.covariate_level_constraints(name, model, vars, ages))
+        vars.update(src.dismod_mr.model.priors.covariate_level_constraints(name, model, vars, ages))
 
 
     if lower_bound and len(lb_data) > 0:
-        vars['lb'] = dismod_mr.model.age_groups.age_standardize_approx('lb_%s'%name, age_weights, vars['mu_age'], lb_data['age_start'], lb_data['age_end'], ages)
+        vars['lb'] = src.dismod_mr.model.age_groups.age_standardize_approx('lb_%s' % name, age_weights, vars['mu_age'], lb_data['age_start'], lb_data['age_end'], ages)
 
         if include_covariates:
 
             vars['lb'].update(
-                dismod_mr.model.covariates.mean_covariate_model('lb_%s'%name, vars['lb']['mu_interval'], lb_data, parameters, model, reference_area, reference_sex, reference_year, zero_re=zero_re)
+                src.dismod_mr.model.covariates.mean_covariate_model('lb_%s' % name, vars['lb']['mu_interval'], lb_data, parameters, model, reference_area, reference_sex, reference_year, zero_re=zero_re)
                 )
         else:
             vars['lb'].update({'pi': vars['lb']['mu_interval']})
 
         vars['lb'].update(
-            dismod_mr.model.covariates.dispersion_covariate_model('lb_%s'%name, lb_data, 1e12, 1e13)  # treat like poisson
+            src.dismod_mr.model.covariates.dispersion_covariate_model('lb_%s' % name, lb_data, 1e12, 1e13)  # treat like poisson
             )
 
         ## ensure that all data has uncertainty quantified appropriately
@@ -264,15 +260,15 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
             lb_data.loc[lb_data[missing_ess].index, 'effective_sample_size'] = 1.0
 
         vars['lb'].update(
-            dismod_mr.model.likelihood.neg_binom_lower_bound('lb_%s'%name, vars['lb']['pi'], vars['lb']['delta'], lb_data['value'], lb_data['effective_sample_size'])
+            src.dismod_mr.model.likelihood.neg_binom_lower_bound('lb_%s' % name, vars['lb']['pi'], vars['lb']['delta'], lb_data['value'], lb_data['effective_sample_size'])
             )
 
     result[data_type] = vars
     return result
-    
+
 def consistent(model, reference_area='all', reference_sex='total', reference_year='all', priors={}, zero_re=True, rate_type='neg_binom'):
     """ Generate PyMC objects for consistent model of epidemological data
-    
+
     :Parameters:
       - `model` : data.ModelData
       - `data_type` : str, one of 'i', 'r', 'f', 'p', or 'pf'
@@ -282,7 +278,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         priors on age patterns
       - `zero_re` : boolean, change one stoch from each set of
         siblings in area hierarchy to a 'sum to zero' deterministic
-      - `rate_type` : str or dict, optional. One of 'beta_binom', 'beta_binom_2', 
+      - `rate_type` : str or dict, optional. One of 'beta_binom', 'beta_binom_2',
         'binom', 'log_normal_model', 'neg_binom',
         'neg_binom_lower_bound_model', 'neg_binom_model',
         'normal_model', 'offest_log_normal', or 'poisson', optionally
@@ -292,7 +288,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
       - Returns dict of dicts of PyMC objects, including 'i', 'p',
         'r', 'f', the covariate adjusted predicted values for each row
         of data
-    
+
     .. note::
       - dict priors can contain keys (t, 'mu') and (t, 'sigma') to
         tell the consistent model about the priors on levels for the
@@ -353,7 +349,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         vals = []
         for i, row in mean_mortality.T.iteritems():
             knots.append((row['age_start'] + row['age_end'] + 1.) / 2.)  # FIXME: change m_all data to half-open intervals, and then remove +1 here
-            
+
             vals.append(row['value'])
 
         # extend knots as constant beyond endpoints
@@ -370,7 +366,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
 
 
     # use Runge-Kutta 4 ODE solver
-    import dismod_mr.model.ode
+    import src.dismod_mr.model.ode
 
     N = len(m_all)
     num_step = 2  # double until it works
@@ -386,12 +382,12 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         # transformation of incidence
         if r.min() > 5.99:
             return i / (r + m_all + f)
-        
+
         C0 = float(mc.invlogit(logit_C0))
 
         susceptible = np.zeros(len(ages))
         condition = np.zeros(len(ages))
-        dismod_mr.model.ode.ode_function(susceptible, condition, num_step, ages, m_all, i, r, f, 1-C0, C0)
+        src.dismod_mr.model.ode.ode_function(susceptible, condition, num_step, ages, m_all, i, r, f, 1 - C0, C0)
 
         p = condition / (susceptible + condition)
         p[np.isnan(p)] = 0.
@@ -460,7 +456,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
                                sigma_age_parent=priors.get(('m_with', 'sigma')),
                                include_covariates=False,
                                zero_re=zero_re, rate_type=rate_type['m_with'])['m_with']
-    
+
     # duration = E[time in bin C]
     @mc.deterministic
     def mu_age_X(r=rate['r']['mu_age'], m=rate['m']['mu_age'], f=rate['f']['mu_age']):

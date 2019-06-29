@@ -3,7 +3,7 @@ import pymc as mc
 import pandas
 import networkx as nx
 
-from dismod_mr import data
+from src.dismod_mr import data
 
 def simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true):
     # choose age intervals to measure
@@ -13,7 +13,7 @@ def simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true):
 
     # find truth for the integral across the age intervals
     import scipy.integrate
-    pi_interval_true = [scipy.integrate.trapz(pi_age_true[a_0i:(a_1i+1)]) / (a_1i - a_0i) 
+    pi_interval_true = [scipy.integrate.trapz(pi_age_true[a_0i:(a_1i+1)]) / (a_1i - a_0i)
                         for a_0i, a_1i in zip(age_start, age_end)]
 
     # generate covariates that add explained variation
@@ -42,7 +42,7 @@ def simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true):
     data['sex'] = 'total'
     data['area'] = 'all'
     data['data_type'] = data_type
-    
+
     return data
 
 def small_output():

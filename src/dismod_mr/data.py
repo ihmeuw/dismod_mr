@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2012 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,10 +11,9 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Data Handling Class for DisMod-MR"""
 
 import pandas as pd
@@ -28,7 +25,6 @@ try:
 except ImportError:
     import json
 
-from . import plot
 
 def my_stats(self, alpha=0.05, start=0, batches=100,
            chain=None, quantiles=(2.5, 25, 50, 75, 97.5)):
@@ -77,9 +73,8 @@ def check_convergence(vars):
     """ Apply a simple test of convergence to the model: compare
     autocorrelation at 25 lags to zero lags.  warn about convergence if it exceeds
     10% for any stoch """
-    import dismod_mr
 
-    cells, stochs = dismod_mr.plot.tally_stochs(vars)
+    cells, stochs = src.dismod_mr.plot.tally_stochs(vars)
 
     for s in sorted(stochs, key=lambda s: s.__name__):
         tr = s.trace()
@@ -91,7 +86,7 @@ def check_convergence(vars):
                 if abs(acorr) > .5:
                     print('potential non-convergence', s, acorr)
                     return False
-            
+
     return True
 
 class ModelVars(dict):
@@ -181,11 +176,11 @@ class ModelData:
 
     def get_data(self, data_type):
         """ Select data of one type.
-        
+
         :Parameters:
           - `data_type` : str, one of 'i', 'r', 'f', 'p', 'rr', 'pf', 'm', 'X', or 'csmr'
-        
-        :Results: 
+
+        :Results:
           - DataFrame of selected data type.
 
         """
@@ -201,7 +196,7 @@ class ModelData:
         for n in nx.dfs_postorder_nodes(G, 'all'):
             G.node[n]['cnt'] = len(df[df['area']==n].index) + pl.sum([G.node[c]['cnt'] for c in G.successors(n)])
             G.node[n]['depth'] = nx.shortest_path_length(G, 'all', n)
-        
+
         for n in nx.dfs_preorder_nodes(G, 'all'):
             if G.node[n]['cnt'] > 0:
                 print(' *'*G.node[n]['depth'], n, int(G.node[n]['cnt']))
@@ -209,7 +204,7 @@ class ModelData:
 
     def plot(self, rate_type=None):
         import matplotlib.pyplot as plt, numpy as np
-        import dismod_mr.plot as plot
+        from src import dismod_mr as plot
 
         if rate_type or 'rate_type' in self.model_settings:
             plot_types = self.model_settings.get('rate_type', rate_type)
@@ -301,13 +296,13 @@ class ModelData:
 
     def set_smoothness(self, rate_type, value):
         """ Set smoothness parameter for age-specific rate function of one type.
-        
+
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p', 'rr', 'pf', 'm', 'X', or 'csmr'
           - `value` : str, one of 'No Prior', 'Slightly', 'Moderately', or 'Very',
             or non-negative float
-        
-        :Results: 
+
+        :Results:
           - Changes the smoothing parameter in self.parameters
 
         """
@@ -315,14 +310,14 @@ class ModelData:
 
     def set_knots(self, rate_type, value):
         """ Set knots for age-specific rate function of one type.
-        
+
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p', 'rr', 'pf',
             'm', 'X', or 'csmr'
           - `value` : list, positions knots, start and end must
             correspond to parameters['ages']
-        
-        :Results: 
+
+        :Results:
           - Changes the knots in self.parameters[rate_type]
 
         """
@@ -331,7 +326,7 @@ class ModelData:
     def set_level_value(self, rate_type, age_before=None, age_after=None, value=0):
         """ Set level value for age-specific rate function of one
         type.
-        
+
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p', 'rr', 'pf',
             'm', 'X', or 'csmr'
@@ -341,8 +336,8 @@ class ModelData:
             more than this
           - `value` : float, value of the age-specific rate function
             before and after specified ages
-        
-        :Results: 
+
+        :Results:
           - Changes level_value in self.parameters[rate_type]
 
         """
@@ -356,7 +351,7 @@ class ModelData:
     def set_level_bounds(self, rate_type, lower=0, upper=1):
         """ Set level bounds for age-specific rate function of one
         type.
-        
+
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p', 'rr', 'pf',
             'm', 'X', or 'csmr'
@@ -365,8 +360,8 @@ class ModelData:
           - `upper` : float, maximum value of the age-specific rate
             function
 
-        
-        :Results: 
+
+        :Results:
           - Changes level_bounds in self.parameters[rate_type]
 
         """
@@ -375,7 +370,7 @@ class ModelData:
     def set_increasing(self, rate_type, age_start, age_end):
         """ Set increasing prior for age-specific rate function of one
         type.
-        
+
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p', 'rr', 'pf',
             'm', 'X', or 'csmr'
@@ -384,8 +379,8 @@ class ModelData:
           - `age_end` : int, maximum age of the age-specific rate
             function prior to increase
 
-        
-        :Results: 
+
+        :Results:
           - Changes increasing in self.parameters[rate_type]
 
         """
@@ -394,7 +389,7 @@ class ModelData:
     def set_decreasing(self, rate_type, age_start, age_end):
         """ Set decreasing prior for age-specific rate function of one
         type.
-        
+
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p', 'rr', 'pf',
             'm', 'X', or 'csmr'
@@ -403,8 +398,8 @@ class ModelData:
           - `age_end` : int, maximum age of the age-specific rate
             function prior to decrease
 
-        
-        :Results: 
+
+        :Results:
           - Changes decreasing in self.parameters[rate_type]
 
         """
@@ -413,14 +408,14 @@ class ModelData:
     def set_heterogeneity(self, rate_type, value):
         """ Set heterogeneity prior for age-specific rate function of one
         type.
-        
+
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p'
           - `value` : str, one of 'Unusable', 'Very', 'Moderately', or
             'Slightly'
 
-        
-        :Results: 
+
+        :Results:
           - Changes heterogeneity in self.parameters[rate_type]
 
         """
@@ -429,14 +424,14 @@ class ModelData:
     def set_effect_prior(self, rate_type, cov, value):
         """ Set prior for fixed or random effect of one
         type.
-        
+
         :Parameters:
           - `rate_type` : str, one of 'i', 'r', 'f', 'p'
           - `cov` : str, covariate name
           - `value` : dict, including keys `dist`, `mu`, and possibly
             `sigma`, `lower`, and `upper`
-        
-        :Results: 
+
+        :Results:
           - Changes heterogeneity in self.parameters[rate_type]
 
         :Notes:
@@ -494,7 +489,7 @@ class ModelData:
                                   include_covariates=include_covariates)
 
             self.model_settings['rate_type'] = rate_type
-                
+
         else:
             self.vars = model.consistent(self, rate_type=rate_model)
             self.model_settings['consistent'] = True
@@ -535,13 +530,12 @@ class ModelData:
             raise NotImplementedError('Need to call .setup_model before calling fit.')
 
     def predict_for(self, rate_type, area, sex, year):
-        from . import model
-        return model.covariates.predict_for(
+        return src.dismod_mr.model.covariates.predict_for(
             self, self.parameters[rate_type],
             'all', 'total', 'all',
             area, sex, year,
-            1., self.vars[rate_type], 
-            self.parameters[rate_type]['level_bounds']['lower'], 
+            1., self.vars[rate_type],
+            self.parameters[rate_type]['level_bounds']['lower'],
             self.parameters[rate_type]['level_bounds']['upper'])
 
     def save(self, path):
@@ -552,7 +546,7 @@ class ModelData:
 
         :Results:
           - Saves files to specified path, overwritting what was there before
-        
+
         """
 
         self.input_data.to_csv(path + '/input_data.csv')
@@ -566,21 +560,21 @@ class ModelData:
     @staticmethod
     def load(path):
         """ Load all model data
-        
+
         :Parameters:
           - `path` : str, directory to save in
-          
+
         :Results:
           - ModelData with all input data
-          
+
         .. note::
-          `path` must contain the following files 
-            - :ref:`input_data-label` 
-            - :ref:`output_template-label` 
+          `path` must contain the following files
+            - :ref:`input_data-label`
+            - :ref:`output_template-label`
             - :ref:`hierarchy-label`
             - :ref:`parameters-label`
             - :ref:`nodes_to_fit-label`
-        
+
         """
         d = ModelData()
 
@@ -592,9 +586,9 @@ class ModelData:
         #    #d.input_data.dtypes[field] = float  # TODO: figure out classy way like this, that works
         #    d.input_data[field] = pl.array(d.input_data[field], dtype=float)
 
-        
+
         d.output_template = pd.DataFrame.from_csv(path + '/output_template.csv')
-        
+
         d.parameters = json.load(open(path + '/parameters.json'))
 
         hierarchy = json.load(open(path + '/hierarchy.json'))
@@ -607,7 +601,7 @@ class ModelData:
 
     def invalid_precision(self):
         """ Identify rows of data with invalid precision
-        :Results: 
+        :Results:
           - DataFrame of rows with invalid quantification of uncertainty
 
         """

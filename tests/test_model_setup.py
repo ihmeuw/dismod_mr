@@ -1,7 +1,7 @@
 """ Test new easy way to setup models
 """
 
-import dismod_mr
+from src import dismod_mr
 
 
 def test_setup():
@@ -23,4 +23,4 @@ def test_setup():
 if __name__ == '__main__':
     import nose
     nose.runmodule()
-    
+

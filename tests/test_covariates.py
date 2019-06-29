@@ -2,12 +2,11 @@
 """
 
 import numpy as np, pymc as mc, pandas as pd
-import dismod_mr
 import data_simulation
 
 def test_covariate_model_sim_no_hierarchy():
     # simulate normal data
-    model = dismod_mr.data.ModelData()
+    model = src.dismod_mr.data.ModelData()
     model.hierarchy, model.output_template = data_simulation.small_output()
 
     X = mc.rnormal(0., 1.**2, size=(128,3))
@@ -28,8 +27,9 @@ def test_covariate_model_sim_no_hierarchy():
 
     # create model and priors
     vars = {}
-    vars.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, {}, model, 'all', 'total', 'all'))
-    vars.update(dismod_mr.model.likelihood.normal('test', vars['pi'], 0., p, sigma_true))
+    vars.update(
+        src.dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, {}, model, 'all', 'total', 'all'))
+    vars.update(src.dismod_mr.model.likelihood.normal('test', vars['pi'], 0., p, sigma_true))
 
     # fit model
     m = mc.MCMC(vars)
@@ -50,7 +50,7 @@ def test_covariate_model_sim_w_hierarchy():
     sex = sex_list[mc.rcategorical([.3, .3, .4], n)]
 
     year = np.array(mc.runiform(1990, 2010, n), dtype=int)
-        
+
     alpha_true = dict(all=0., USA=.1, CAN=-.2)
 
     pi_true = np.exp([alpha_true[a] for a in area])
@@ -58,15 +58,15 @@ def test_covariate_model_sim_w_hierarchy():
 
     p = mc.rnormal(pi_true, 1./sigma_true**2.)
 
-    model = dismod_mr.data.ModelData()
+    model = src.dismod_mr.data.ModelData()
     model.input_data = pd.DataFrame(dict(value=p, area=area, sex=sex, year_start=year, year_end=year))
     model.hierarchy, model.output_template = hierarchy, output_template
 
     # create model and priors
     vars = {}
-    vars.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, {}, model,
+    vars.update(src.dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, {}, model,
                                                      'all', 'total', 'all'))
-    vars.update(dismod_mr.model.likelihood.normal('test', vars['pi'], 0., p, sigma_true))
+    vars.update(src.dismod_mr.model.likelihood.normal('test', vars['pi'], 0., p, sigma_true))
 
     # fit model
     m = mc.MCMC(vars)
@@ -77,7 +77,7 @@ def test_covariate_model_sim_w_hierarchy():
     assert len(vars['beta']) == 1
 
 def test_fixed_effect_priors():
-    model = dismod_mr.data.ModelData()
+    model = src.dismod_mr.data.ModelData()
 
     # set prior on sex
     parameters = dict(fixed_effects={'x_sex': dict(dist='TruncatedNormal', mu=1., sigma=.5, lower=-10, upper=10)})
@@ -100,14 +100,14 @@ def test_fixed_effect_priors():
 
     # create model and priors
     vars = {}
-    vars.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, parameters, model,
+    vars.update(src.dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, parameters, model,
                                                      'all', 'total', 'all'))
 
     print(vars['beta'])
     assert vars['beta'][0].parents['mu'] == 1.
 
 def test_random_effect_priors():
-    model = dismod_mr.data.ModelData()
+    model = src.dismod_mr.data.ModelData()
 
     # set prior on sex
     parameters = dict(random_effects={'USA': dict(dist='TruncatedNormal', mu=.1, sigma=.5, lower=-10, upper=10)})
@@ -132,7 +132,7 @@ def test_random_effect_priors():
 
     # create model and priors
     vars = {}
-    vars.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, parameters, model,
+    vars.update(src.dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, parameters, model,
                                                      'all', 'total', 'all'))
 
     print(vars['alpha'])
@@ -144,7 +144,7 @@ def test_covariate_model_dispersion():
     # simulate normal data
     n = 100
 
-    model = dismod_mr.data.ModelData()
+    model = src.dismod_mr.data.ModelData()
     model.hierarchy, model.output_template = data_simulation.small_output()
 
     Z = mc.rcategorical([.5, 5.], n)
@@ -157,7 +157,7 @@ def test_covariate_model_dispersion():
 
     p = mc.rnegative_binomial(pi_true*ess, delta_true*np.exp(Z*zeta_true)) / ess
 
-    
+
     model.input_data = pd.DataFrame(dict(value=p, z_0=Z))
     model.input_data['area'] = 'all'
     model.input_data['sex'] = 'total'
@@ -168,9 +168,10 @@ def test_covariate_model_dispersion():
 
     # create model and priors
     vars = dict(mu=mc.Uninformative('mu_test', value=pi_true))
-    vars.update(dismod_mr.model.covariates.mean_covariate_model('test', vars['mu'], model.input_data, {}, model, 'all', 'total', 'all'))
-    vars.update(dismod_mr.model.covariates.dispersion_covariate_model('test', model.input_data, .1, 10.))
-    vars.update(dismod_mr.model.likelihood.neg_binom('test', vars['pi'], vars['delta'], p, ess))
+    vars.update(
+        src.dismod_mr.model.covariates.mean_covariate_model('test', vars['mu'], model.input_data, {}, model, 'all', 'total', 'all'))
+    vars.update(src.dismod_mr.model.covariates.dispersion_covariate_model('test', model.input_data, .1, 10.))
+    vars.update(src.dismod_mr.model.likelihood.neg_binom('test', vars['pi'], vars['delta'], p, ess))
 
     # fit model
     m = mc.MCMC(vars)
@@ -182,16 +183,16 @@ def test_covariate_model_shift_for_root_consistency():
     sigma_true = .025
     a = np.arange(0, 100, 1)
     pi_age_true = .0001 * (a * (100. - a) + 100.)
-    
-    d = dismod_mr.data.ModelData()
+
+    d = src.dismod_mr.data.ModelData()
     d.input_data = data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true)
     d.hierarchy, d.output_template = data_simulation.small_output()
-    
+
 
     # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
+    vars = src.dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
 
-    vars = dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'male', 1990, None, None, None)
+    vars = src.dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'male', 1990, None, None, None)
 
     # fit model
     m = mc.MCMC(vars)
@@ -199,7 +200,7 @@ def test_covariate_model_shift_for_root_consistency():
     m.sample(3)
 
     # check estimates
-    pi_usa = dismod_mr.model.covariates.predict_for(d, d.parameters['p'], 'all', 'male', 1990, 'USA', 'male', 1990, 0., vars['p'], 0., np.inf)
+    pi_usa = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'], 'all', 'male', 1990, 'USA', 'male', 1990, 0., vars['p'], 0., np.inf)
 
 def test_predict_for():
     """ Approach to testing predict_for function:
@@ -209,20 +210,20 @@ def test_predict_for():
     3. Sample to generate trace with known values
     4. Predict for results, and confirm that they match expected values
     """
-    
+
     # generate simulated data
     n = 5
     sigma_true = .025
     a = np.arange(0, 100, 1)
     pi_age_true = .0001 * (a * (100. - a) + 100.)
-    
-    d = dismod_mr.data.ModelData()
+
+    d = src.dismod_mr.data.ModelData()
     d.input_data = data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true)
     d.hierarchy, d.output_template = data_simulation.small_output()
 
 
     # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
+    vars = src.dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
 
     # fit model
     m = mc.MCMC(vars)
@@ -237,11 +238,11 @@ def test_predict_for():
     d.parameters['p']['random_effects'] = {}
     for node in ['USA', 'CAN', 'NAHI', 'super-region-1', 'all']:
         d.parameters['p']['random_effects'][node] = dict(dist='Constant', mu=0, sigma=1.e-9) # zero out REs to see if test passes
-        
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'all', 'total', 'all',
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     fe_usa_1990 = 1.
@@ -255,11 +256,11 @@ def test_predict_for():
     # check estimates with priors on random effects
     for i, node in enumerate(['USA', 'NAHI', 'super-region-1']):
         d.parameters['p']['random_effects'][node]['mu'] = (i+1.)/10.
-        
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'all', 'total', 'all',
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     fe_usa_1990 = 1.
@@ -271,11 +272,11 @@ def test_predict_for():
     ### Prediction case 3: confirm that changing RE for reference area does not change results
 
     d.parameters['p']['random_effects']['all']['mu'] = 1.
-        
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'all', 'total', 'all',
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     fe_usa_1990 = 1.
@@ -285,10 +286,10 @@ def test_predict_for():
 
 
     ### Prediction case 4: see that prediction of CAN includes region and super-region effect, but not USA effect
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'all', 'total', 'all',
                                          'CAN', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     fe = 1.
@@ -299,7 +300,7 @@ def test_predict_for():
 
 
     # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, 'p', 'USA', 'male', 1990, None, None, None)
+    vars = src.dismod_mr.model.process.age_specific_rate(d, 'p', 'USA', 'male', 1990, None, None, None)
 
     # fit model
     m = mc.MCMC(vars)
@@ -308,10 +309,10 @@ def test_predict_for():
     m.sample(3)
 
     # check estimates
-    pi_usa = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+    pi_usa = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'USA', 'male', 1990,
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                        0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     assert_almost_equal(pi_usa, vars['p']['mu_age'].trace())
@@ -321,11 +322,11 @@ def test_predict_for():
 
     d.parameters['p']['random_effects']['USA']['sigma'] = 0.
     d.parameters['p']['random_effects']['CAN']['sigma'] = 0.
-        
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                        'all', 'total', 'all',
                                        'NAHI', 'male', 1990,
-                                       0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
 
 
@@ -344,14 +345,14 @@ def test_predict_for_wo_data():
     3. Sample to generate trace with known values
     4. Predict for results, and confirm that they match expected values
     """
-    
-    
-    d = dismod_mr.data.ModelData()
+
+
+    d = src.dismod_mr.data.ModelData()
     d.hierarchy, d.output_template = data_simulation.small_output()
 
 
     # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
+    vars = src.dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
 
     # fit model
     m = mc.MCMC(vars)
@@ -364,26 +365,26 @@ def test_predict_for_wo_data():
     d.parameters['p']['random_effects'] = {}
     for node in ['USA', 'NAHI', 'super-region-1', 'all']:
         d.parameters['p']['random_effects'][node] = dict(dist='Constant', mu=0, sigma=1.e-9) # zero out REs to see if test passes
-        
-    pred1 = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred1 = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'all', 'total', 'all',
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                       0., vars['p'], 0., np.inf)
 
     #assert_almost_equal(pred1,
     #                    vars['p']['mu_age'].trace())
 
     ### Prediction case 2: constant non-zero random effects, zero fixed effect coefficients
     # FIXME: this test was failing because PyMC is drawing from the prior of beta[0] even though I asked for NoStepper
-                                                      
+
     # check estimates with priors on random effects
     for i, node in enumerate(['USA', 'NAHI', 'super-region-1']):
         d.parameters['p']['random_effects'][node]['mu'] = (i+1.)/10.
-        
-    pred2 = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred2 = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'all', 'total', 'all',
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                       0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     fe_usa_1990 = np.exp(.5*vars['p']['beta'][0].value) # beta[0] is drawn from prior, even though I set it to NoStepper, see FIXME above
@@ -400,20 +401,20 @@ def test_predict_for_wo_effects():
     3. Sample to generate trace with known values
     4. Predict for results, and confirm that they match expected values
     """
-    
+
     # generate simulated data
     n = 5
     sigma_true = .025
     a = np.arange(0, 100, 1)
     pi_age_true = .0001 * (a * (100. - a) + 100.)
-    
-    d = dismod_mr.data.ModelData()
+
+    d = src.dismod_mr.data.ModelData()
     d.input_data = data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true)
     d.hierarchy, d.output_template = data_simulation.small_output()
 
 
     # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, 'p', 'NAHI', 'male', 2005, None, None, None, include_covariates=False)
+    vars = src.dismod_mr.model.process.age_specific_rate(d, 'p', 'NAHI', 'male', 2005, None, None, None, include_covariates=False)
 
     # fit model
     m = mc.MCMC(vars)
@@ -423,11 +424,11 @@ def test_predict_for_wo_effects():
 
 
     ### Prediction case: prediction should match mu age
-        
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'NAHI', 'male', 2005,
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
     assert_almost_equal(pred,
                         vars['p']['mu_age'].trace())
@@ -441,20 +442,20 @@ def test_predict_for_w_region_as_reference():
     3. Sample to generate trace with known values
     4. Predict for results, and confirm that they match expected values
     """
-    
+
     # generate simulated data
     n = 5
     sigma_true = .025
     a = np.arange(0, 100, 1)
     pi_age_true = .0001 * (a * (100. - a) + 100.)
-    
-    d = dismod_mr.data.ModelData()
+
+    d = src.dismod_mr.data.ModelData()
     d.input_data = data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true)
     d.hierarchy, d.output_template = data_simulation.small_output()
 
 
     # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, 'p', 'NAHI', 'male', 2005, None, None, None)
+    vars = src.dismod_mr.model.process.age_specific_rate(d, 'p', 'NAHI', 'male', 2005, None, None, None)
 
     # fit model
     m = mc.MCMC(vars)
@@ -469,11 +470,11 @@ def test_predict_for_w_region_as_reference():
     d.parameters['p']['random_effects'] = {}
     for node in ['USA', 'NAHI', 'super-region-1', 'all']:
         d.parameters['p']['random_effects'][node] = dict(dist='Constant', mu=0, sigma=1.e-9) # zero out REs to see if test passes
-        
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'NAHI', 'male', 2005,
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     fe_usa_1990 = np.exp(0.)
@@ -487,11 +488,11 @@ def test_predict_for_w_region_as_reference():
     # check estimates with priors on random effects
     for i, node in enumerate(['USA', 'NAHI', 'super-region-1', 'all']):
         d.parameters['p']['random_effects'][node]['mu'] = (i+1.)/10.
-        
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'NAHI', 'male', 2005,
                                          'USA', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     fe_usa_1990 = np.exp(0.)
@@ -504,10 +505,10 @@ def test_predict_for_w_region_as_reference():
 
     # set random seed to make randomness reproducible
     np.random.seed(12345)
-    pred = dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
+    pred = src.dismod_mr.model.covariates.predict_for(d, d.parameters['p'],
                                          'NAHI', 'male', 2005,
                                          'CAN', 'male', 1990,
-                                         0., vars['p'], 0., np.inf)
+                                                      0., vars['p'], 0., np.inf)
 
     # test that the predicted value is as expected
     np.random.seed(12345)
@@ -520,7 +521,7 @@ def test_predict_for_w_region_as_reference():
 def assert_almost_equal(x, y):
     log_offset_diff = np.log(x + 1.e-4) - np.log(y + 1.e-4)
     assert np.all(log_offset_diff**2 <= 1.e-4), 'expected approximate equality, found means of:\n  %s\n  %s' % (x.mean(1), y.mean(1))
-    
+
 
 if __name__ == '__main__':
     import nose

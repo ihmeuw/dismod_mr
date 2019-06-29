@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2012 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,10 +11,9 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Expert prior models"""
 
 import numpy as np, pymc as mc
@@ -121,7 +118,7 @@ def covariate_level_constraints(name, model, vars, ages):
     X_sex_min = -.5 - vars['X_shift']['x_sex']  # make sure that the range of sex covariates is included
     index_map = dict([[key, i] for i,key in enumerate(vars['X_shift'].index)])
     sex_index = index_map['x_sex']
-    
+
     U_all = []
     nodes = ['all']
     for l in range(1,4):
@@ -129,7 +126,7 @@ def covariate_level_constraints(name, model, vars, ages):
         U_i = np.array([col in nodes for col in vars['U'].columns])
         if U_i.sum() > 0:
             U_all.append(U_i)
-    
+
     @mc.potential(name='covariate_constraint_%s'%name)
     def covariate_constraint(mu=vars['mu_age'], alpha=vars['alpha'], beta=vars['beta'],
                              U_all=U_all,
@@ -158,10 +155,10 @@ def covariate_level_constraints(name, model, vars, ages):
         lower_violation = min(0., log_mu_min - lower)
         upper_violation = max(0., log_mu_max - upper)
         return mc.normal_like([lower_violation, upper_violation], 0., 1.e-6**-2)
-    
+
     return dict(covariate_constraint=covariate_constraint)
 
-    
+
 
 
 def derivative_constraints(name, parameters, mu_age, ages):
