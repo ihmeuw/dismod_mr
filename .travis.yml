@@ -11,6 +11,6 @@ install:
   - conda info -a
   - conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION pymc
   - source activate test-env
-  - python setup.py install
+  - pip install .
 script:
   - pytest
