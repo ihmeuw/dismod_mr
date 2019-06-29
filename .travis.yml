@@ -1,6 +1,6 @@
 language: python
 python:
-  - "3.6"
+  - '3.6'
 install:
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda
@@ -15,3 +15,12 @@ install:
   - pip install pytest
 script:
   - pytest
+deploy:
+  provider: pypi
+  user: vivarium
+  password:
+    secure: NkT+ZXx5s2cZvi7iWJDsqEYnB2+nfY7WTRePjqxsri7lqSxvj/HLD/7Gr1mBgXeW2xBJX+/bew1EtHhwpLNOPAY2qReKtkq+vYUWuP5olE0Ln7IgtfNj3E/VtgP27hQiurlE7GVxErug9TwDfell+Rh8Tdq1TsLS82jo/fdqXHQ=
+  on:
+    distributions: sdist bdist_wheel
+    repo: ihmeuw/dismod_mr
+    tags: true
