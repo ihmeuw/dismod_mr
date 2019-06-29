@@ -1,12 +1,13 @@
-""" Test model likelihoods
-"""
-
-import numpy as np, pymc as mc, pandas as pd
+"""Test model likelihoods."""
+import numpy as np
+import pandas as pd
+import pymc as mc
 
 import dismod_mr
-import data_simulation
+from dismod_mr.testing import data_simulation
 
 # TODO: add test of consistent model, confirm that is working
+
 
 def test_age_specific_rate_model():
     # generate simulated data
@@ -19,26 +20,33 @@ def test_age_specific_rate_model():
     d = dismod_mr.data.ModelData()
     d.input_data = data_simulation.simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true)
     d.hierarchy, d.output_template = data_simulation.small_output()
-    
-    # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, data_type,
-                                 reference_area='all', reference_sex='total', reference_year='all',
-                                 mu_age=None, mu_age_parent=None, sigma_age_parent=None)
 
+    # create model and priors
+    variables = dismod_mr.model.process.age_specific_rate(d, data_type,
+                                                          reference_area='all',
+                                                          reference_sex='total',
+                                                          reference_year='all',
+                                                          mu_age=None,
+                                                          mu_age_parent=None,
+                                                          sigma_age_parent=None)
 
     # fit model
-    m = mc.MCMC(vars)
+    m = mc.MCMC(variables)
     m.sample(3)
 
     # check estimates
-    pi_usa = dismod_mr.model.covariates.predict_for(d, d.parameters, 'all', 'total', 'all', 'USA', 'male', 1990, 0., vars[data_type], -np.inf, np.inf)
-
+    pi_usa = dismod_mr.model.covariates.predict_for(d, d.parameters, 'all', 'total', 'all', 'USA', 'male',
+                                                    1990, 0., variables[data_type], -np.inf, np.inf)
 
     # create model w/ emp prior
     # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, data_type,
-                                 reference_area='all', reference_sex='total', reference_year='all',
-                                 mu_age=None, mu_age_parent=pi_usa.mean(0), sigma_age_parent=pi_usa.std(0))
+    variables = dismod_mr.model.process.age_specific_rate(d, data_type,
+                                                          reference_area='all',
+                                                          reference_sex='total',
+                                                          reference_year='all',
+                                                          mu_age=None,
+                                                          mu_age_parent=pi_usa.mean(0),
+                                                          sigma_age_parent=pi_usa.std(0))
 
 
 def test_age_specific_rate_model_w_lower_bound_data():
@@ -54,16 +62,21 @@ def test_age_specific_rate_model_w_lower_bound_data():
     d.input_data = d.input_data.append(data_simulation.simulated_age_intervals('pf', n, a, pi_age_true*2., sigma_true),
                                        ignore_index=True)
     d.hierarchy, d.output_template = data_simulation.small_output()
-    
-    # create model and priors
-    vars = dismod_mr.model.process.age_specific_rate(d, 'pf',
-                                 reference_area='all', reference_sex='total', reference_year='all',
-                                 mu_age=None, mu_age_parent=None, sigma_age_parent=None, lower_bound='csmr')
 
+    # create model and priors
+    variables = dismod_mr.model.process.age_specific_rate(d, 'pf',
+                                                          reference_area='all',
+                                                          reference_sex='total',
+                                                          reference_year='all',
+                                                          mu_age=None,
+                                                          mu_age_parent=None,
+                                                          sigma_age_parent=None,
+                                                          lower_bound='csmr')
 
     # fit model
-    m = mc.MCMC(vars)
+    m = mc.MCMC(variables)
     m.sample(3)
+
 
 def test_consistent():
     dm = dismod_mr.data.ModelData()
@@ -82,8 +95,8 @@ def test_consistent():
     # create model and priors
     dm.vars = dismod_mr.model.process.consistent(dm)
 
-
     mc.MCMC(dm.vars).sample(3)
+
 
 def test_consistent_w_non_integral_ages():
     dm = dismod_mr.data.ModelData()
@@ -106,8 +119,3 @@ def test_consistent_w_non_integral_ages():
     dm.vars = dismod_mr.model.process.consistent(dm)
 
     mc.MCMC(dm.vars).sample(3)
-
-if __name__ == '__main__':
-    import nose
-    nose.runmodule()
-    

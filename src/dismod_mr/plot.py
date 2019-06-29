@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2017 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,18 +11,18 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Module for DisMod-MR graphics"""
-
-import numpy as np, matplotlib.pyplot as plt
-import pymc as pm
-import pandas
+import matplotlib.pyplot as plt
 import networkx as nx
+import numpy as np
+import pymc as mc
+
 
 colors = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f0', '#ffff33']
+
 
 def asr(model, t):
     """ plot age-standardized rate fit and model data
@@ -52,7 +50,7 @@ def asr(model, t):
 
 def all_plots_for(model, t, ylab, emp_priors):
     """ plot results of a fit
-    
+
     :Parameters:
       - `model` : data.ModelData
       - `data_types` : list of str, data types listed as strings, default = ['i', 'r', 'f', 'p', 'rr', 'pf']
@@ -62,13 +60,14 @@ def all_plots_for(model, t, ylab, emp_priors):
     """
     plot_fit(model, data_types=[t], ylab=ylab, plot_config=(1,1), fig_size=(8,8))
     plot_one_ppc(model, t)
-    plot_one_effects(model, t)
+    # plot_one_effects(model, t)
     plot_acorr(model.vars[t])
     plot_hists(model.vars)
 
+
 def data_bars(df, style='book', color='black', label=None, max=500):
     """ Plot data bars
-    
+
     :Parameters:
       - `df` : pandas.DataFrame with columns age_start, age_end, value
       - `style` : str, either book or talk
@@ -79,7 +78,7 @@ def data_bars(df, style='book', color='black', label=None, max=500):
     .. note::
       - The 'talk' style uses fewer colors, thicker line widths, and larger marker sizes.
       - If there are more than `max` data points, a random sample of `max` data points will be selected to show.
-    
+
     """
     data_bars = list(zip(df['age_start'], df['age_end'], df['value']))
 
@@ -103,9 +102,10 @@ def data_bars(df, style='book', color='black', label=None, max=500):
     else:
         raise Exception('Unrecognized style: %s' % style)
 
+
 def my_stats(node):
     """ Convenience function to generate a stats dict even if the pymc.Node has no trace
-    
+
     :Parameters:
       - `node` : pymc.PyMCObjects.Deterministic
 
@@ -119,10 +119,11 @@ def my_stats(node):
         return {'mean': node.value,
                 '95% HPD interval': np.vstack((node.value, node.value)).T}
 
+
 def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY','PY','Percent (%)','','PY'], plot_config=(2,3),
              with_data=True, with_ui=True, emp_priors={}, posteriors={}, fig_size=(10,6)):
     """ plot results of a fit
-    
+
     :Parameters:
       - `model` : data.ModelData
       - `data_types` : list of str, data types listed as strings, default = ['i', 'r', 'f', 'p', 'rr', 'pf']
@@ -131,17 +132,17 @@ def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY'
       - `with_data` : boolean, plot with data type `t`, default = True
       - `with_ui` : boolean, plot with uncertainty interval, default = True
       - `emp_priors` : dictionary
-      - `posteriors` : 
+      - `posteriors` :
       - `fig_size` : tuple, size of figure, default = (8,6)
-    
+
     .. note::
       - `data_types` and `ylab` must be the same length
       - graphing options, such as ``pylab.subplots_adjust`` and ``pylab.legend()`` may be used to additionally modify graphics
 
     **Examples:**
-      
+
     .. sourcecode:: python
-    
+
         dismod3.graphics.plot_fit(model, ['i', 'p'], ['PY', '%'], (1,2), with_data=False, fig_size=(10,4))
         pylab.subplots_adjust(wspace=.3)
 
@@ -149,16 +150,16 @@ def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY'
         :align: center
 
     .. sourcecode:: python
-    
+
         dismod3.graphics.plot_fit(model, ['i', 'p'], ['PY', '%'], (1,2), fig_size=(8,8))
         pylab.legend()
 
     .. figure:: graphics_plot_fit_single.png
-        :align: center        
-    
+        :align: center
+
     """
     assert len(data_types) == len(ylab), 'data_types and y-axis labels are not the same length'
-    
+
     vars = model.vars
     plt.figure(figsize=fig_size)
     try:
@@ -167,7 +168,7 @@ def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY'
         ages = vars[data_types[0]]['ages']
     for j, t in enumerate(data_types):
         plt.subplot(plot_config[0], plot_config[1], j+1)
-        if with_data == 1: 
+        if with_data == 1:
             data_bars(model.input_data[model.input_data['data_type'] == t], color='grey', label='Data')
         if 'knots' in vars[t]:
             knots = vars[t]['knots']
@@ -195,19 +196,20 @@ def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY'
         plt.xlabel('Age (years)')
         plt.ylabel(ylab[j])
         plt.title(t)
-    
+
+
 def plot_one_ppc(model, t):
     """ plot data and posterior predictive check
-    
+
     :Parameters:
       - `model` : data.ModelData
       - `t` : str, data type of 'i', 'r', 'f', 'p', 'rr', 'm', 'X', 'pf', 'csmr'
-    
+
     """
     stats = {}
     trace = model.vars[t]['p_pred'].trace()
     stats['quantiles'] = {50: np.median(trace, axis=0)}
-    stats['95% HPD interval'] = pm.utils.hpd(trace, .05)
+    stats['95% HPD interval'] = mc.utils.hpd(trace, .05)
     if stats == None:
         return
 
@@ -229,13 +231,14 @@ def plot_one_ppc(model, t):
     plt.hlines([0], l, r)
     plt.axis([l, r, y.min()*1.1 - y.max()*.1, -y.min()*.1 + y.max()*1.1])
 
+
 def effects(model, data_type, figsize=(22, 17)):
     """ Plot random effects and fixed effects.
-    
+
     :Parameters:
       - `model` : data.ModelData
       - `data_types` : str, one of 'i', 'r', 'f', 'p', 'rr', 'pf'
-      
+
     """
     vars = model.vars[data_type]
     hierarchy = model.hierarchy
@@ -245,10 +248,10 @@ def effects(model, data_type, figsize=(22, 17)):
     for i, (covariate, effect) in enumerate([['U', 'alpha'], ['X', 'beta']]):
         if covariate not in vars:
             continue
-        
+
         cov_name = list(vars[covariate].columns)
-        
-        if isinstance(vars.get(effect), pm.Stochastic):
+
+        if isinstance(vars.get(effect), mc.Stochastic):
             plt.subplot(1, 2, i+1)
             plt.title('%s_%s' % (effect, data_type))
 
@@ -262,7 +265,7 @@ def effects(model, data_type, figsize=(22, 17)):
 
                 x = np.atleast_1d(np.mean(trace))
                 y = np.arange(len(x))
-                hpd = pm.utils.hpd(trace, 0.05)
+                hpd = mc.utils.hpd(trace, 0.05)
 
                 xerr = np.array([x - np.atleast_2d(hpd)[:,0],
                                  np.atleast_2d(hpd)[:,1] - x])
@@ -277,7 +280,7 @@ def effects(model, data_type, figsize=(22, 17)):
                     spaces = cov_name[i] in hierarchy and len(nx.shortest_path(hierarchy, 'all', cov_name[i])) or 0
                     plt.text(l, y[i], ' %s%s' % (' * '*spaces, cov_name[i]), va='center', ha='left')
                 plt.axis([l, r, -.5, t+.5])
-                
+
         if isinstance(vars.get(effect), list):
             plt.subplot(1, 2, i+1)
             plt.title('%s_%s' % (effect, data_type))
@@ -286,10 +289,10 @@ def effects(model, data_type, figsize=(22, 17)):
 
             for y, i in enumerate(index):
                 n = vars[effect][i]
-                if isinstance(n, pm.Stochastic) or isinstance(n, pm.Deterministic):
+                if isinstance(n, mc.Stochastic) or isinstance(n, mc.Deterministic):
                     trace = n.trace()
                     x = np.atleast_1d(np.mean(trace))
-                    hpd = pm.utils.hpd(trace, 0.05)
+                    hpd = mc.utils.hpd(trace, 0.05)
 
                     xerr = np.array([x - np.atleast_2d(hpd)[:,0],
                                      np.atleast_2d(hpd)[:,1] - x])
@@ -306,7 +309,7 @@ def effects(model, data_type, figsize=(22, 17)):
                 plt.text(l, y, ' %s%s' % (' * '*spaces, cov_name[i]), va='center', ha='left')
 
             plt.axis([l, r, -.5, t+.5])
-                
+
 
             effect_str = '\n'
             if effect == 'alpha':
@@ -330,7 +333,7 @@ def effects(model, data_type, figsize=(22, 17)):
 
 def plot_hists(vars):
     """ Plot histograms for all stochs in a dict or dict of dicts
-    
+
     :Parameters:
       - `vars` : data.ModelData.vars
 
@@ -367,14 +370,15 @@ def plot_trace(model):
     plot_viz_of_stochs(model.vars, show_trace, (12,9))
     plt.subplots_adjust(.05,.01,.99,.99,.5,.5)
 
+
 def plot_viz_of_stochs(vars, viz_func, figsize=(8,6)):
     """ Plot autocorrelation for all stochs in a dict or dict of dicts
-    
+
     :Parameters:
       - `vars` : dictionary
       - `viz_func` : visualazation function such as ``acorr``, ``show_trace``, or ``hist``
       - `figsize` : tuple, size of figure
-    
+
     """
     plt.figure(figsize=figsize)
 
@@ -398,7 +402,7 @@ def plot_viz_of_stochs(vars, viz_func, figsize=(8,6)):
 
 def tally_stochs(vars):
     """ Count number of stochastics in model
-    
+
     :Parameters:
       - `vars` : dictionary
 
@@ -418,16 +422,17 @@ def tally_stochs(vars):
                 nodes += n
 
         for n in nodes:
-            if isinstance(n, pm.Stochastic) and not n.observed:
+            if isinstance(n, mc.Stochastic) and not n.observed:
                 trace = n.trace()
                 if len(trace) > 0:
                     stochs.append(n)
                     cells += len(np.atleast_1d(n.value))
     return cells, stochs
 
+
 def data_value_by_covariates(inp):
     """ Show raw values of data stratified by all x_* covariates
-    
+
     :Parameters:
       - `inp` : pd.DataFrame of input data
     """
@@ -443,6 +448,7 @@ def data_value_by_covariates(inp):
         plt.plot(X[c_i]+np.random.normal(size=len(y))*.03, y, 'k.', alpha=.5)
         plt.axis(xmin=-.1, xmax=1.1, ymin=-.1, ymax=1.1)
         plt.subplots_adjust(hspace=.5, wspace=.5)
+
 
 def plot_residuals(dm):
     inp = dm.input_data

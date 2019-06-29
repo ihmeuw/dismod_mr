@@ -1,20 +1,17 @@
 language: python
 python:
   - "3.6"
-addons:
-  apt:
-    packages:
-    - libatlas-dev
-    - libatlas-base-dev
-    - liblapack-dev
-    - gfortran
-before_install:
-  - sh -e /etc/init.d/xvfb start
-  - export DISPLAY=":99.0"
-  - travis_retry pip install --install-option="--no-cython-compile" Cython==0.22
-  - travis_retry pip install numpy scipy nose matplotlib
-install: 
-  - pip install -r requirements.txt
-  - python setup.py install
+install:
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  - conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION pymc
+  - source activate test-env
+  - pip install .
+  - pip install pytest
 script:
   - pytest
