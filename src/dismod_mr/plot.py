@@ -15,13 +15,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
 """ Module for DisMod-MR graphics"""
-
-import numpy as np, matplotlib.pyplot as plt
-import pymc as pm
-import pandas
+import matplotlib.pyplot as plt
 import networkx as nx
+import numpy as np
+import pymc as mc
+
 
 colors = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f0', '#ffff33']
+
 
 def asr(model, t):
     """ plot age-standardized rate fit and model data
@@ -59,9 +60,10 @@ def all_plots_for(model, t, ylab, emp_priors):
     """
     plot_fit(model, data_types=[t], ylab=ylab, plot_config=(1,1), fig_size=(8,8))
     plot_one_ppc(model, t)
-    plot_one_effects(model, t)
+    # plot_one_effects(model, t)
     plot_acorr(model.vars[t])
     plot_hists(model.vars)
+
 
 def data_bars(df, style='book', color='black', label=None, max=500):
     """ Plot data bars
@@ -100,6 +102,7 @@ def data_bars(df, style='book', color='black', label=None, max=500):
     else:
         raise Exception('Unrecognized style: %s' % style)
 
+
 def my_stats(node):
     """ Convenience function to generate a stats dict even if the pymc.Node has no trace
 
@@ -115,6 +118,7 @@ def my_stats(node):
     except AttributeError:
         return {'mean': node.value,
                 '95% HPD interval': np.vstack((node.value, node.value)).T}
+
 
 def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY','PY','Percent (%)','','PY'], plot_config=(2,3),
              with_data=True, with_ui=True, emp_priors={}, posteriors={}, fig_size=(10,6)):
@@ -193,6 +197,7 @@ def plot_fit(model, data_types=['i', 'r', 'f', 'p', 'rr', 'pf'], ylab=['PY','PY'
         plt.ylabel(ylab[j])
         plt.title(t)
 
+
 def plot_one_ppc(model, t):
     """ plot data and posterior predictive check
 
@@ -204,7 +209,7 @@ def plot_one_ppc(model, t):
     stats = {}
     trace = model.vars[t]['p_pred'].trace()
     stats['quantiles'] = {50: np.median(trace, axis=0)}
-    stats['95% HPD interval'] = pm.utils.hpd(trace, .05)
+    stats['95% HPD interval'] = mc.utils.hpd(trace, .05)
     if stats == None:
         return
 
@@ -226,6 +231,7 @@ def plot_one_ppc(model, t):
     plt.hlines([0], l, r)
     plt.axis([l, r, y.min()*1.1 - y.max()*.1, -y.min()*.1 + y.max()*1.1])
 
+
 def effects(model, data_type, figsize=(22, 17)):
     """ Plot random effects and fixed effects.
 
@@ -245,7 +251,7 @@ def effects(model, data_type, figsize=(22, 17)):
 
         cov_name = list(vars[covariate].columns)
 
-        if isinstance(vars.get(effect), pm.Stochastic):
+        if isinstance(vars.get(effect), mc.Stochastic):
             plt.subplot(1, 2, i+1)
             plt.title('%s_%s' % (effect, data_type))
 
@@ -259,7 +265,7 @@ def effects(model, data_type, figsize=(22, 17)):
 
                 x = np.atleast_1d(np.mean(trace))
                 y = np.arange(len(x))
-                hpd = pm.utils.hpd(trace, 0.05)
+                hpd = mc.utils.hpd(trace, 0.05)
 
                 xerr = np.array([x - np.atleast_2d(hpd)[:,0],
                                  np.atleast_2d(hpd)[:,1] - x])
@@ -283,10 +289,10 @@ def effects(model, data_type, figsize=(22, 17)):
 
             for y, i in enumerate(index):
                 n = vars[effect][i]
-                if isinstance(n, pm.Stochastic) or isinstance(n, pm.Deterministic):
+                if isinstance(n, mc.Stochastic) or isinstance(n, mc.Deterministic):
                     trace = n.trace()
                     x = np.atleast_1d(np.mean(trace))
-                    hpd = pm.utils.hpd(trace, 0.05)
+                    hpd = mc.utils.hpd(trace, 0.05)
 
                     xerr = np.array([x - np.atleast_2d(hpd)[:,0],
                                      np.atleast_2d(hpd)[:,1] - x])
@@ -364,6 +370,7 @@ def plot_trace(model):
     plot_viz_of_stochs(model.vars, show_trace, (12,9))
     plt.subplots_adjust(.05,.01,.99,.99,.5,.5)
 
+
 def plot_viz_of_stochs(vars, viz_func, figsize=(8,6)):
     """ Plot autocorrelation for all stochs in a dict or dict of dicts
 
@@ -415,12 +422,13 @@ def tally_stochs(vars):
                 nodes += n
 
         for n in nodes:
-            if isinstance(n, pm.Stochastic) and not n.observed:
+            if isinstance(n, mc.Stochastic) and not n.observed:
                 trace = n.trace()
                 if len(trace) > 0:
                     stochs.append(n)
                     cells += len(np.atleast_1d(n.value))
     return cells, stochs
+
 
 def data_value_by_covariates(inp):
     """ Show raw values of data stratified by all x_* covariates
@@ -440,6 +448,7 @@ def data_value_by_covariates(inp):
         plt.plot(X[c_i]+np.random.normal(size=len(y))*.03, y, 'k.', alpha=.5)
         plt.axis(xmin=-.1, xmax=1.1, ymin=-.1, ymax=1.1)
         plt.subplots_adjust(hspace=.5, wspace=.5)
+
 
 def plot_residuals(dm):
     inp = dm.input_data

@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
 """ Age integrating models"""
-
-import numpy as np, pymc as mc
+import numpy as np
+import pymc as mc
 
 
 def age_standardize_approx(name, age_weights, mu_age, age_start, age_end, ages):
@@ -59,6 +59,7 @@ def age_standardize_approx(name, age_weights, mu_age, age_start, age_end, ages):
         return mu
 
     return dict(mu_interval=mu_interval)
+
 
 def age_integrate_approx(name, age_weights, mu_age, age_start, age_end, ages):
     """ Generate PyMC objects for approximating the integral of gamma from age_start[i] to age_end[i]

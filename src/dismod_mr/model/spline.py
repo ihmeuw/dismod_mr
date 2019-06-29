@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
 """ Spline model used for age-specific rates"""
-
 import pylab as pl
 import pymc as mc
+import scipy.interpolate
 
 
 def spline(name, ages, knots, smoothing, interpolation_method='linear'):
@@ -46,8 +46,6 @@ def spline(name, ages, knots, smoothing, interpolation_method='linear'):
     # TODO: fix AdaptiveMetropolis so that this is not necessary
     flat_gamma = mc.Lambda('flat_gamma_%s'%name, lambda gamma=gamma: pl.array([x for x in pl.flatten(gamma)]))
 
-
-    import scipy.interpolate
     @mc.deterministic(name='mu_age_%s'%name)
     def mu_age(gamma=flat_gamma, knots=knots, ages=ages):
         mu = scipy.interpolate.interp1d(knots, pl.exp(gamma), kind=interpolation_method, bounds_error=False, fill_value=0.)

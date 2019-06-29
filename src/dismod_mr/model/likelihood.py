@@ -154,6 +154,7 @@ def neg_binom(name, pi, delta, p, n):
 
     return dict(p_obs=p_obs, p_pred=p_pred)
 
+
 def beta_binom_2(name, pi, delta, p, n):
     """ Generate PyMC objects for a beta binomial model with faster computation
 
@@ -194,6 +195,7 @@ def beta_binom_2(name, pi, delta, p, n):
                            n=n[~i_zero]) / pl.array(n+1.e-9, dtype=float)
 
     return dict(p_obs=p_obs, p_pred=p_pred)
+
 
 def neg_binom_lower_bound(name, pi, delta, p, n):
     """ Generate PyMC objects for a negative binomial lower bound model
@@ -251,6 +253,7 @@ def normal(name, pi, sigma, p, s):
         return mc.rnormal(pi, 1./(sigma**2. + s**2.))
 
     return dict(p_obs=p_obs, p_pred=p_pred)
+
 
 # FIXME: negative ESS
 def log_normal(name, pi, sigma, p, s):

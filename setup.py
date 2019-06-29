@@ -21,7 +21,8 @@ if __name__ == "__main__":
         'pymc>=2.3.6',
         'networkx>=1.8',
         'pandas>=0.23.4',
-        'numba>=0.44.0'''
+        'numba>=0.44.0',
+        'matplotlib',
     ]
 
     setup(

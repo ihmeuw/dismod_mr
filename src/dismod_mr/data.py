@@ -25,6 +25,8 @@ try:
 except ImportError:
     import json
 
+import dismod_mr
+
 
 def my_stats(self, alpha=0.05, start=0, batches=100,
            chain=None, quantiles=(2.5, 25, 50, 75, 97.5)):
@@ -32,7 +34,7 @@ def my_stats(self, alpha=0.05, start=0, batches=100,
 
     n = len(trace)
     if not n:
-        print_(
+        print(
             'Cannot generate statistics for zero-length trace in',
             self.__name__)
         return
@@ -74,7 +76,7 @@ def check_convergence(vars):
     autocorrelation at 25 lags to zero lags.  warn about convergence if it exceeds
     10% for any stoch """
 
-    cells, stochs = src.dismod_mr.plot.tally_stochs(vars)
+    cells, stochs = dismod_mr.plot.tally_stochs(vars)
 
     for s in sorted(stochs, key=lambda s: s.__name__):
         tr = s.trace()
@@ -530,7 +532,7 @@ class ModelData:
             raise NotImplementedError('Need to call .setup_model before calling fit.')
 
     def predict_for(self, rate_type, area, sex, year):
-        return src.dismod_mr.model.covariates.predict_for(
+        return dismod_mr.model.covariates.predict_for(
             self, self.parameters[rate_type],
             'all', 'total', 'all',
             area, sex, year,
@@ -609,6 +611,7 @@ class ModelData:
           & self.input_data.standard_error.isnull() \
           & (self.input_data.lower_ci.isnull() | self.input_data.upper_ci.isnull())
         return self.input_data[rows]
+
 
 load = ModelData.load
 

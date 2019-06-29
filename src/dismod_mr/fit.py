@@ -15,9 +15,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
 """ Module for DisMod-MR model fitting methods"""
+import sys
+import time
 
-import sys, time
-import numpy as np, pymc as mc, networkx as nx
+import networkx as nx
+import numpy as np
+import pymc as mc
+
 
 def asr(model, data_type, iter=2000, burn=1000, thin=1, tune_interval=100, verbose=False):
     """ Fit data model for one epidemiologic parameter using MCMC

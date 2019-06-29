@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
 """ Expert prior models"""
+import numpy as np
+import pymc as mc
 
-import numpy as np, pymc as mc
 
 def similar(name, mu_child, mu_parent, sigma_parent, sigma_difference, offset=1.e-9):
     """ Generate PyMC objects encoding a simliarity prior on mu_child
@@ -113,7 +114,6 @@ def covariate_level_constraints(name, model, vars, ages):
     # X_min = X_all.min()
     # X_min['x_sex'] = -.5 - vars['X_shift']['x_sex']  # make sure that the range of sex covariates is included
 
-
     X_sex_max = .5 - vars['X_shift']['x_sex']
     X_sex_min = -.5 - vars['X_shift']['x_sex']  # make sure that the range of sex covariates is included
     index_map = dict([[key, i] for i,key in enumerate(vars['X_shift'].index)])
@@ -159,8 +159,6 @@ def covariate_level_constraints(name, model, vars, ages):
     return dict(covariate_constraint=covariate_constraint)
 
 
-
-
 def derivative_constraints(name, parameters, mu_age, ages):
     """ Generate PyMC objects implementing priors on the value of the rate function
 
@@ -190,4 +188,3 @@ def derivative_constraints(name, parameters, mu_age, ages):
         return -1.e12 * (inc_violation**2 + dec_violation**2)
 
     return dict(mu_age_derivative_potential=mu_age_derivative_potential)
-
