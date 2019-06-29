@@ -26,7 +26,7 @@ Installation
 Dismod MR requires PyMC2 which does not play nicely with normal Python
 installation tools.  Fortunately, ``conda`` has solved this issue for us.
 So first you'll need to setup a conda environment
-(after `installing conda, if necessary https://docs.conda.io/projects/conda/en/latest/user-guide/install/`_)
+(after `installing conda, if necessary <https://docs.conda.io/projects/conda/en/latest/user-guide/install/>`_)
 and install ``pymc``.  Then you can install ``dismod_mr`` using ``pip``.
 
 .. code-block:: sh
