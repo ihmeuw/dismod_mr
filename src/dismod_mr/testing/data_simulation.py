@@ -1,9 +1,11 @@
-import numpy as np
-import pymc as mc
-import pandas
 import networkx as nx
+import numpy as np
+import pandas as pd
+import pymc as mc
+import scipy.integrate
 
-from src.dismod_mr import data
+from dismod_mr import data
+
 
 def simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true):
     # choose age intervals to measure
@@ -12,7 +14,6 @@ def simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true):
     age_end = np.array(mc.runiform(age_start+1, np.minimum(age_start+10,100)), dtype=int)
 
     # find truth for the integral across the age intervals
-    import scipy.integrate
     pi_interval_true = [scipy.integrate.trapz(pi_age_true[a_0i:(a_1i+1)]) / (a_1i - a_0i)
                         for a_0i, a_1i in zip(age_start, age_end)]
 
@@ -29,8 +30,8 @@ def simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true):
     p = np.maximum(0., mc.rnormal(pi_true, 1./sigma_true**2.))
 
     # store the simulated data in a pandas DataFrame
-    data = pandas.DataFrame(dict(value=p, age_start=age_start, age_end=age_end,
-                                 x_0=X[:,0], x_1=X[:,1], x_2=X[:,2]))
+    data = pd.DataFrame(dict(value=p, age_start=age_start, age_end=age_end,
+                             x_0=X[:, 0], x_1=X[:, 1], x_2=X[:, 2]))
     data['effective_sample_size'] = np.maximum(p*(1-p)/sigma_true**2, 1.)
 
     data['standard_error'] = np.nan
@@ -45,8 +46,8 @@ def simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true):
 
     return data
 
-def small_output():
 
+def small_output():
     # generate a moderately complicated hierarchy graph for the model
     hierarchy = nx.DiGraph()
     hierarchy.add_node('all')
@@ -55,19 +56,20 @@ def small_output():
     hierarchy.add_edge('NAHI', 'CAN', weight=.1)
     hierarchy.add_edge('NAHI', 'USA', weight=.1)
 
-    output_template=pandas.DataFrame(dict(year=[1990, 1990, 2005, 2005, 2010, 2010]*2,
-                                          sex=['male', 'female']*3*2,
-                                          x_0=[.5]*6*2,
-                                          x_1=[0.]*6*2,
-                                          x_2=[.5]*6*2,
-                                          pop=[50.]*6*2,
-                                          area=['CAN']*6 + ['USA']*6))
+    output_template = pd.DataFrame(dict(year=[1990, 1990, 2005, 2005, 2010, 2010]*2,
+                                        sex=['male', 'female']*3*2,
+                                        x_0=[.5]*6*2,
+                                        x_1=[0.]*6*2,
+                                        x_2=[.5]*6*2,
+                                        pop=[50.]*6*2,
+                                        area=['CAN']*6 + ['USA']*6))
 
     return hierarchy, output_template
 
+
 def simple_model(N):
     model = data.ModelData()
-    model.input_data = pandas.DataFrame(index=range(N))
+    model.input_data = pd.DataFrame(index=range(N))
     initialize_input_data(model.input_data)
 
     return model
@@ -88,14 +90,18 @@ def initialize_input_data(input_data):
 
 def add_quality_metrics(df):
     df['abs_err'] = df['true'] - df['mu_pred']
-    df['rel_err'] = (df['true'] - df['mu_pred']) / df['true'].mean() # rel error normalized by crude mean of observed data
+    # rel error normalized by crude mean of observed data
+    df['rel_err'] = (df['true'] - df['mu_pred']) / df['true'].mean()
     df['covered?'] = (df['true'] >= df['lb_pred']) & (df['true'] <= df['ub_pred'])
+
 
 def initialize_results(model):
     model.results = dict(param=[], bias=[], rel_bias=[], mare=[], mae=[], pc=[], time=[])
 
+
 def finalize_results(model):
-    model.results = pandas.DataFrame(model.results, columns='param bias rel_bias mae mare pc time'.split())
+    model.results = pd.DataFrame(model.results, columns='param bias rel_bias mae mare pc time'.split())
+
 
 def add_to_results(model, name):
     df = getattr(model, name)
@@ -106,5 +112,3 @@ def add_to_results(model, name):
     model.results['mare'].append(np.median(np.absolute(df['rel_err'].dropna())))
     model.results['pc'].append(df['covered?'].mean())
     model.results['time'].append(model.mcmc.wall_time)
-
-

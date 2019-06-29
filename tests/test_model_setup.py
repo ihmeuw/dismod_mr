@@ -1,15 +1,10 @@
-""" Test new easy way to setup models
-"""
-
-from src import dismod_mr
+"""Test new easy way to setup models."""
+import dismod_mr
 
 
 def test_setup():
     """ Load a model from example dir and set it up with new interface"""
-    import os
-    test_dir = os.path.dirname(os.path.abspath(__file__))
-
-    dm = dismod_mr.load(test_dir + '/example_data')
+    dm = dismod_mr.load(dismod_mr.testing.get_test_data_dir())
 
     dm.setup_model(rate_type='p', rate_model='neg_binom')
 
@@ -19,8 +14,3 @@ def test_setup():
     #                    'normal', 'offest_log_normal', 'poisson']:
 
     #     dm.setup_model(rate_type='p', rate_model=rate_model)
-
-if __name__ == '__main__':
-    import nose
-    nose.runmodule()
-
