@@ -35,6 +35,22 @@ and install ``pymc``.  Then you can install ``dismod_mr`` using ``pip``.
    conda activate dismod_mr
    pip install dismod_mr
 
+If you get an error stating
+
+.. code-block:: sh
+
+   ERROR: Complete output from command python setup.py egg_info:
+   ERROR: Traceback (most recent call last):
+     File "<string>", line 1, in <module>
+     File "/tmp/pip-install-d9fbq7v3/pymc/setup.py", line 8, in <module>
+       from numpy.distutils.misc_util import Configuration
+   ModuleNotFoundError: No module named 'numpy'
+   ----------------------------------------
+   ERROR: Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-install-d9fbq7v3/pymc/
+
+or something similar, you do not have ``pymc`` properly installed.
+
+
 Installing from source
 ++++++++++++++++++++++
 

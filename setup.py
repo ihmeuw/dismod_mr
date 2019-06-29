@@ -1,32 +1,10 @@
 #!/usr/bin/env python
 import os
-import shutil
-import subprocess
 
 from setuptools import setup, find_packages
 
 
-def check_environment():
-    conda_path = shutil.which('conda')
-    if not conda_path:
-        raise EnvironmentError('You must have conda installed on your system to use this library.'
-                               'See installation instructions at https://docs.conda.io/en/latest/miniconda.html')
-    cp = subprocess.run([conda_path, 'list'], stdout=subprocess.PIPE, check=True)
-
-    versions = {}
-    for line in cp.stdout.decode().split('\n')[3:-1]:
-        lib, version, *_ = line.split()
-        versions[lib] = version
-
-    if 'pymc' not in versions:
-        raise EnvironmentError(f'PyMC is not installed in your conda environment. Run "conda install pymc" and '
-                               f'try installation again.')
-    # TODO: Add version check?
-
-
 if __name__ == "__main__":
-    check_environment()
-
     base_dir = os.path.dirname(__file__)
     src_dir = os.path.join(base_dir, "src")
 
