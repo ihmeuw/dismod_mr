@@ -206,7 +206,7 @@ class ModelData:
 
     def plot(self, rate_type=None):
         import matplotlib.pyplot as plt, numpy as np
-        from src import dismod_mr as plot
+        import dismod_mr.plot as plot
 
         if rate_type or 'rate_type' in self.model_settings:
             plot_types = self.model_settings.get('rate_type', rate_type)
