@@ -102,18 +102,6 @@ def covariate_level_constraints(name, model, vars, ages):
     if name not in model.parameters or 'level_value' not in model.parameters[name] or 'level_bounds' not in model.parameters[name]:
         return {}
 
-    # X_out = model.output_template
-    # X_out['x_sex'] = .5
-    # for x_i in vars['X_shift'].index:
-    #     X_out[x_i] = np.array(X_out[x_i], dtype=float) - vars['X_shift'][x_i] # shift covariates so that the root node has X_ar,sr,yr == 0
-
-    # X_all = vars['X'].append(X_out.select(lambda c: c in vars['X'].columns, 1), ignore_index=True)
-    # X_all['x_sex'] = .5 - vars['X_shift']['x_sex']
-
-    # X_max = X_all.max()
-    # X_min = X_all.min()
-    # X_min['x_sex'] = -.5 - vars['X_shift']['x_sex']  # make sure that the range of sex covariates is included
-
     X_sex_max = .5 - vars['X_shift']['x_sex']
     X_sex_min = -.5 - vars['X_shift']['x_sex']  # make sure that the range of sex covariates is included
     index_map = dict([[key, i] for i,key in enumerate(vars['X_shift'].index)])
