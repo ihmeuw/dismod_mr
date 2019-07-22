@@ -45,7 +45,6 @@ def MyTruncatedNormal(name, mu, tau, a, b, value):
             return -np.inf
     return my_trunc_norm
 
-
 def mean_covariate_model(name, mu, input_data, parameters, model, root_area, root_sex, root_year, zero_re=True):
     """ Generate PyMC objects covariate adjusted version of mu
 
@@ -78,16 +77,13 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
         for level, node in enumerate(nx.shortest_path(model.hierarchy, 'all', n2)):
                         model.hierarchy.node[node]['level'] = level
 
-    # U = U.select(lambda col: U[col].std() > 1.e-5, axis=1)  # drop constant columns
     if len(U.index) == 0:
         U = pd.DataFrame()
     else:
-        U = U.select(lambda col: (U[col].max() > 0) and (model.hierarchy.node[col].get('level') > model.hierarchy.node[root_area]['level']), axis=1)  # drop columns with only zeros and which are for higher levels in hierarchy
-        # U = U.select(lambda col: model.hierarchy.node[col].get('level') <= 2, axis=1)  # drop country-level REs
-        # U = U.drop(['super-region_0', 'north_america_high_income', 'USA'], 1)
-        #
-        # U = U.drop(['super-region_0', 'north_america_high_income'], 1)
-        # U = U.drop(U.columns, 1)
+        keep_cols = [col for col in U.columns if (
+            (U[col].max() > 0) and 
+            (model.hierarchy.node[col].get('level') > model.hierarchy.node[root_area]['level']))]
+        U_filtered = U.filter(keep_cols)  # drop columns with only zeros and which are for higher levels in hierarchy
 
         # drop random effects with less than 1 observation or with all observations
         # set to 1, unless they have an informative prior
@@ -96,7 +92,9 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
             for re in parameters['random_effects']:
                 if parameters['random_effects'][re].get('dist') == 'Constant':
                     keep.append(re)
-        U = U.select(lambda col: 1 <= U[col].sum() < len(U[col]) or col in keep, axis=1)
+
+        keep_cols = [col for col in U_filtered.columns if 1 <= U_filtered[col].sum() < len(U_filtered[col]) or col in keep]
+        U = U_filtered.filter(keep_cols).copy()
 
     U_shift = pd.Series(0., index=U.columns)
     for level, node in enumerate(nx.shortest_path(model.hierarchy, 'all', root_area)):
@@ -184,7 +182,8 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
                         alpha_potentials.append(alpha_potential)
 
     # make X and beta
-    X = input_data.select(lambda col: col.startswith('x_'), axis=1)
+    keep_cols = [col for col in input_data.columns if col.startswith('x_')]
+    X = input_data.filter(keep_cols).copy()
 
     # add sex as a fixed effect (TODO: decide if this should be in data.py, when loading gbd model)
     X['x_sex'] = [SEX_VALUE[row['sex']] for i, row in input_data.T.iteritems()]
@@ -269,8 +268,8 @@ def dispersion_covariate_model(name, input_data, delta_lb, delta_ub):
     upper = np.log(delta_ub)
     eta = mc.Uniform('eta_%s'%name, lower=lower, upper=upper, value=.5*(lower+upper))
 
-    Z = input_data.select(lambda col: col.startswith('z_'), axis=1)
-    Z = Z.select(lambda col: Z[col].std() > 0, 1)  # drop blank cols
+    keep_cols = [col for col in input_data.columns if col.startswith('z_') and input_data[col].std() > 0]
+    Z = input_data.filter(keep_cols)
     if len(Z.columns) > 0:
         zeta = mc.Normal('zeta_%s'%name, 0, .25**-2, value=np.zeros(len(Z.columns)))
 
@@ -406,7 +405,7 @@ def predict_for(model, parameters,
     #
     # the resulting array is covs
     if 'X' in vars:
-        covs = output_template.filter(vars['X'].columns)
+        covs = output_template.filter(vars['X'].columns).copy()
         if 'x_sex' in vars['X'].columns:
             covs['x_sex'] = SEX_VALUE[sex]
         assert np.all(covs.columns == vars['X_shift'].index), 'covariate columns and unshift index should match up'
@@ -421,7 +420,7 @@ def predict_for(model, parameters,
     if 'U' in vars:
         p_U = area_hierarchy.number_of_nodes()  # random effects for area
         U_l = pd.DataFrame(np.zeros((1, p_U)), columns=area_hierarchy.nodes())
-        U_l = U_l.filter(vars['U'].columns)
+        U_l = U_l.filter(vars['U'].columns).copy()
     else:
         U_l = pd.DataFrame(index=[0])
 

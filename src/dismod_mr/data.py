@@ -349,6 +349,8 @@ class ModelData:
             age_after = 0
 
         self.parameters[rate_type]['level_value'] = dict(age_before=age_before, age_after=age_after, value=value)
+        if 'level_bounds' not in self.parameters[rate_type]:
+            self.set_level_bounds(rate_type, lower=0, upper=1)  # level bounds are needed for level value prior to work
 
     def set_level_bounds(self, rate_type, lower=0, upper=1):
         """ Set level bounds for age-specific rate function of one
@@ -368,6 +370,8 @@ class ModelData:
 
         """
         self.parameters[rate_type]['level_bounds'] = dict(lower=lower, upper=upper)
+        if 'level_value' not in self.parameters[rate_type]:
+            self.set_level_value(rate_type, abe_before=-1, age_after=101)  # level values are needed for level value prior to work
 
     def set_increasing(self, rate_type, age_start, age_end):
         """ Set increasing prior for age-specific rate function of one
@@ -589,7 +593,7 @@ class ModelData:
         #    d.input_data[field] = pl.array(d.input_data[field], dtype=float)
 
 
-        d.output_template = pd.DataFrame.from_csv(path + '/output_template.csv')
+        d.output_template = pd.read_csv(path + '/output_template.csv')
 
         d.parameters = json.load(open(path + '/parameters.json'))
 
