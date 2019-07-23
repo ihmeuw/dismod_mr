@@ -286,13 +286,14 @@ class ModelData:
                 area = self.input_data['area'][i]
                 return (area in self.hierarchy) or (area == 'all')
 
-            self.input_data = self.input_data.select(relevant_row)
+            rows = [i for i in self.input_data.index if relevant_row(i)]
+            self.input_data = self.input_data.loc[rows]
             self.nodes_to_fit = set(self.hierarchy.nodes()) & set(self.nodes_to_fit)
 
-        self.input_data = self.input_data.select(lambda i: self.input_data['sex'][i] in sexes)
+        self.input_data = self.input_data[self.input_data.sex.isin(sexes)]
 
-        self.input_data = self.input_data.select(lambda i: self.input_data['year_end'][i] >= start_year)
-        self.input_data = self.input_data.select(lambda i: self.input_data['year_start'][i] <= end_year)
+        self.input_data = self.input_data[self.input_data.year_end >= start_year]
+        self.input_data = self.input_data[self.input_data.year_start <= end_year]
 
         print('kept %d rows of data' % len(self.input_data.index))
 
