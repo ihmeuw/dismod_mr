@@ -371,7 +371,7 @@ class ModelData:
         """
         self.parameters[rate_type]['level_bounds'] = dict(lower=lower, upper=upper)
         if 'level_value' not in self.parameters[rate_type]:
-            self.set_level_value(rate_type, abe_before=-1, age_after=101)  # level values are needed for level value prior to work
+            self.set_level_value(rate_type, age_before=-1, age_after=101)  # level values are needed for level value prior to work
 
     def set_increasing(self, rate_type, age_start, age_end):
         """ Set increasing prior for age-specific rate function of one
