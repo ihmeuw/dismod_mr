@@ -1,9 +1,9 @@
 
 
 # Copyright 2008-2012 University of Washington
-# 
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,7 +13,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -22,7 +22,7 @@
 import numpy as np, pymc as mc, scipy.interpolate
 
 def age_specific_rate(model, data_type, reference_area='all', reference_sex='total', reference_year='all',
-                      mu_age=None, mu_age_parent=None, sigma_age_parent=None, 
+                      mu_age=None, mu_age_parent=None, sigma_age_parent=None,
                       rate_type='neg_binom', lower_bound=None, interpolation_method='linear',
                       include_covariates=True, zero_re=False):
     # TODO: expose (and document) interface for alternative rate_type as well as other options,
@@ -37,7 +37,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
       - `mu_age_parent` : pymc.Node, will be used as the age pattern of the parent of the root area, set to None if not needed
       - `sigma_age_parent` : pymc.Node, will be used as the standard deviation of the age pattern, set to None if not needed
       - `rate_type` : str, optional. One of 'beta_binom', 'beta_binom_2', 'binom', 'log_normal_model', 'neg_binom', 'neg_binom_lower_bound_model', 'neg_binom_model', 'normal_model', 'offest_log_normal', or 'poisson'
-      - `lower_bound` : 
+      - `lower_bound` :
       - `interpolation_method` : str, optional, one of 'linear', 'nearest', 'zero', 'slinear', 'quadratic, or 'cubic'
       - `include_covariates` : boolean
       - `zero_re` : boolean, change one stoch from each set of siblings in area hierarchy to a 'sum to zero' deterministic
@@ -49,7 +49,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
     name = data_type
     import dismod_mr
     result = dismod_mr.data.ModelVars()
-    
+
     if (isinstance(mu_age_parent, np.ndarray) and np.any(np.isnan(mu_age_parent))) \
            or (isinstance(sigma_age_parent, np.ndarray) and np.any(np.isnan(sigma_age_parent))):
         mu_age_parent = None
@@ -106,7 +106,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
                 initial_mu = mu_age_parent.value
             else:
                 initial_mu = mu_age_parent
-                
+
             for i, k_i in enumerate(knots):
                 vars['gamma'][i].value = (np.log(initial_mu[k_i-ages[0]])).clip(-12,6)
 
@@ -168,7 +168,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
             # special case, treat pf data as poisson
             if data_type == 'pf':
                 lower = 1.e12
-            
+
             vars.update(
                 dismod_mr.model.covariates.dispersion_covariate_model(name, data, lower, lower*9.)
                 )
@@ -269,10 +269,10 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
 
     result[data_type] = vars
     return result
-    
+
 def consistent(model, reference_area='all', reference_sex='total', reference_year='all', priors={}, zero_re=True, rate_type='neg_binom'):
     """ Generate PyMC objects for consistent model of epidemological data
-    
+
     :Parameters:
       - `model` : data.ModelData
       - `data_type` : str, one of 'i', 'r', 'f', 'p', or 'pf'
@@ -282,7 +282,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         priors on age patterns
       - `zero_re` : boolean, change one stoch from each set of
         siblings in area hierarchy to a 'sum to zero' deterministic
-      - `rate_type` : str or dict, optional. One of 'beta_binom', 'beta_binom_2', 
+      - `rate_type` : str or dict, optional. One of 'beta_binom', 'beta_binom_2',
         'binom', 'log_normal_model', 'neg_binom',
         'neg_binom_lower_bound_model', 'neg_binom_model',
         'normal_model', 'offest_log_normal', or 'poisson', optionally
@@ -292,7 +292,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
       - Returns dict of dicts of PyMC objects, including 'i', 'p',
         'r', 'f', the covariate adjusted predicted values for each row
         of data
-    
+
     .. note::
       - dict priors can contain keys (t, 'mu') and (t, 'sigma') to
         tell the consistent model about the priors on levels for the
@@ -353,7 +353,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         vals = []
         for i, row in mean_mortality.T.iteritems():
             knots.append((row['age_start'] + row['age_end'] + 1.) / 2.)  # FIXME: change m_all data to half-open intervals, and then remove +1 here
-            
+
             vals.append(row['value'])
 
         # extend knots as constant beyond endpoints
@@ -386,12 +386,12 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
         # transformation of incidence
         if r.min() > 5.99:
             return i / (r + m_all + f)
-        
+
         C0 = float(mc.invlogit(logit_C0))
 
         susceptible = np.zeros(len(ages))
         condition = np.zeros(len(ages))
-        dismod_mr.model.ode.ode_function(susceptible, condition, num_step, ages, m_all, i, r, f, 1-C0, C0)
+        dismod_mr.model.ode.ode_function(susceptible, condition, num_step, ages, m_all, i, r, f, 1-C0, C0, scipy=False)
 
         p = condition / (susceptible + condition)
         p[np.isnan(p)] = 0.
@@ -460,7 +460,7 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
                                sigma_age_parent=priors.get(('m_with', 'sigma')),
                                include_covariates=False,
                                zero_re=zero_re, rate_type=rate_type['m_with'])['m_with']
-    
+
     # duration = E[time in bin C]
     @mc.deterministic
     def mu_age_X(r=rate['r']['mu_age'], m=rate['m']['mu_age'], f=rate['f']['mu_age']):
@@ -483,4 +483,3 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
     vars = rate
     vars.update(logit_C0=logit_C0, p=p, pf=pf, rr=rr, smr=smr, m_with=m_with, X=X)
     return vars
-
