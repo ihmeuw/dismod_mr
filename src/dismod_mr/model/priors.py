@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2012 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,13 +11,13 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Expert prior models"""
+import numpy as np
+import pymc as mc
 
-import numpy as np, pymc as mc
 
 def similar(name, mu_child, mu_parent, sigma_parent, sigma_difference, offset=1.e-9):
     """ Generate PyMC objects encoding a simliarity prior on mu_child
@@ -79,7 +77,7 @@ def level_constraints(name, parameters, unconstrained_mu_age, ages):
                lower=parameters['level_bounds']['lower'],
                upper=parameters['level_bounds']['upper']):
         mu_age = unconstrained_mu_age.copy()
-        mu_age[:age_before] = value
+        mu_age[:int(age_before)] = value
         if age_after < len(mu_age)-1:
             mu_age[(age_after+1):] = value
         return mu_age.clip(lower, upper)
@@ -104,24 +102,11 @@ def covariate_level_constraints(name, model, vars, ages):
     if name not in model.parameters or 'level_value' not in model.parameters[name] or 'level_bounds' not in model.parameters[name]:
         return {}
 
-    # X_out = model.output_template
-    # X_out['x_sex'] = .5
-    # for x_i in vars['X_shift'].index:
-    #     X_out[x_i] = np.array(X_out[x_i], dtype=float) - vars['X_shift'][x_i] # shift covariates so that the root node has X_ar,sr,yr == 0
-
-    # X_all = vars['X'].append(X_out.select(lambda c: c in vars['X'].columns, 1), ignore_index=True)
-    # X_all['x_sex'] = .5 - vars['X_shift']['x_sex']
-
-    # X_max = X_all.max()
-    # X_min = X_all.min()
-    # X_min['x_sex'] = -.5 - vars['X_shift']['x_sex']  # make sure that the range of sex covariates is included
-
-
     X_sex_max = .5 - vars['X_shift']['x_sex']
     X_sex_min = -.5 - vars['X_shift']['x_sex']  # make sure that the range of sex covariates is included
     index_map = dict([[key, i] for i,key in enumerate(vars['X_shift'].index)])
     sex_index = index_map['x_sex']
-    
+
     U_all = []
     nodes = ['all']
     for l in range(1,4):
@@ -129,7 +114,7 @@ def covariate_level_constraints(name, model, vars, ages):
         U_i = np.array([col in nodes for col in vars['U'].columns])
         if U_i.sum() > 0:
             U_all.append(U_i)
-    
+
     @mc.potential(name='covariate_constraint_%s'%name)
     def covariate_constraint(mu=vars['mu_age'], alpha=vars['alpha'], beta=vars['beta'],
                              U_all=U_all,
@@ -158,10 +143,8 @@ def covariate_level_constraints(name, model, vars, ages):
         lower_violation = min(0., log_mu_min - lower)
         upper_violation = max(0., log_mu_max - upper)
         return mc.normal_like([lower_violation, upper_violation], 0., 1.e-6**-2)
-    
-    return dict(covariate_constraint=covariate_constraint)
 
-    
+    return dict(covariate_constraint=covariate_constraint)
 
 
 def derivative_constraints(name, parameters, mu_age, ages):
@@ -193,4 +176,3 @@ def derivative_constraints(name, parameters, mu_age, ages):
         return -1.e12 * (inc_violation**2 + dec_violation**2)
 
     return dict(mu_age_derivative_potential=mu_age_derivative_potential)
-

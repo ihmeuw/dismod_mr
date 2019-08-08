@@ -1,9 +1,7 @@
-
-
-# Copyright 2008-2012 University of Washington
-# 
+# Copyright 2008-2019 University of Washington
+#
 # This file is part of DisMod-MR.
-# 
+#
 # DisMod-MR is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,13 +11,12 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Age integrating models"""
-
-import numpy as np, pymc as mc
+import numpy as np
+import pymc as mc
 
 
 def age_standardize_approx(name, age_weights, mu_age, age_start, age_end, ages):
@@ -53,7 +50,7 @@ def age_standardize_approx(name, age_weights, mu_age, age_start, age_end, ages):
                     age_start=np.array(age_start, dtype=int),
                     age_end=np.array(age_end, dtype=int)):
         mu = (weighted_sum_mu[age_end] - weighted_sum_mu[age_start]) / (cum_sum_weights[age_end] - cum_sum_weights[age_start])
-        
+
         # correct cases where age_start == age_end
         i = age_start == age_end
         if np.any(i):
@@ -62,6 +59,7 @@ def age_standardize_approx(name, age_weights, mu_age, age_start, age_end, ages):
         return mu
 
     return dict(mu_interval=mu_interval)
+
 
 def age_integrate_approx(name, age_weights, mu_age, age_start, age_end, ages):
     """ Generate PyMC objects for approximating the integral of gamma from age_start[i] to age_end[i]
@@ -149,7 +147,7 @@ def midpoint_covariate_approx(name, mu_age, age_start, age_end, ages, transform=
                     theta=theta,
                     age_mid=np.array(age_mid, dtype=int),
                     age_width=np.array(age_width, dtype=float)):
-        
+
         return mu_age.take(np.clip(age_mid, ages[0], ages[-1]) - ages[0]) + theta*age_width
 
     return dict(mu_interval=mu_interval, theta=theta)

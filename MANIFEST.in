@@ -1,0 +1,8 @@
+include LICENSE
+include README.rst
+
+recursive-include docs *
+prune docs/_build
+
+recursive-include src/dismod_mr *.json *.csv *.py
+recursive-include tests *.py

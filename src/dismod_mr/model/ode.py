@@ -1,6 +1,4 @@
-
-
-# Copyright 2008-2012 University of Washington
+# Copyright 2008-2019 University of Washington
 #
 # This file is part of DisMod-MR.
 #
@@ -16,7 +14,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 import pandas as pd
 import numpy as np
 from scipy import integrate

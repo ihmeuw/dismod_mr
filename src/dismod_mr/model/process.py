@@ -1,6 +1,4 @@
-
-
-# Copyright 2008-2012 University of Washington
+# Copyright 2008-2019 University of Washington
 #
 # This file is part of DisMod-MR.
 #
@@ -16,12 +14,12 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with DisMod-MR.  If not, see <http://www.gnu.org/licenses/>.
-
 """ Dismod-MR model creation methods"""
-
 import numpy as np
 import pymc as mc
 import scipy.interpolate
+
+import dismod_mr
 
 
 def age_specific_rate(model, data_type, reference_area='all', reference_sex='total', reference_year='all',
@@ -50,7 +48,6 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
 
     """
     name = data_type
-    import dismod_mr
     result = dismod_mr.data.ModelVars()
 
     if (isinstance(mu_age_parent, np.ndarray) and np.any(np.isnan(mu_age_parent))) \
@@ -182,7 +179,7 @@ def age_specific_rate(model, data_type, reference_area='all', reference_sex='tot
                 lower = 1.e12
 
             vars.update(
-                dismod_mr.model.covariates.dispersion_covariate_model(name, data, lower, lower*9.)
+                dismod_mr.model.covariates.dispersion_covariate_model(name, data, lower, lower * 9.)
             )
 
             vars.update(
@@ -402,11 +399,8 @@ def consistent(model, reference_area='all', reference_sex='total', reference_yea
 
     logit_C0 = mc.Uniform('logit_C0', -15, 15, value=-10.)
 
-    # use Runge-Kutta 4 ODE solver
-    import dismod_mr.model.ode
-
     N = len(m_all)
-    num_step = 10  # double until it works
+    num_step = 2  # double until it works
     ages = np.array(ages, dtype=float)
     @mc.deterministic
     def mu_age_p(logit_C0=logit_C0,
