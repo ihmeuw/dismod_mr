@@ -19,7 +19,6 @@
 
 import pandas as pd
 import numpy as np
-import time
 from scipy import integrate
 from scipy.interpolate import interp1d
 
@@ -86,29 +85,9 @@ def ode_function(susceptible, condition, num_step, age_local, all_cause, inciden
             susceptible[j+1] = sc[0]
             condition[j+1] = sc[1]
 
-        t1 = time.time()
-        print(t1-t0)
-
-        # for output testing purposes only... can be removed for production
-        # out = pd.DataFrame(index=age)
-        # out['s_orig'] = susceptible
-        # out['c_orig'] = condition
-        # out.to_csv('out_orig.csv')
-
     if scipy == True:
-        t0 = time.time()
         res = integrate.solve_ivp(lambda a, y: odefun(a, y, age, incidence, remission, excess, all_cause), t_span=(
             age[0], age[-1]), y0=[s0, c0], method='RK23', t_eval=age)
 
-        t1 = time.time()
-        print(t1-t0)
-
-        print(res.message)
         susceptible = res.y[0, :]
         condition = res.y[1, :]
-
-        # for output testing purposes only... can be removed for production
-        # out = pd.DataFrame(index=age)
-        # out['s_new'] = susceptible
-        # out['c_new'] = condition
-        # out.to_csv('out_new.csv')
