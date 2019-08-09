@@ -53,7 +53,6 @@ def ode_function(susceptible, condition, num_step, age_local, all_cause, inciden
     if not isinstance(scipy, bool):
         raise Exception('scipy flag in ode_function must be of type bool')
 
-    t0 = time.time()
     age = age_local
     N = len(age)
     susceptible[0] = s0
