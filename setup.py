@@ -19,7 +19,7 @@ if __name__ == "__main__":
         'numpy>=1.7.1',
         'scipy>=0.12.0',
         'pymc>=2.3.6',
-        'networkx>=1.8',
+        'networkx==2.3',
         'pandas>=0.23.4',
         'numba>=0.44.0',
         'matplotlib',
