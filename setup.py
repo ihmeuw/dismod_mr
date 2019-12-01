@@ -23,6 +23,7 @@ if __name__ == "__main__":
         'pandas>=0.23.4',
         'numba>=0.44.0',
         'matplotlib',
+        'loguru',
     ]
 
     setup(

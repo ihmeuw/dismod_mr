@@ -45,6 +45,7 @@ def MyTruncatedNormal(name, mu, tau, a, b, value):
             return -np.inf
     return my_trunc_norm
 
+
 def mean_covariate_model(name, mu, input_data, parameters, model, root_area, root_sex, root_year, zero_re=True):
     """ Generate PyMC objects covariate adjusted version of mu
 
@@ -81,7 +82,7 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
         U = pd.DataFrame()
     else:
         keep_cols = [col for col in U.columns if (
-            (U[col].max() > 0) and 
+            (U[col].max() > 0) and
             (model.hierarchy.node[col].get('level') > model.hierarchy.node[root_area]['level']))]
         U_filtered = U.filter(keep_cols)  # drop columns with only zeros and which are for higher levels in hierarchy
 

@@ -26,6 +26,7 @@ except ImportError:
     import json
 
 import dismod_mr
+from dismod_mr.parameter import InputDataSet
 
 
 def my_stats(self, alpha=0.05, start=0, batches=100,
@@ -90,6 +91,7 @@ def check_convergence(vars):
                     return False
 
     return True
+
 
 class ModelVars(dict):
     """ Container class for PyMC Node objects that make up the model
@@ -156,14 +158,14 @@ class ModelVars(dict):
                 prior_dict[t] = pdt
         return prior_dict
 
+
 class ModelData:
     """ ModelData object contains all information for a disease model:
         Data, model parameters, information about output
     """
 
     def __init__(self):
-        self.input_data = pd.DataFrame(columns=('data_type value area sex age_start age_end year_start year_end' +
-                                           ' standard_error effective_sample_size lower_ci upper_ci age_weights').split())
+        self._input_data = {}
         self.output_template = pd.DataFrame(columns='data_type area sex year pop'.split())
         self.parameters = dict(i={}, p={}, r={}, f={}, rr={}, X={}, pf={}, ages=range(101))
 
@@ -176,6 +178,25 @@ class ModelData:
 
         self.model_settings = {} # TODO: determine if this is a good idea, think carefully about name
 
+    @property
+    def input_data(self):
+        return pd.concat([dataset.data for dataset in self._input_data.values()])
+
+    def add_data(self, data):
+        for data_type in data['data_type'].unique():
+            if data_type in self._input_data:
+                continue  # Probably raise an error
+            self._input_data[data_type] = InputDataSet(data[data.data_type == data_type])
+
+    def replace_all_data_with(self, new_data):
+        old_data = self._input_data
+        self._input_data = {}
+        try:
+            self.add_data(new_data)
+        except Exception:
+            self._input_data = old_data
+            raise
+
     def get_data(self, data_type):
         """ Select data of one type.
 
@@ -186,10 +207,10 @@ class ModelData:
           - DataFrame of selected data type.
 
         """
-        if len(self.input_data) > 0:
-            return self.input_data[self.input_data['data_type'] == data_type]
+        if data_type in self._input_data:
+            return self._input_data[data_type].data
         else:
-            return self.input_data
+            return pd.DataFrame(columns=InputDataSet.expected_columns)
 
     def describe(self, data_type):
         G = self.hierarchy
@@ -281,21 +302,16 @@ class ModelData:
             for area in areas:
                 self.hierarchy.add_edge('all', area)
             self.hierarchy = nx.bfs_tree(self.hierarchy, 'all')
-
-            def relevant_row(i):
-                area = self.input_data['area'][i]
-                return (area in self.hierarchy) or (area == 'all')
-
-            rows = [i for i in self.input_data.index if relevant_row(i)]
-            self.input_data = self.input_data.loc[rows]
             self.nodes_to_fit = set(self.hierarchy.nodes()) & set(self.nodes_to_fit)
 
-        self.input_data = self.input_data[self.input_data.sex.isin(sexes)]
+        def relevant_row(row):
+            return (row['area'] in self.hierarchy
+                    and row['sex'] in sexes
+                    and start_year <= row['year_end']
+                    and row['year_start'] <= end_year)
 
-        self.input_data = self.input_data[self.input_data.year_end >= start_year]
-        self.input_data = self.input_data[self.input_data.year_start <= end_year]
-
-        print('kept %d rows of data' % len(self.input_data.index))
+        for data_set in self._input_data.values():
+            data_set.keep(relevant_row)
 
     def set_smoothness(self, rate_type, value):
         """ Set smoothness parameter for age-specific rate function of one type.
@@ -460,7 +476,6 @@ class ModelData:
         else: # random effect
             self.parameters[rate_type]['random_effects'][cov] = value
 
-
     def setup_model(self, rate_type=None, rate_model='neg_binom',
                     interpolation_method='linear', include_covariates=True):
         """ Setup PyMC model vars based on current parameters and data
@@ -556,7 +571,11 @@ class ModelData:
 
         """
 
-        self.input_data.to_csv(path + '/input_data.csv')
+        original_inputs = pd.concat([dataset.original_data for dataset in self._input_data.values()])
+        original_inputs.to_csv(path + '/original_input_data.csv')
+        cleaned_inputs = pd.concat([dataset.data for dataset in self._input_data.values()])
+        cleaned_inputs.to_csv(path + '/input_data.csv')
+
         self.output_template.to_csv(path + '/output_template.csv')
         json.dump(self.parameters, open(path + '/parameters.json', 'w'), indent=2)
         json.dump(dict(nodes=[[n, self.hierarchy.node[n]] for n in sorted(self.hierarchy.nodes())],
@@ -586,7 +605,7 @@ class ModelData:
         d = ModelData()
 
         # TODO: catch _csv.Error and retry, to give j drive time to sync
-        d.input_data = pd.read_csv(path + '/input_data.csv')
+        d.add_data(pd.read_csv(path + '/input_data.csv'))
 
         # ensure that certain columns are float
         #for field in 'value standard_error upper_ci lower_ci effective_sample_size'.split():
@@ -612,10 +631,7 @@ class ModelData:
           - DataFrame of rows with invalid quantification of uncertainty
 
         """
-        rows = self.input_data.effective_sample_size.isnull() \
-          & self.input_data.standard_error.isnull() \
-          & (self.input_data.lower_ci.isnull() | self.input_data.upper_ci.isnull())
-        return self.input_data[rows]
+        return pd.concat([dataset.invalid_precision() for dataset in self.input_data.values()])
 
 
 load = ModelData.load

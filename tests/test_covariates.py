@@ -4,12 +4,13 @@ import pandas as pd
 import pymc as mc
 
 import dismod_mr
+from dismod_mr.testing.data_simulation import small_output, add_standard_columns
 
 
 def test_covariate_model_sim_no_hierarchy():
     # simulate normal data
     model = dismod_mr.data.ModelData()
-    model.hierarchy, model.output_template = dismod_mr.testing.data_simulation.small_output()
+    model.hierarchy, model.output_template = small_output()
 
     X = mc.rnormal(0., 1.**2, size=(128, 3))
 
@@ -20,16 +21,14 @@ def test_covariate_model_sim_no_hierarchy():
     sigma_true = .01*np.ones_like(pi_true)
 
     p = mc.rnormal(pi_true, 1./sigma_true**2.)
-
-    model.input_data = pd.DataFrame(dict(value=p, x_0=X[:, 0], x_1=X[:, 1], x_2=X[:, 2]))
-    model.input_data['area'] = 'all'
-    model.input_data['sex'] = 'total'
-    model.input_data['year_start'] = 2000
-    model.input_data['year_end'] = 2000
+    
+    input_data = pd.DataFrame(dict(value=p, x_0=X[:, 0], x_1=X[:, 1], x_2=X[:, 2]))
+    input_data = add_standard_columns(input_data)
+    model.add_data(input_data)
 
     # create model and priors
     variables = {}
-    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data,
+    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.get_data('i'),
                                                                      {}, model, 'all', 'total', 'all'))
     variables.update(dismod_mr.model.likelihood.normal('test', variables['pi'], 0., p, sigma_true))
 
@@ -42,7 +41,7 @@ def test_covariate_model_sim_w_hierarchy():
     n = 50
 
     # setup hierarchy
-    hierarchy, output_template = dismod_mr.testing.data_simulation.small_output()
+    hierarchy, output_template = small_output()
 
     # simulate normal data
     area_list = np.array(['all', 'USA', 'CAN'])
@@ -61,12 +60,14 @@ def test_covariate_model_sim_w_hierarchy():
     p = mc.rnormal(pi_true, 1./sigma_true**2.)
 
     model = dismod_mr.data.ModelData()
-    model.input_data = pd.DataFrame(dict(value=p, area=area, sex=sex, year_start=year, year_end=year))
+    input_data = pd.DataFrame(dict(value=p, area=area, sex=sex,
+                                   year_start=year, year_end=year, data_type='i'))
+    model.add_data(add_standard_columns(input_data))    
     model.hierarchy, model.output_template = hierarchy, output_template
 
     # create model and priors
     variables = {}
-    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, {}, model,
+    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.get_data('i'), {}, model,
                                                                      'all', 'total', 'all'))
     variables.update(dismod_mr.model.likelihood.normal('test', variables['pi'], 0., p, sigma_true))
 
@@ -94,14 +95,12 @@ def test_fixed_effect_priors():
     sigma_true = .05
     p = mc.rnormal(pi_true, 1./sigma_true**2.)
 
-    model.input_data = pd.DataFrame(dict(value=p, sex=sex))
-    model.input_data['area'] = 'all'
-    model.input_data['year_start'] = 2010
-    model.input_data['year_start'] = 2010
-
+    input_data = pd.DataFrame(dict(value=p, sex=sex))
+    model.add_data(add_standard_columns(input_data))
+    
     # create model and priors
     variables = {}
-    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, parameters, model,
+    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.get_data('i'), parameters, model,
                                                                      'all', 'total', 'all'))
 
     assert variables['beta'][0].parents['mu'] == 1.
@@ -122,17 +121,18 @@ def test_random_effect_priors():
     sigma_true = .05
     p = mc.rnormal(pi_true, 1./sigma_true**2.)
 
-    model.input_data = pd.DataFrame(dict(value=p, area=area))
-    model.input_data['sex'] = 'male'
-    model.input_data['year_start'] = 2010
-    model.input_data['year_end'] = 2010
+    input_data = pd.DataFrame(dict(value=p, area=area))
+    input_data['sex'] = 'male'
+    input_data['year_start'] = 2010
+    input_data['year_end'] = 2010
+    model.add_data(add_standard_columns(input_data))
 
     model.hierarchy.add_edge('all', 'USA')
     model.hierarchy.add_edge('all', 'CAN')
 
     # create model and priors
     variables = {}
-    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.input_data, parameters, model,
+    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', 1, model.get_data('i'), parameters, model,
                                                                      'all', 'total', 'all'))
 
     # assert variables['alpha'][1].parents['mu'] == .1
@@ -143,7 +143,7 @@ def test_covariate_model_dispersion():
     n = 100
 
     model = dismod_mr.data.ModelData()
-    model.hierarchy, model.output_template = dismod_mr.testing.data_simulation.small_output()
+    model.hierarchy, model.output_template = small_output()
 
     Z = mc.rcategorical([.5, 5.], n)
     zeta_true = -.2
@@ -155,17 +155,14 @@ def test_covariate_model_dispersion():
 
     p = mc.rnegative_binomial(pi_true*ess, delta_true*np.exp(Z*zeta_true)) / ess
 
-    model.input_data = pd.DataFrame(dict(value=p, z_0=Z))
-    model.input_data['area'] = 'all'
-    model.input_data['sex'] = 'total'
-    model.input_data['year_start'] = 2000
-    model.input_data['year_end'] = 2000
+    input_data = pd.DataFrame(dict(value=p, z_0=Z))
+    model.add_data(add_standard_columns(input_data))
 
     # create model and priors
     variables = dict(mu=mc.Uninformative('mu_test', value=pi_true))
-    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', variables['mu'], model.input_data, {},
+    variables.update(dismod_mr.model.covariates.mean_covariate_model('test', variables['mu'], model.get_data('i'), {},
                                                                      model, 'all', 'total', 'all'))
-    variables.update(dismod_mr.model.covariates.dispersion_covariate_model('test', model.input_data, .1, 10.))
+    variables.update(dismod_mr.model.covariates.dispersion_covariate_model('test', model.get_data('i'), .1, 10.))
     variables.update(dismod_mr.model.likelihood.neg_binom('test', variables['pi'], variables['delta'], p, ess))
 
     # fit model
@@ -181,8 +178,8 @@ def test_covariate_model_shift_for_root_consistency():
     pi_age_true = .0001 * (a * (100. - a) + 100.)
 
     d = dismod_mr.data.ModelData()
-    d.input_data = dismod_mr.testing.data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true)
-    d.hierarchy, d.output_template = dismod_mr.testing.data_simulation.small_output()
+    d.add_data(dismod_mr.testing.data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true))
+    d.hierarchy, d.output_template = small_output()
 
     # create model and priors
     variables = dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
@@ -215,8 +212,8 @@ def test_predict_for():
     pi_age_true = .0001 * (a * (100. - a) + 100.)
 
     d = dismod_mr.data.ModelData()
-    d.input_data = dismod_mr.testing.data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true)
-    d.hierarchy, d.output_template = dismod_mr.testing.data_simulation.small_output()
+    d.add_data(dismod_mr.testing.data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true))
+    d.hierarchy, d.output_template = small_output()
 
     # create model and priors
     variables = dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
@@ -337,7 +334,7 @@ def test_predict_for_wo_data():
     4. Predict for results, and confirm that they match expected values
     """
     d = dismod_mr.data.ModelData()
-    d.hierarchy, d.output_template = dismod_mr.testing.data_simulation.small_output()
+    d.hierarchy, d.output_template = small_output()
 
     # create model and priors
     variables = dismod_mr.model.process.age_specific_rate(d, 'p', 'all', 'total', 'all', None, None, None)
@@ -396,8 +393,8 @@ def test_predict_for_wo_effects():
     pi_age_true = .0001 * (a * (100. - a) + 100.)
 
     d = dismod_mr.data.ModelData()
-    d.input_data = dismod_mr.testing.data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true)
-    d.hierarchy, d.output_template = dismod_mr.testing.data_simulation.small_output()
+    d.add_data(dismod_mr.testing.data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true))
+    d.hierarchy, d.output_template = small_output()
 
     # create model and priors
     variables = dismod_mr.model.process.age_specific_rate(d, 'p', 'NAHI', 'male', 2005,
@@ -435,8 +432,8 @@ def test_predict_for_w_region_as_reference():
     pi_age_true = .0001 * (a * (100. - a) + 100.)
 
     d = dismod_mr.data.ModelData()
-    d.input_data = dismod_mr.testing.data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true)
-    d.hierarchy, d.output_template = dismod_mr.testing.data_simulation.small_output()
+    d.add_data(dismod_mr.testing.data_simulation.simulated_age_intervals('p', n, a, pi_age_true, sigma_true))
+    d.hierarchy, d.output_template = small_output()
 
     # create model and priors
     variables = dismod_mr.model.process.age_specific_rate(d, 'p', 'NAHI', 'male', 2005, None, None, None)

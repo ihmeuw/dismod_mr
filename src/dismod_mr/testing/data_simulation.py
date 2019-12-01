@@ -88,6 +88,25 @@ def initialize_input_data(input_data):
     input_data['area'] = 'all'
 
 
+def add_standard_columns(input_data):
+    defaults = {
+        'data_type': 'i',
+        'area': 'all',
+        'sex': 'total',
+        'year_start': 2000,
+        'year_end': 2000,
+        'age_start': 0,
+        'age_end': 100,
+        'standard_error': np.nan,
+        'upper_ci': np.nan,
+        'lower_ci': np.nan,
+    }
+    for column, default_val in defaults.items():
+        if column not in input_data.columns:
+            input_data[column] = default_val
+    return input_data
+
+
 def add_quality_metrics(df):
     df['abs_err'] = df['true'] - df['mu_pred']
     # rel error normalized by crude mean of observed data

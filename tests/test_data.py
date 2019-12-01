@@ -5,10 +5,6 @@ import dismod_mr
 def test_blank_input_data():
     d = dismod_mr.data.ModelData()
 
-    for field in ('data_type value area sex age_start age_end year_start year_end '
-                  'standard_error effective_sample_size lower_ci upper_ci age_weights').split():
-        assert field in d.input_data.columns, f'Input data CSV should have field "{field}"'
-
     for field in 'data_type area sex year pop'.split():
         assert field in d.output_template.columns, f'Output template CSV should have field "{field}"'
 

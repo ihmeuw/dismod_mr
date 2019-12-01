@@ -18,7 +18,7 @@ def test_age_specific_rate_model():
     pi_age_true = .0001 * (a * (100. - a) + 100.)
 
     d = dismod_mr.data.ModelData()
-    d.input_data = data_simulation.simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true)
+    d.add_data(data_simulation.simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true))
     d.hierarchy, d.output_template = data_simulation.small_output()
 
     # create model and priors
@@ -58,9 +58,8 @@ def test_age_specific_rate_model_w_lower_bound_data():
     pi_age_true = .0001 * (a * (100. - a) + 100.)
 
     d = dismod_mr.data.ModelData()
-    d.input_data = data_simulation.simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true)
-    d.input_data = d.input_data.append(data_simulation.simulated_age_intervals('pf', n, a, pi_age_true*2., sigma_true),
-                                       ignore_index=True)
+    d.add_data(data_simulation.simulated_age_intervals(data_type, n, a, pi_age_true, sigma_true))
+    d.add_data(data_simulation.simulated_age_intervals('pf', n, a, pi_age_true*2., sigma_true))
     d.hierarchy, d.output_template = data_simulation.small_output()
 
     # create model and priors
@@ -79,6 +78,7 @@ def test_age_specific_rate_model_w_lower_bound_data():
 
 
 def test_consistent():
+    np.random.seed(123456)
     dm = dismod_mr.data.ModelData()
     dm.hierarchy, dm.output_template = data_simulation.small_output()
 
@@ -99,6 +99,7 @@ def test_consistent():
 
 
 def test_consistent_w_non_integral_ages():
+    np.random.seed(1234567)
     dm = dismod_mr.data.ModelData()
     dm.hierarchy, dm.output_template = data_simulation.small_output()
 
@@ -114,8 +115,9 @@ def test_consistent_w_non_integral_ages():
     mc.MCMC(dm.vars).sample(3)
 
     # try again, this time with m_all data
-    dm.input_data = pd.DataFrame([['m_all', 0, 100, .1]], columns=['data_type', 'age_start', 'age_end', 'value'])
-
+    m_all = (pd.DataFrame([['m_all', 0, 100, .1]], columns=['data_type', 'age_start', 'age_end', 'value']))
+    m_all = data_simulation.add_standard_columns(m_all)
+    dm.add_data(m_all)
     dm.vars = dismod_mr.model.process.consistent(dm)
 
     mc.MCMC(dm.vars).sample(3)
