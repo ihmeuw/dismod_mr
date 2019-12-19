@@ -30,7 +30,7 @@ class InputDataSet:
         'age_weights',  # Something something age standardization.
         'sex',  # The sex represented by the data.
         'value',  # The data.
-        'standard_error', 'lower_ci', 'upper_ci', 'effective_sample_size', # Parameters about data uncertainty
+        'standard_error', 'lower_ci', 'upper_ci', 'effective_sample_size',  # Parameters about data uncertainty
     ]
 
     def __init__(self, data: pd.DataFrame):
@@ -61,7 +61,7 @@ class InputDataSet:
         """The measure this data set represents."""
         return self._data_type
 
-    def clean_data(self, data: pd.DataFrame) -> pd.DataFrame:
+    def clean_data(self, data: pd.DataFrame) -> (pd.DataFrame, str):
         """Cleans up input data sets where possible, otherwise errors."""
         if not isinstance(data, pd.DataFrame):
             raise ValueError(f'Data sets must be provided as pandas DataFrames.  You provided {type(data)}.')
