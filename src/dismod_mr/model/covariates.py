@@ -45,6 +45,18 @@ def MyTruncatedNormal(name, mu, tau, a, b, value):
             return -np.inf
     return my_trunc_norm
 
+
+def update_hierarchy(hierarchy):
+    # FIXME: This seems like the wrong place to do this.  The location
+    # I'm pretty sure, so we should be able to do this one time at model
+    # setup.
+    for location in hierarchy.nodes():
+        for level, ancestor in enumerate(nx.shortest_path(hierarchy, 'all', location)):
+            hierarchy.node[ancestor]['level'] = level
+
+    return hierarchy
+
+
 def mean_covariate_model(name, mu, input_data, parameters, model, root_area, root_sex, root_year, zero_re=True):
     """ Generate PyMC objects covariate adjusted version of mu
 
@@ -60,6 +72,7 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
 
     """
     n = len(input_data.index)
+    model.hierarchy = update_hierarchy(model.hierarchy)
 
     # make U and alpha
     p_U = model.hierarchy.number_of_nodes()  # random effects for area
@@ -69,19 +82,14 @@ def mean_covariate_model(name, mu, input_data, parameters, model, root_area, roo
             print('WARNING: "%s" not in model hierarchy, skipping random effects for this observation' % row['area'])
             continue
 
-        for level, node in enumerate(nx.shortest_path(model.hierarchy, 'all', input_data.loc[i, 'area'])):
-            model.hierarchy.node[node]['level'] = level
+        for node in nx.shortest_path(model.hierarchy, 'all', input_data.loc[i, 'area']):
             U.loc[i, node] = 1.
-
-    for n2 in model.hierarchy.nodes():
-        for level, node in enumerate(nx.shortest_path(model.hierarchy, 'all', n2)):
-                        model.hierarchy.node[node]['level'] = level
 
     if len(U.index) == 0:
         U = pd.DataFrame()
     else:
         keep_cols = [col for col in U.columns if (
-            (U[col].max() > 0) and 
+            (U[col].max() > 0) and
             (model.hierarchy.node[col].get('level') > model.hierarchy.node[root_area]['level']))]
         U_filtered = U.filter(keep_cols)  # drop columns with only zeros and which are for higher levels in hierarchy
 
