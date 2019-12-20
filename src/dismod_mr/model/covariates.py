@@ -48,8 +48,9 @@ def MyTruncatedNormal(name, mu, tau, a, b, value):
 
 def update_hierarchy(hierarchy):
     # FIXME: This seems like the wrong place to do this.  The location
-    # I'm pretty sure, so we should be able to do this one time at model
-    # setup.
+    #  hierarchy is global, I'm pretty sure, so we should be able to do this
+    #  one time at model setup. Or at least only do it when the hierarchy
+    #  is altered.
     for location in hierarchy.nodes():
         for level, ancestor in enumerate(nx.shortest_path(hierarchy, 'all', location)):
             hierarchy.node[ancestor]['level'] = level
