@@ -36,8 +36,8 @@ def f(a, susceptible_condition,
 @numba.jit(nopython=True)
 def ode_function(susceptible, condition, num_step, age_local, all_cause, incidence, remission, excess, s0, c0):
         age          = age_local
-
         N = len(age)
+        t0 = age[0]
 
         susceptible[0] = s0
         condition[0]   = c0
@@ -55,10 +55,10 @@ def ode_function(susceptible, condition, num_step, age_local, all_cause, inciden
 
                         # copied from http://www.seanet.com/~bradbell/pycppad/runge_kutta_4.xml
 
-                        k1 = dt * f(ti         , yi, incidence, remission, excess, all_cause)
-                        k2 = dt * f(ti + .5*dt , yi + .5*k1, incidence, remission, excess, all_cause)
-                        k3 = dt * f(ti + .5*dt , yi + .5*k2, incidence, remission, excess, all_cause)
-                        k4 = dt * f(ti + dt    , yi + k3, incidence, remission, excess, all_cause)
+                        k1 = dt * f(-t0 + ti         , yi, incidence, remission, excess, all_cause)
+                        k2 = dt * f(-t0 + ti + .5*dt , yi + .5*k1, incidence, remission, excess, all_cause)
+                        k3 = dt * f(-t0 + ti + .5*dt , yi + .5*k2, incidence, remission, excess, all_cause)
+                        k4 = dt * f(-t0 + ti + dt    , yi + k3, incidence, remission, excess, all_cause)
                         yf = yi + (1./6.) * ( k1 + 2.*k2 + 2.*k3 + k4 )
 
                         sc    = yf
