@@ -85,3 +85,14 @@ Coding Practices
 
 * `.py` files should be short, less than 500 lines
 * Functions should be short, less than 25 lines
+
+
+Updating version
+----------------
+
+* Merge all your changes to master and make sure the automated test suite passes (can't remember if you have actual tests or a trivial assert True test suite).
+* Update the __version__ attribute in the __about__.py file.
+* Update the changelog.
+* Commit and push the two update files directly to master
+* tag the commit git tag -a v{YOUR_NEW_VERSION} -m {RELEASE MESSAGE}
+* Push the tags git push --tags

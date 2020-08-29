@@ -7,7 +7,7 @@ __title__ = "dismod_mr"
 __summary__ = "Integrative Meta-Regression Framework for Descriptive Epidemmiology"
 __uri__ = "https://github.com/ihmeuw/dismod_mr"
 
-__version__ = "1.1.1"
+__version__ = "1.1.2.2"
 
 __author__ = "Abraham D. Flaxman"
 __email__ = "abie@uw.edu"
