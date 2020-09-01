@@ -21,7 +21,7 @@ if __name__ == "__main__":
         'pymc>=2.3.6',
         'networkx==2.3',
         'pandas>=0.23.4,<1.1',
-        'numba==0.45.0',
+        'numba==0.51.0',
         'matplotlib<3.3',
     ]
 
