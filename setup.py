@@ -22,7 +22,7 @@ if __name__ == "__main__":
         'networkx==2.3',
         'pandas>=0.23.4,<1.1',
         'numba>=0.44.0',
-        'matplotlib',
+        'matplotlib<3.3',
     ]
 
     setup(
