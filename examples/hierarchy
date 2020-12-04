@@ -1,0 +1,67 @@
+{
+  "nodes": [
+    [
+      "China",
+      {
+        "level": 1
+      }
+    ],
+    [
+      "Shandong",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Shanghai",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Xinjiang",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "Yunnan",
+      {
+        "level": 2
+      }
+    ],
+    [
+      "all",
+      {
+        "level": 0
+      }
+    ]
+  ],
+  "edges": [
+    [
+      "China",
+      "Shandong",
+      {}
+    ],
+    [
+      "China",
+      "Shanghai",
+      {}
+    ],
+    [
+      "China",
+      "Xinjiang",
+      {}
+    ],
+    [
+      "China",
+      "Yunnan",
+      {}
+    ],
+    [
+      "all",
+      "China",
+      {}
+    ]
+  ]
+}
