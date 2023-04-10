@@ -18,7 +18,7 @@ if __name__ == "__main__":
     install_requirements = [
         'numpy>=1.7.1',
         'scipy>=0.12.0',
-        'pymc>=2.3.6',
+        'pymc==2.3.8',
         'networkx==2.3',
         'pandas>=0.23.4,<1.1',
         'numba==0.51.0',
