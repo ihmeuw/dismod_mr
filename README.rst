@@ -2,10 +2,6 @@
     :target: https://travis-ci.org/ihmeuw/dismod_mr
     :alt: Latest Version
 
-============
-Introduction
-============
-
 This project is the descriptive epidemiological meta-regression tool,
 DisMod-MR, which grew out of the Global Burden of Disease (GBD) Study
 2010.  DisMod-MR has been developed for the Institute of Health
@@ -27,11 +23,11 @@ Dismod MR requires PyMC2 which does not play nicely with normal Python
 installation tools.  Fortunately, ``conda`` has solved this issue for us.
 So first you'll need to setup a conda environment
 (after `installing conda, if necessary <https://docs.conda.io/projects/conda/en/latest/user-guide/install/>`_)
-and install ``pymc``.  Then you can install ``dismod_mr`` using ``pip``.
+and install ``pymc`` version ``2.3.8``.  Then you can install ``dismod_mr`` using ``pip``.
 
 .. code-block:: sh
 
-   conda create --name=dismod_mr python=3.6 pymc
+   conda create --name=dismod_mr python=3.6 pymc==2.3.8
    conda activate dismod_mr
    pip install dismod_mr
 
@@ -61,11 +57,22 @@ package index.
 
 .. code-block:: sh
 
-   conda create --name=dismod_mr python=3.6 pymc
+   conda create --name=dismod_mr python=3.6 pymc==2.3.8
    conda activate dismod_mr
    git clone git@github.com:ihmeuw/dismod_mr.git
    cd dismod_mr
    pip install -e .
+
+To test this, you can use ``pytest``, which you must first install.
+
+.. code-block:: sh
+
+   pip install pytest
+   pytest
+
+If you have things setup right, this will still generate many
+warnings, but there should be no tests that produce failures or
+errors.
 
 Coding Practices
 ----------------
