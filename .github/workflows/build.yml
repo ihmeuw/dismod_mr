@@ -3,7 +3,7 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: linux
     strategy:
       matrix:
         python-version: ["3.6"]
